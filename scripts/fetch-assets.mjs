@@ -23,7 +23,12 @@ const assets = [
  ['gramedia-comics.jpg','Bookshelf Comics in Gramedia.jpg',1600],
  ['gramedia-books.jpg','Books stack in Gramedia Book Store.jpg',1600],
  ['indomie.jpg','Boxes of Indo Mie instant noodles.jpg',1200],
- ['discman.jpg','Sony Discman D 50.jpg',1162]
+ ['discman.jpg','Sony Discman D 50.jpg',1162],
+ ['dr-grip.jpg','GrGRIP.jpg',1200],
+ ['pilot-pens.jpg',"My Hi-TEC-Cs and Erk's Pens (498161156).jpg",1200],
+ ['gameboy-color.jpg','Nintendo-Game-Boy-Color-BL.jpg',1200],
+ ['pager.jpg','Motorola Advisor Pager (5005137730).jpg',1200],
+ ['rollerskates.png','Rollerskates.png',1000]
 ];
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -75,9 +80,8 @@ for (const [target, file, width] of assets) {
   failed.push(target);
   console.warn(`asset ${target} skipped after retries: ${error.message}`);
  }
- // Be polite to Commons and reduce 429 responses on CI runners.
  await sleep(350);
 }
 
-if (ok < 18) throw new Error(`Only ${ok}/${assets.length} visual assets could be fetched; refusing incomplete build. Missing: ${failed.join(', ')}`);
+if (ok < 23) throw new Error(`Only ${ok}/${assets.length} visual assets could be fetched; refusing incomplete build. Missing: ${failed.join(', ')}`);
 console.log(`Downloaded ${ok}/${assets.length} licensed visual assets.${failed.length ? ` Missing after retries: ${failed.join(', ')}` : ' Complete visual set.'}`);
