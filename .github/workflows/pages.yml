@@ -10,6 +10,8 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: true
+env:
+  VITE_API_BASE_URL: https://wisata-masa-lalu.juldigi.workers.dev
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,9 +22,24 @@ jobs:
           node-version: '22'
       - run: npm install
       - run: npm test
+      - name: Verify live Cloudflare API
+        run: |
+          node --input-type=module <<'NODE'
+          const base = process.env.VITE_API_BASE_URL;
+          for (const path of ['/api/health', '/api/catalog']) {
+            const r = await fetch(base + path, {
+              headers: { Origin: 'https://juldigi0107.github.io' },
+              signal: AbortSignal.timeout(20000)
+            });
+            if (!r.ok) throw Error(path + ': HTTP ' + r.status);
+            if (r.headers.get('access-control-allow-origin') !== 'https://juldigi0107.github.io') throw Error(path + ': CORS mismatch');
+            const d = await r.json();
+            if (path.endsWith('health') && d.ok !== true) throw Error('Health failed');
+            if (path.endsWith('catalog') && (!Array.isArray(d.entries) || !d.entries.length)) throw Error('Catalog missing');
+            console.log(path + ': HTTP 200, JSON and CORS verified');
+          }
+          NODE
       - run: npm run build
-        env:
-          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
