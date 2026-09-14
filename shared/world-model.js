@@ -1,6 +1,6 @@
 import {memoryTriggers} from './memory-triggers.js';
 
-export const worldVersion='3.0.0-alpha.1';
+export const worldVersion='3.1.0';
 
 export const nostalgiaProfiles=[
  {id:'anak-warung',label:'Anak Warung',scene:'kampung',keywords:['jajanan','warung','pedagang'],accent:'amber'},
@@ -165,8 +165,7 @@ export const achievements=[
  {id:'raja-dingdong',label:'Raja Dingdong',description:'Capai tiga high score arcade.',category:'mainan',target:3},
  {id:'pemburu-layangan',label:'Pemburu Layangan',description:'Selesaikan lima chase/timing permainan.',category:'permainan',target:5},
  {id:'penjelajah-waktu',label:'Penjelajah Waktu',description:'Kunjungi seluruh tahun 1990–1999.',kind:'years',target:10},
- {id:'keliling-kota',label:'Keliling Dunia 90-an',description:'Kunjungi lima area utama.',kind:'scenes',target:5},
- {id:'arsiparis',label:'Arsiparis',description:'Buka 20 entri contextual encyclopedia.',kind:'archive',target:20}
+ {id:'keliling-kota',label:'Keliling Dunia 90-an',description:'Kunjungi lima area utama.',kind:'scenes',target:5}
 ];
 
 export const onboardingChoices=nostalgiaProfiles.map(profile=>({id:profile.id,label:profile.label,scene:profile.scene}));
