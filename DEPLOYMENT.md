@@ -5,8 +5,8 @@
 - Frontend: GitHub Pages — `https://juldigi0107.github.io/wisata-masa-lalu/`
 - Backend target: Cloudflare Worker — `https://wisata-masa-lalu.juldigi.workers.dev`
 - Katalog lokal/SSOT aplikasi: `shared/assembled-catalog.js`
-- Versi katalog saat ini: **v2.3.0**
-- Jumlah katalog teruji: **32 entri** lintas TV, kartun/anime, permainan, benda/game, musik, Ramadhan, dan budaya warung.
+- Versi katalog saat ini: **v2.4.0**
+- Jumlah katalog teruji: **39 entri** lintas TV, kartun/anime, permainan, benda/game, musik/personal audio, Ramadhan, budaya warung, makanan/minuman, dan budaya baca.
 - Frontend memiliki **safe fallback**: Worker hanya dipakai saat versi dan jumlah entrinya sama persis dengan katalog lokal. Worker yang tertinggal tidak boleh menurunkan isi aplikasi.
 
 ## Frontend GitHub Pages
@@ -78,11 +78,11 @@ Workflow `.github/workflows/worker.yml` selalu menjalankan test. Langkah deploy 
 
 Aset eksternal diambil dari sumber berlisensi melalui `scripts/fetch-assets.mjs`. Downloader memiliki retry/backoff untuk HTTP 429/5xx dan build menolak hasil yang terlalu tidak lengkap.
 
-Sumber, kreator, dan lisensi dicatat di `public/assets/ATTRIBUTION.md`.
+Sumber, kreator, dan lisensi awal dicatat di `public/assets/ATTRIBUTION.md`. Tambahan batch v2.4 dicatat di `public/assets/ATTRIBUTION-v2.4.md`.
 
 Aset vektor orisinal proyek berada di `public/assets/`.
 
-Build v2.3 terakhir berhasil mengambil **15/15 aset visual**.
+Pipeline v2.4 menargetkan **20 aset visual lokal** dan mensyaratkan minimal 18 berhasil diunduh agar build boleh diteruskan.
 
 ## Data dan provenance
 
@@ -93,6 +93,7 @@ Build v2.3 terakhir berhasil mengambil **15/15 aset visual**.
 - Jadwal simulasi dipisahkan dari `archiveSchedules`.
 - Sampel jadwal komunitas tidak diklaim sebagai scan koran primer.
 - Harga jajanan dan barang yang belum memiliki sumber historis tetap kosong/disclaimer; tidak diubah menjadi angka perkiraan seolah fakta.
+- Batch budaya baca, makanan/minuman, dan personal audio v2.4 memakai sumber penerbit/produsen resmi bila tersedia; sumber sekunder tetap diberi jenis sumber secara eksplisit.
 
 ## Verifikasi minimum sebelum rilis
 
@@ -109,6 +110,8 @@ Build v2.3 terakhir berhasil mengambil **15/15 aset visual**.
 
 ## Cakupan saat ini
 
-Aplikasi bukan lagi Batch 1. Katalog v2.3 berisi 32 entri terkurasi dan UI mempunyai CRT simulator, arsip Minggu pagi, blueprint permainan, object cabinet, kalkulator warung, Ramadhan experience, kaset/kamus gaul, quiz 20 pertanyaan, pencarian + filter kategori arsip, detail provenance, dan source ledger.
+Aplikasi bukan lagi Batch 1. Katalog v2.4 berisi 39 entri terkurasi dan UI mempunyai CRT simulator, arsip Minggu pagi, blueprint permainan, object cabinet, kalkulator warung, Ramadhan experience, kaset/kamus gaul, quiz 20 pertanyaan, pencarian + filter kategori arsip, progressive loading 12 entri per batch, detail provenance, dan source ledger.
 
-API sudah disiapkan untuk pertumbuhan ke **500+ entri** melalui pagination dan facets. Penambahan konten tetap dilakukan per batch enrichment supaya data lama tidak rusak dan setiap fakta baru mempunyai provenance yang jelas.
+Batch v2.4 menambahkan budaya baca (Majalah Bobo, gelombang manga Elex, Toko Buku Gramedia), makanan/minuman (Indomie Mi Goreng dan AQUA), serta personal audio (Walkman dan Discman/CD portable). API dan rendering arsip sudah disiapkan untuk pertumbuhan ke **500+ entri** melalui pagination, facets, progressive rendering, dan `content-visibility` pada kartu off-screen.
+
+Penambahan konten tetap dilakukan per batch enrichment supaya data lama tidak rusak dan setiap fakta baru mempunyai provenance yang jelas.
