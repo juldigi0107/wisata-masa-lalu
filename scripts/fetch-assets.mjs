@@ -18,7 +18,12 @@ const assets = [
  ['yoyo.jpg','Yo-Yo-Plastic-Toy-Green.jpg',1100],
  ['floppy.jpg','3.5" floppy disk.jpg',1100],
  ['phone.jpg','Old rotary phone.jpg',1100],
- ['camera.jpg','Olympus Trip 505.jpg',1100]
+ ['camera.jpg','Olympus Trip 505.jpg',1100],
+ ['bobo-logo.png','Logo Majalah Bobo.png',900],
+ ['gramedia-comics.jpg','Bookshelf Comics in Gramedia.jpg',1600],
+ ['gramedia-books.jpg','Books stack in Gramedia Book Store.jpg',1600],
+ ['indomie.jpg','Boxes of Indo Mie instant noodles.jpg',1200],
+ ['discman.jpg','Sony Discman D 50.jpg',1162]
 ];
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -74,5 +79,5 @@ for (const [target, file, width] of assets) {
  await sleep(350);
 }
 
-if (ok < 13) throw new Error(`Only ${ok}/${assets.length} visual assets could be fetched; refusing incomplete build. Missing: ${failed.join(', ')}`);
+if (ok < 18) throw new Error(`Only ${ok}/${assets.length} visual assets could be fetched; refusing incomplete build. Missing: ${failed.join(', ')}`);
 console.log(`Downloaded ${ok}/${assets.length} licensed visual assets.${failed.length ? ` Missing after retries: ${failed.join(', ')}` : ' Complete visual set.'}`);
