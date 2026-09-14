@@ -1,0 +1,16 @@
+/* Original environment art layer. The SVGs are authored for this project and intentionally
+   remain stylized rather than pretending to be archival photography. */
+.scene-rumah .scene-architecture,.scene-kampung .scene-architecture,.scene-sekolah .scene-architecture,.scene-kota .scene-architecture,.scene-digital .scene-architecture{inset:0;background-position:center bottom;background-repeat:no-repeat;background-size:cover!important;opacity:.96;filter:saturate(.82) contrast(1.04)}
+.scene-rumah .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/rumah-90.svg')!important}
+.scene-kampung .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/kampung-90.svg')!important}
+.scene-sekolah .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/sekolah-90.svg')!important}
+.scene-kota .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/kota-90.svg')!important}
+.scene-digital .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/digital-90.svg')!important;filter:saturate(.9) contrast(1.08)}
+.scene-rumah .scene-architecture:before,.scene-rumah .scene-architecture:after,.scene-kampung .scene-architecture:before,.scene-kampung .scene-architecture:after,.scene-sekolah .scene-architecture:before,.scene-sekolah .scene-architecture:after,.scene-kota .scene-architecture:before,.scene-kota .scene-architecture:after,.scene-digital .scene-architecture:before,.scene-digital .scene-architecture:after{display:none!important}
+.scene-rumah .scene-sky,.scene-kampung .scene-sky,.scene-sekolah .scene-sky,.scene-kota .scene-sky,.scene-digital .scene-sky{opacity:.45}
+.scene-rumah .scene-ground,.scene-kampung .scene-ground,.scene-sekolah .scene-ground,.scene-kota .scene-ground,.scene-digital .scene-ground{opacity:.28}
+.phase-malam .scene-architecture{filter:brightness(.62) saturate(.78) contrast(1.08)}
+.phase-malam .scene-architecture:after{content:""!important;display:block!important;position:absolute;inset:0;background:radial-gradient(circle at 22% 38%,rgba(247,205,120,.18),transparent 18%),radial-gradient(circle at 76% 42%,rgba(247,205,120,.12),transparent 15%),rgba(5,11,13,.12);mix-blend-mode:screen;pointer-events:none}
+.mode-ramadan .scene-architecture{filter:saturate(.8) sepia(.05)}
+.mode-agustusan .scene-architecture{filter:saturate(.92) contrast(1.03)}
+@media(max-width:760px){.scene-rumah .scene-architecture,.scene-kampung .scene-architecture,.scene-sekolah .scene-architecture,.scene-kota .scene-architecture,.scene-digital .scene-architecture{background-size:auto 100%!important;background-position:center bottom}}
