@@ -46,14 +46,20 @@ export const deepObjectCabinet = [
 ];
 
 export const decadeMoments = [
+ {year:1990,entryId:'wartel-1990',label:'Telekomunikasi',title:'Wartel swasta terdokumentasi',note:'Arsip Harian Neraca 7 Juni 1990 mencatat pelatihan 26 tenaga Wartel swasta dan beberapa lokasi Wartel di Palembang.'},
  {year:1991,entryId:'pilot-dr-grip',label:'Alat tulis',title:'Dr. Grip diluncurkan',note:'PILOT menempatkan peluncuran pertama Dr. Grip pada 1991.'},
  {year:1991,entryId:'olga-dan-sepatu-roda',label:'Film remaja',title:'Olga dan Sepatu Roda',note:'Film 1991 menggabungkan sekolah, radio, dan kultur sepatu roda.'},
+ {year:1992,entryId:'sony-minidisc-1992',label:'Personal audio',title:'MiniDisc hadir',note:'Sony mencatat MZ-1 dan ekosistem MiniDisc mulai dipasarkan di Jepang pada November 1992.'},
+ {year:1994,entryId:'indonet-internet-komersial-1994',label:'Internet Indonesia',title:'IndoNet berdiri',note:'Indonet mencatat pendiriannya pada 1994 sebagai penyedia internet komersial pertama di Indonesia.'},
  {year:1994,entryId:'pilot-hi-tec-c',label:'Sekolah',title:'Hi-Tec-C hadir',note:'PILOT mencatat Hi-Tec-C 0,3 mm diluncurkan pada 1994.'},
+ {year:1995,entryId:'windows-95-indonesia',label:'Komputer',title:'Windows 95 & PT Microsoft Indonesia',note:'Microsoft meluncurkan Windows 95 pada 24 Agustus 1995; riwayat perusahaan juga mencatat PT Microsoft Indonesia diluncurkan pada tahun yang sama.'},
  {year:1995,entryId:'pager-motorola-90an',label:'Komunikasi',title:'Pager dua arah',note:'Motorola memperkenalkan Tango, pager dua arahnya, pada 1995.'},
+ {year:1996,entryId:'apjii-1996',label:'Internet Indonesia',title:'APJII berdiri',note:'APJII dinyatakan berdiri pada Musyawarah Nasional pertama 15 Mei 1996.'},
  {year:1996,entryId:'tamagotchi',label:'Mainan digital',title:'Tamagotchi',note:'Bandai mencatat peluncuran Tamagotchi pada November 1996.'},
  {year:1997,entryId:'hyper-yoyo',label:'Mainan keterampilan',title:'Hyper Yo-Yo',note:'Bandai Namco mencatat Hyper Yo-Yo diluncurkan pada April 1997.'},
  {year:1998,entryId:'game-boy-color',label:'Handheld',title:'Game Boy Color',note:'Nintendo menempatkan Game Boy Color pada 1998.'},
- {year:1998,entryId:'kuldesak-1998',label:'Film Indonesia',title:'Kuldesak',note:'Film omnibus ini menjadi salah satu penanda penting ekosistem film Indonesia akhir 90-an.'}
+ {year:1998,entryId:'kuldesak-1998',label:'Film Indonesia',title:'Kuldesak',note:'Film omnibus ini menjadi salah satu penanda penting ekosistem film Indonesia akhir 90-an.'},
+ {year:1999,entryId:'lorong-waktu',label:'Ramadhan / TV',title:'Lorong Waktu',note:'Entri SSOT mencatat serial religi-fiksi ilmiah ini mulai hadir di SCTV pada 1999.'}
 ];
 
 export const provenanceTiers = [
