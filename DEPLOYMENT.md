@@ -1,30 +1,102 @@
-# Deployment
-## Frontend
-Settings → Pages → Build and deployment → Source: GitHub Actions.
-Push main memulai workflow Pages. Jika pengaturan baru diaktifkan, jalankan ulang workflow melalui Actions.
-Alamat yang diharapkan: https://juldigi0107.github.io/wisata-masa-lalu/ (baru aktif setelah deployment berhasil).
-## Backend: dashboard Cloudflare
-Workers & Pages → buat Worker dengan import repositori ini.
-Nama Worker: wisata-masa-lalu-api. Root directory: /. Build command: npm test. Deploy command: npx wrangler deploy.
-Konfigurasi wrangler.jsonc menunjuk worker/index.js; API menggunakan katalog JSON yang dibundel sebagai modul JS, tanpa database tambahan.
-Alternatif: set repository Actions secrets CLOUDFLARE_API_TOKEN dan CLOUDFLARE_ACCOUNT_ID lalu jalankan workflow Deploy Cloudflare Workers API.
-Simpan token hanya dalam pengaturan secret, bukan source code atau chat.
-## Hubungkan
-Set repository Actions variable VITE_API_BASE_URL ke origin HTTPS Worker yang benar dari hasil deployment (tanpa /api di akhir).
-Jalankan ulang workflow Pages. Tanpa variable ini, aplikasi menggunakan katalog bawaan dengan status yang terlihat.
-Jika domain frontend diubah, perbarui ALLOWED_ORIGIN pada wrangler.jsonc.
-## Endpoint
-GET /api/health
-GET /api/catalog
-GET /api/entries?q=doraemon&type=kartun
-GET /api/schedules?day=Minggu
-## Verifikasi
-Workflow menjalankan API tests dan build frontend. Pengujian browser manual: daya TV, 6 saluran, CRT, audio setelah klik, slider, filter hari/jam, pencarian, detail, navigasi wilayah, layar mobile.
-Belum ada browser runner pada sesi pembuatan; jangan menganggap UI sudah diuji.
-## Cakupan
-Fondasi Batch 1: 4 entri editorial contoh, jadwal simulasi, harga belum terverifikasi. Belum merupakan 500 entri atau aplikasi lengkap 8 modul.
-Aset foto, radio berlisensi, 10 renderer layout, kuis, mini-game, dan CMS belum diimplementasi.
-Font Cooper memakai fallback Georgia bila font lokal tidak tersedia.
-## Referensi
-https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
-https://developers.cloudflare.com/workers/wrangler/configuration/
+# Deployment — Wisata Masa Lalu
+
+## Status arsitektur
+
+- Frontend: GitHub Pages — `https://juldigi0107.github.io/wisata-masa-lalu/`
+- Backend target: Cloudflare Worker — `https://wisata-masa-lalu.juldigi.workers.dev`
+- Katalog lokal/SSOT aplikasi: `shared/assembled-catalog.js`
+- Versi katalog saat ini: **v2.1.0**
+- Frontend memiliki **safe fallback**: Worker hanya dipakai saat versi dan jumlah entrinya sama persis dengan katalog lokal. Worker yang tertinggal tidak boleh menurunkan isi aplikasi.
+
+## Frontend GitHub Pages
+
+Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+
+Setiap push ke `main` menjalankan workflow `.github/workflows/pages.yml`. Workflow:
+
+1. memasang dependency,
+2. menjalankan seluruh API/data test,
+3. membandingkan versi katalog lokal dengan Worker live,
+4. mengunduh aset visual berlisensi ke `public/assets/media/`,
+5. membangun Vite production bundle,
+6. memublikasikan artifact ke GitHub Pages.
+
+Jika Worker live tidak identik dengan katalog lokal, build tetap dilanjutkan memakai bundled catalog. Ini disengaja untuk mencegah runtime downgrade.
+
+## Backend Cloudflare Worker
+
+Konfigurasi Wrangler berada di `wrangler.jsonc` dan entry point Worker adalah `worker/index.js`.
+
+Worker menggunakan `shared/assembled-catalog.js` sehingga frontend dan backend mempunyai struktur data yang sama. Database eksternal belum diperlukan untuk katalog kurasi statis saat ini.
+
+### Opsi A — Cloudflare Git integration
+
+Di dashboard Cloudflare, hubungkan repository ini dan gunakan project/Worker yang mengarah ke root repository. Perintah deployment adalah:
+
+```text
+npx wrangler deploy
+```
+
+Pastikan integrasi Cloudflare benar-benar mengikuti branch `main` dan bukan snapshot lama.
+
+### Opsi B — GitHub Actions
+
+Repository membutuhkan dua **Actions secrets** berikut:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+
+Lokasi: GitHub repository → Settings → Secrets and variables → Actions → New repository secret.
+
+Jangan menyimpan token di source code, file `.env` yang di-commit, issue, atau chat.
+
+Workflow `.github/workflows/worker.yml` selalu menjalankan test. Langkah deploy hanya berjalan jika kedua secret tersedia; jika tidak, workflow tetap melaporkan validasi kode berhasil tetapi deployment dilewati.
+
+## Endpoint API v2.1
+
+- `GET /api/health`
+- `GET /api/catalog`
+- `GET /api/entries?q=doraemon&type=kartun`
+- `GET /api/entries?type=mainan`
+- `GET /api/entries?station=RCTI&type=tv`
+- `GET /api/schedules?day=Minggu`
+- `GET /api/archive-schedules?date=1995-06-04&station=RCTI`
+- `GET /api/sources`
+- `GET /api/stats`
+
+`/api/health` harus melaporkan versi yang sama dengan katalog lokal sebelum frontend mengaktifkan runtime binding ke Worker.
+
+## Aset visual
+
+Aset eksternal diambil dari sumber berlisensi melalui `scripts/fetch-assets.mjs`. Downloader memiliki retry/backoff untuk HTTP 429/5xx dan build menolak hasil yang terlalu tidak lengkap.
+
+Sumber, kreator, dan lisensi dicatat di `public/assets/ATTRIBUTION.md`.
+
+Aset vektor orisinal proyek berada di `public/assets/`.
+
+## Data dan provenance
+
+- Fakta historis menggunakan `status: verified` atau `status: curated`.
+- `verified` wajib mempunyai sumber.
+- Kutipan nostalgia rekaan selalu diberi label editorial.
+- Jadwal simulasi dipisahkan dari `archiveSchedules`.
+- Sampel jadwal komunitas tidak diklaim sebagai scan koran primer.
+- Harga jajanan yang belum memiliki sumber historis tetap diberi disclaimer dan tidak diperlakukan sebagai indeks inflasi resmi.
+
+## Verifikasi minimum sebelum rilis
+
+1. `npm test` lulus.
+2. `npm run build` lulus.
+3. Semua ID entri unik.
+4. Semua `sourceIds` dapat diselesaikan ke daftar sumber entri.
+5. Entri `verified` mempunyai sumber.
+6. Semua enam stasiun TV memiliki sedikitnya satu entri kurasi.
+7. Artifact visual berhasil diambil atau memenuhi minimum build.
+8. Pages publish berhasil.
+9. Worker `/api/health` diperiksa versinya secara eksplisit.
+
+## Cakupan saat ini
+
+Aplikasi bukan lagi Batch 1. Katalog v2.1 menggabungkan kurasi TV/kartun dengan batch permainan rakyat bersumber resmi, sementara UI sudah mempunyai CRT simulator, arsip Minggu pagi, blueprint permainan, object cabinet, kalkulator warung, Ramadhan experience, kaset/kamus gaul, quiz 20 pertanyaan, pencarian arsip, dan source ledger.
+
+Target jangka lanjut tetap **500+ entri**. Penambahan dilakukan per batch terkurasi melalui file enrichment agar data lama tidak rusak.
