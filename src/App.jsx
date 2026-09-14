@@ -114,7 +114,7 @@ export default function App(){
  const archive=data.archiveSchedules?.[0];
  const verifiedCount=data.entries.filter(e=>e.status==='verified').length;
  const quizPercent=Math.round(quizScore/quizQuestions.length*100);
- const trackedAssetCount=assetCredits.length+10;
+ const trackedAssetCount=assetCredits.length;
  const activeVisual=active.assets?.find(asset=>asset.kind==='image'&&asset.path);
 
  return <div className={night?'app-shell night-ready':'app-shell'}>
