@@ -1,0 +1,9 @@
+{
+  "name": "wisata-masa-lalu-api",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-09-14",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGIN": "https://juldigi0107.github.io"
+  }
+}

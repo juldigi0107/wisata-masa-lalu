@@ -1,0 +1,7 @@
+import test from "node:test";import assert from "node:assert/strict";import worker from "../worker/index.js";import catalog from "../shared/catalog.js";
+const call=(path,options={})=>worker.fetch(new Request("https://example.com"+path,options),{ALLOWED_ORIGIN:"https://juldigi0107.github.io"});
+test("catalog and schedule references are valid",()=>{const ids=new Set(catalog.entries.map(e=>e.id));assert.equal(ids.size,catalog.entries.length);for(const s of catalog.schedules){assert.ok(ids.has(s.entryId));assert.ok(s.startMinute<s.endMinute)}});
+test("health and catalog",async()=>{assert.equal((await (await call("/api/health")).json()).ok,true);assert.equal((await (await call("/api/catalog")).json()).entries.length,4)});
+test("search and type filters",async()=>{const r=await(await call("/api/entries?q=doraemon&type=kartun")).json();assert.equal(r.total,1);assert.equal(r.entries[0].id,"doraemon")});
+test("CORS only trusts configured frontend",async()=>{assert.equal((await call("/api/catalog",{headers:{Origin:"https://juldigi0107.github.io"}})).headers.get("Access-Control-Allow-Origin"),"https://juldigi0107.github.io");assert.equal((await call("/api/catalog",{headers:{Origin:"https://evil.example"}})).headers.get("Access-Control-Allow-Origin"),null);assert.equal((await call("/api/catalog",{method:"OPTIONS",headers:{Origin:"https://evil.example"}})).status,403)});
+test("method and path errors",async()=>{assert.equal((await call("/unknown")).status,404);assert.equal((await call("/api/catalog",{method:"POST"})).status,405)});
