@@ -13,14 +13,10 @@ import "./world/polish.css";
 import "./world/archive-premium.css";
 import "./world/special-mechanics.css";
 import "./world/context-archive.css";
+import "./world/device-controls.css";
 
-// Keep the historical SSOT shared by the immersive layer, contextual archive,
-// tests, and Worker API. The legacy editorial experience remains accessible
-// from inside WorldApp as the deep archive rather than the primary navigation.
 Object.assign(baseCatalog, assembledCatalog);
 
-// PWA shortcuts and shared links must open a real destination, not a decorative URL.
-// We seed only valid scene/year values into the existing local profile; no data is erased.
 try{
  const params=new URLSearchParams(window.location.search);
  const requestedScene=params.get('scene');
