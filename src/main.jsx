@@ -12,6 +12,7 @@ import "./world/motion.css";
 import "./world/polish.css";
 import "./world/archive-premium.css";
 import "./world/special-mechanics.css";
+import "./world/context-archive.css";
 
 // Keep the historical SSOT shared by the immersive layer, contextual archive,
 // tests, and Worker API. The legacy editorial experience remains accessible
