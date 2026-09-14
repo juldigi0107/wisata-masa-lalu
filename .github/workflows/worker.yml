@@ -1,11 +1,20 @@
 name: Deploy Cloudflare Workers API
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'worker/**'
+      - 'shared/**'
+      - 'tests/**'
+      - 'wrangler.jsonc'
+      - 'package.json'
+      - '.github/workflows/worker.yml'
 permissions:
   contents: read
 concurrency:
   group: worker-production
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   deploy:
     runs-on: ubuntu-latest
