@@ -5,6 +5,7 @@ import baseCatalog from "../shared/catalog.js";
 import assembledCatalog from "../shared/assembled-catalog.js";
 import "./styles.css";
 import "./details.css";
+import "./world/premium.css";
 
 // Keep the historical SSOT shared by the immersive layer, contextual archive,
 // tests, and Worker API. The legacy editorial experience remains accessible
