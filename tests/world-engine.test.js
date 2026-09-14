@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {memoryTriggers,getTrigger} from '../shared/memory-triggers.js';
 import {
  scenes,years,yearWorldState,nostalgiaProfiles,onboardingChoices,dayCampaign,
- randomMemoryEvents,collections,achievements
+ randomMemoryEvents,collections,achievements,worldVersion
 } from '../shared/world-model.js';
 
 const normalized=value=>String(value??'').toLocaleLowerCase('id');
@@ -39,6 +39,8 @@ test('every spatial object, exit, campaign step, and random event resolves',()=>
 });
 
 test('decade, profiles, collections, and achievements have complete production contracts',()=>{
+ assert.match(worldVersion,/^\d+\.\d+\.\d+$/,'public world engine must use a stable semantic version');
+ assert.equal(/alpha|beta|prototype|mock/i.test(worldVersion),false,'prerelease world label leaked');
  assert.deepEqual(years,Array.from({length:10},(_,i)=>1990+i));
  for(const year of years){
   const state=yearWorldState[year];
@@ -51,11 +53,17 @@ test('decade, profiles, collections, and achievements have complete production c
  assert.ok(collections.length>=10);
  assert.equal(new Set(collections.map(item=>item.id)).size,collections.length);
  assert.ok(achievements.length>=4);
- for(const achievement of achievements)assert.ok(achievement.id&&achievement.label&&achievement.target>0);
+ const validCategories=new Set(memoryTriggers.map(item=>item.category));
+ for(const achievement of achievements){
+  assert.ok(achievement.id&&achievement.label&&achievement.target>0,`invalid achievement: ${achievement.id}`);
+  if(achievement.kind)assert.ok(['scenes','years'].includes(achievement.kind),`unsupported achievement kind: ${achievement.id}/${achievement.kind}`);
+  if(achievement.category)assert.ok(validCategories.has(achievement.category),`unsupported achievement category: ${achievement.id}/${achievement.category}`);
+  assert.ok(achievement.kind||achievement.category,`achievement has no unlock route: ${achievement.id}`);
+ }
 });
 
 test('world content contains no prototype placeholder language',()=>{
- const corpus=JSON.stringify({memoryTriggers,scenes,dayCampaign,randomMemoryEvents,collections,achievements,onboardingChoices});
- const banned=['lorem ipsum','coming soon','fitur belum tersedia','placeholder','dummy button','todo:','tbd'];
+ const corpus=JSON.stringify({worldVersion,memoryTriggers,scenes,dayCampaign,randomMemoryEvents,collections,achievements,onboardingChoices});
+ const banned=['lorem ipsum','coming soon','fitur belum tersedia','placeholder','dummy button','todo:','tbd','alpha.','-alpha','-beta','prototype','mockup'];
  for(const phrase of banned)assert.equal(normalized(corpus).includes(phrase),false,`prototype language leaked: ${phrase}`);
 });
