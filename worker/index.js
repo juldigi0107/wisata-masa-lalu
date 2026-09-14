@@ -19,7 +19,7 @@ export default {
   }
   if (request.method !== "GET") return reply({error:"Method tidak didukung"},405,{Allow:"GET, OPTIONS","Cache-Control":"no-store"});
 
-  if (url.pathname === "/api/health") return reply({ok:true,version:catalog.version,mode:"curated-static-v2",entries:catalog.entries.length,archiveSchedules:catalog.archiveSchedules?.length||0},{},{"Cache-Control":"no-store"});
+  if (url.pathname === "/api/health") return reply({ok:true,version:catalog.version,mode:"curated-static-v2",entries:catalog.entries.length,archiveSchedules:catalog.archiveSchedules?.length||0},200,{"Cache-Control":"no-store"});
   if (url.pathname === "/api/catalog") return reply(catalog);
   if (url.pathname === "/api/entries") {
    const q=(url.searchParams.get("q")||"").toLocaleLowerCase("id");
