@@ -39,6 +39,8 @@ jobs:
             console.log(path + ': HTTP 200, JSON and CORS verified');
           }
           NODE
+      - name: Fetch licensed editorial assets into public/assets/media
+        run: node scripts/fetch-assets.mjs
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
