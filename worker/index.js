@@ -1,4 +1,5 @@
 import catalog from "../shared/assembled-catalog.js";
+import {auditCatalog,auditEntry} from "../shared/editorial-audit.js";
 
 const clampInt = (raw, fallback, min, max) => {
  const value = Number.parseInt(raw ?? "", 10);
@@ -27,7 +28,10 @@ export default {
   }
   if (request.method !== "GET") return reply({error:"Method tidak didukung"},405,{Allow:"GET, OPTIONS","Cache-Control":"no-store"});
 
-  if (url.pathname === "/api/health") return reply({ok:true,version:catalog.version,mode:"curated-static-v2",entries:catalog.entries.length,verified:catalog.entries.filter(e=>e.status==="verified").length,archiveSchedules:catalog.archiveSchedules?.length||0},200,{"Cache-Control":"no-store"});
+  if (url.pathname === "/api/health") {
+   const audit=auditCatalog(catalog);
+   return reply({ok:true,version:catalog.version,mode:"curated-static-v2",entries:catalog.entries.length,verified:catalog.entries.filter(e=>e.status==="verified").length,archiveSchedules:catalog.archiveSchedules?.length||0,editorialMeanScore:audit.meanScore,editorialNeedsAttention:audit.needsAttention},200,{"Cache-Control":"no-store"});
+  }
   if (url.pathname === "/api/catalog") return reply(catalog);
 
   if (url.pathname === "/api/entries") {
@@ -36,14 +40,22 @@ export default {
    const station=normalized(url.searchParams.get("station"));
    const status=normalized(url.searchParams.get("status"));
    const region=normalized(url.searchParams.get("region"));
+   const readiness=normalized(url.searchParams.get("readiness"));
+   const issue=normalized(url.searchParams.get("issue"));
+   const minScore=clampInt(url.searchParams.get("minScore"),0,0,100);
+   const maxScore=clampInt(url.searchParams.get("maxScore"),100,0,100);
    const limit=clampInt(url.searchParams.get("limit"),24,1,100);
    const offset=clampInt(url.searchParams.get("offset"),0,0,1000000);
 
    const filtered=catalog.entries.filter(entry=>{
+    const quality=auditEntry(entry);
     const matchesType=!type||normalized(entry.type)===type;
     const matchesStation=!station||normalized(entry.details?.station)===station;
     const matchesStatus=!status||normalized(entry.status)===status;
     const matchesRegion=!region||normalized(entry.details?.region).includes(region)||(entry.tags||[]).some(tag=>normalized(tag).includes(region));
+    const matchesReadiness=!readiness||quality.readiness===readiness;
+    const matchesIssue=!issue||quality.issues.includes(issue);
+    const matchesScore=quality.completenessScore>=minScore&&quality.completenessScore<=maxScore;
     const haystack=normalized([
      entry.title,
      entry.summary,
@@ -54,12 +66,12 @@ export default {
      entry.details?.context,
      entry.details?.people
     ].filter(Boolean).join(" "));
-    return matchesType&&matchesStation&&matchesStatus&&matchesRegion&&(!q||haystack.includes(q));
+    return matchesType&&matchesStation&&matchesStatus&&matchesRegion&&matchesReadiness&&matchesIssue&&matchesScore&&(!q||haystack.includes(q));
    });
 
    const entries=filtered.slice(offset,offset+limit);
    const nextOffset=offset+entries.length<filtered.length?offset+entries.length:null;
-   return reply({entries,total:filtered.length,offset,limit,nextOffset,version:catalog.version});
+   return reply({entries,total:filtered.length,offset,limit,nextOffset,version:catalog.version,qualityFilters:{readiness:readiness||null,issue:issue||null,minScore,maxScore}});
   }
 
   if (url.pathname === "/api/schedules") {
@@ -81,7 +93,8 @@ export default {
    const byType={};
    const byStatus={};
    for(const entry of catalog.entries){byType[entry.type]=(byType[entry.type]||0)+1;byStatus[entry.status]=(byStatus[entry.status]||0)+1;}
-   return reply({version:catalog.version,total:catalog.entries.length,byType,byStatus,stations:catalog.stations.length,archiveSchedules:catalog.archiveSchedules?.length||0});
+   const audit=auditCatalog(catalog);
+   return reply({version:catalog.version,total:catalog.entries.length,byType,byStatus,stations:catalog.stations.length,archiveSchedules:catalog.archiveSchedules?.length||0,editorial:{meanScore:audit.meanScore,medianScore:audit.medianScore,releaseReady:audit.releaseReady,needsAttention:audit.needsAttention,verifiedWithIssues:audit.verifiedWithIssues}});
   }
   if (url.pathname === "/api/facets") {
    const byType={};
@@ -94,7 +107,25 @@ export default {
     if(entry.details?.station) byStation[entry.details.station]=(byStation[entry.details.station]||0)+1;
     if(entry.details?.region) byRegion[entry.details.region]=(byRegion[entry.details.region]||0)+1;
    }
-   return reply({version:catalog.version,total:catalog.entries.length,byType,byStatus,byStation,byRegion});
+   const audit=auditCatalog(catalog);
+   return reply({version:catalog.version,total:catalog.entries.length,byType,byStatus,byStation,byRegion,byReadiness:audit.byReadiness,byIssue:audit.byIssue,bySourceKind:audit.bySourceKind,byYear:audit.byYear});
+  }
+  if (url.pathname === "/api/audit") {
+   const audit=auditCatalog(catalog);
+   const readiness=normalized(url.searchParams.get("readiness"));
+   const issue=normalized(url.searchParams.get("issue"));
+   const type=normalized(url.searchParams.get("type"));
+   const limit=clampInt(url.searchParams.get("limit"),24,1,100);
+   const offset=clampInt(url.searchParams.get("offset"),0,0,1000000);
+   const queue=audit.priorityQueue.filter(item=>(!readiness||item.readiness===readiness)&&(!issue||item.issues.includes(issue))&&(!type||normalized(item.type)===type));
+   const entries=queue.slice(offset,offset+limit);
+   return reply({
+    version:audit.version,total:audit.total,meanScore:audit.meanScore,medianScore:audit.medianScore,
+    releaseReady:audit.releaseReady,needsAttention:audit.needsAttention,verifiedWithIssues:audit.verifiedWithIssues,
+    byReadiness:audit.byReadiness,byIssue:audit.byIssue,bySourceKind:audit.bySourceKind,byYear:audit.byYear,byType:audit.byType,
+    queueTotal:queue.length,offset,limit,nextOffset:offset+entries.length<queue.length?offset+entries.length:null,entries,
+    disclaimer:"Completeness score mengukur kesiapan dokumentasi editorial, bukan menjamin kebenaran historis."
+   });
   }
   return reply({error:"Endpoint tidak ditemukan"},404,{"Cache-Control":"no-store"});
  }
