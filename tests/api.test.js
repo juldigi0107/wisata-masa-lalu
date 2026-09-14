@@ -9,8 +9,9 @@ const call=(path,options={})=>worker.fetch(new Request("https://example.com"+pat
 test("assembled catalog entries, sources, station coverage and schedule references are valid",()=>{
  const ids=new Set(catalog.entries.map(e=>e.id));
  assert.equal(ids.size,catalog.entries.length,"entry ids must be unique");
- assert.ok(catalog.entries.length>=24,"assembled v2.2 catalog unexpectedly small");
- assert.ok(catalog.entries.filter(e=>e.type==="mainan").length>=5,"traditional-game batch missing");
+ assert.ok(catalog.entries.length>=32,"assembled v2.3 catalog unexpectedly small");
+ assert.ok(catalog.entries.filter(e=>e.type==="mainan").length>=9,"traditional-game / object batch missing");
+ assert.ok(catalog.entries.filter(e=>e.type==="kartun").length>=5,"anime batch missing");
  assert.ok(catalog.entries.filter(e=>e.type==="musik").length>=4,"music batch missing");
  assert.ok(catalog.entries.some(e=>e.type==="ramadhan"),"Ramadan batch missing");
  assert.ok(catalog.entries.some(e=>e.type==="jajanan"),"food/beverage culture batch missing");
@@ -36,16 +37,18 @@ test("health reports assembled catalog version and size",async()=>{
 
 test("search supports query, type and station filters",async()=>{
  const doraemon=await(await call("/api/entries?q=doraemon&type=kartun")).json();assert.equal(doraemon.total,1);assert.equal(doraemon.entries[0].id,"doraemon");
+ const conan=await(await call("/api/entries?q=conan&type=kartun")).json();assert.equal(conan.total,1);assert.equal(conan.entries[0].id,"detective-conan");
  const sctv=await(await call("/api/entries?station=SCTV&type=tv")).json();assert.ok(sctv.total>=1);assert.ok(sctv.entries.every(e=>e.type==="tv"&&e.details?.station==="SCTV"));
- const games=await(await call("/api/entries?type=mainan")).json();assert.ok(games.total>=5);assert.ok(games.entries.every(e=>e.type==="mainan"));
+ const games=await(await call("/api/entries?type=mainan")).json();assert.ok(games.total>=9);assert.ok(games.entries.every(e=>e.type==="mainan"));
+ const tamagotchi=await(await call("/api/entries?q=tamagotchi&type=mainan")).json();assert.equal(tamagotchi.total,1);assert.equal(tamagotchi.entries[0].id,"tamagotchi");
  const music=await(await call("/api/entries?type=musik")).json();assert.ok(music.total>=4);assert.ok(music.entries.every(e=>e.type==="musik"));
  const sosro=await(await call("/api/entries?q=sosro&type=jajanan")).json();assert.equal(sosro.total,1);assert.equal(sosro.entries[0].id,"tehbotol-sosro");
 });
 
 test("archive schedules, source ledger and stats are exposed",async()=>{
  const archive=await(await call("/api/archive-schedules?date=1995-06-04&station=RCTI")).json();assert.equal(archive.total,1);assert.equal(archive.schedules[0].items[0].title,"Doraemon");
- const sources=await(await call("/api/sources")).json();assert.ok(sources.total>=20);assert.equal(sources.total,sources.sources.length);assert.equal(new Set(sources.sources.map(s=>s.id)).size,sources.total);
- const stats=await(await call("/api/stats")).json();assert.equal(stats.version,catalog.version);assert.equal(stats.total,catalog.entries.length);assert.ok(stats.byType.mainan>=5);assert.ok(stats.byType.musik>=4);assert.ok(stats.byStatus.verified>=1);
+ const sources=await(await call("/api/sources")).json();assert.ok(sources.total>=28);assert.equal(sources.total,sources.sources.length);assert.equal(new Set(sources.sources.map(s=>s.id)).size,sources.total);
+ const stats=await(await call("/api/stats")).json();assert.equal(stats.version,catalog.version);assert.equal(stats.total,catalog.entries.length);assert.ok(stats.byType.mainan>=9);assert.ok(stats.byType.kartun>=5);assert.ok(stats.byType.musik>=4);assert.ok(stats.byStatus.verified>=1);
 });
 
 test("CORS only trusts configured frontend",async()=>{
