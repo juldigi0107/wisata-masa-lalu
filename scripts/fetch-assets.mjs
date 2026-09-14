@@ -21,22 +21,58 @@ const assets = [
  ['camera.jpg','Olympus Trip 505.jpg',1100]
 ];
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+async function fetchAsset(url, target) {
+ const waits = [0, 1400, 3200, 5600];
+ let lastError;
+ for (let attempt = 0; attempt < waits.length; attempt++) {
+  if (waits[attempt]) await sleep(waits[attempt]);
+  try {
+   const res = await fetch(url, {
+    headers:{
+     'User-Agent':'WisataMasaLalu/2.0 (licensed editorial asset build; GitHub Pages)',
+     'Accept':'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+    }
+   });
+   if (!res.ok) {
+    const retryable = res.status === 429 || res.status >= 500;
+    if (retryable && attempt < waits.length - 1) {
+     console.warn(`asset ${target}: HTTP ${res.status}; retry ${attempt + 1}/${waits.length - 1}`);
+     continue;
+    }
+    throw new Error(`HTTP ${res.status}`);
+   }
+   const type = res.headers.get('content-type') || '';
+   if (!type.startsWith('image/')) throw new Error(`unexpected content-type ${type}`);
+   return new Uint8Array(await res.arrayBuffer());
+  } catch (error) {
+   lastError = error;
+   if (attempt < waits.length - 1) {
+    console.warn(`asset ${target}: ${error.message}; retry ${attempt + 1}/${waits.length - 1}`);
+    continue;
+   }
+  }
+ }
+ throw lastError || new Error('download failed');
+}
+
 let ok = 0;
+const failed = [];
 for (const [target, file, width] of assets) {
  const url = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(file)}?width=${width}`;
  try {
-  const res = await fetch(url, {headers:{'User-Agent':'WisataMasaLalu/2.0 (licensed editorial asset build; GitHub Pages)'}});
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const type = res.headers.get('content-type') || '';
-  if (!type.startsWith('image/')) throw new Error(`unexpected content-type ${type}`);
-  const bytes = new Uint8Array(await res.arrayBuffer());
+  const bytes = await fetchAsset(url, target);
   await writeFile(new URL(target, out), bytes);
   ok++;
   console.log(`asset ${target}: ${Math.round(bytes.length/1024)} KB`);
  } catch (error) {
-  console.warn(`asset ${target} skipped: ${error.message}`);
+  failed.push(target);
+  console.warn(`asset ${target} skipped after retries: ${error.message}`);
  }
+ // Be polite to Commons and reduce 429 responses on CI runners.
+ await sleep(350);
 }
 
-if (ok < 8) throw new Error(`Only ${ok}/${assets.length} visual assets could be fetched; refusing incomplete build.`);
-console.log(`Downloaded ${ok}/${assets.length} licensed visual assets.`);
+if (ok < 13) throw new Error(`Only ${ok}/${assets.length} visual assets could be fetched; refusing incomplete build. Missing: ${failed.join(', ')}`);
+console.log(`Downloaded ${ok}/${assets.length} licensed visual assets.${failed.length ? ` Missing after retries: ${failed.join(', ')}` : ' Complete visual set.'}`);
