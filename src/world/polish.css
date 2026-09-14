@@ -36,6 +36,13 @@
 .profile-strip{position:fixed!important}
 .memory-ribbon{transition:transform .22s,opacity .22s}.interaction-drawer~.memory-ribbon{opacity:.35}
 
+/* Public product language never exposes internal prerelease labels. */
+.world-footer b{font-size:0!important}
+.world-footer b:after{content:'TIME MACHINE · PRODUCTION';font:700 .48rem/1 'Courier New',monospace;letter-spacing:.14em;color:rgba(129,221,210,.72)}
+.world-footer{border-top:1px solid rgba(255,255,255,.06)!important;background:#080d0c!important;color:rgba(241,227,203,.5)!important}
+.world-footer button{border:1px solid rgba(255,255,255,.1)!important;border-radius:999px!important;background:transparent!important;color:rgba(241,227,203,.56)!important}
+.world-footer button:hover,.world-footer button:focus-visible{border-color:rgba(130,223,212,.35)!important;color:#cffff8!important;background:rgba(130,223,212,.07)!important}
+
 /* Better text rendering and balanced headlines */
 .world-app,.onboarding,.time-intro{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .scene-caption h2,.interaction-drawer h3,.onboarding-paper h1,.time-machine-panel h2,.search-panel h2,.collection-panel h2{text-wrap:balance}
