@@ -35,20 +35,32 @@ test("health reports assembled catalog version and size",async()=>{
  assert.equal(health.ok,true);assert.equal(health.mode,"curated-static-v2");assert.equal(health.version,catalog.version);assert.equal(health.entries,catalog.entries.length);assert.equal(body.entries.length,catalog.entries.length);assert.equal(body.version,catalog.version);
 });
 
-test("search supports query, type and station filters",async()=>{
+test("search supports query, type, station, status and region filters",async()=>{
  const doraemon=await(await call("/api/entries?q=doraemon&type=kartun")).json();assert.equal(doraemon.total,1);assert.equal(doraemon.entries[0].id,"doraemon");
  const conan=await(await call("/api/entries?q=conan&type=kartun")).json();assert.equal(conan.total,1);assert.equal(conan.entries[0].id,"detective-conan");
  const sctv=await(await call("/api/entries?station=SCTV&type=tv")).json();assert.ok(sctv.total>=1);assert.ok(sctv.entries.every(e=>e.type==="tv"&&e.details?.station==="SCTV"));
- const games=await(await call("/api/entries?type=mainan")).json();assert.ok(games.total>=9);assert.ok(games.entries.every(e=>e.type==="mainan"));
+ const verified=await(await call("/api/entries?status=verified&limit=100")).json();assert.ok(verified.total>=1);assert.ok(verified.entries.every(e=>e.status==="verified"));
+ const betawi=await(await call("/api/entries?region=betawi&limit=100")).json();assert.ok(betawi.total>=1);assert.ok(betawi.entries.some(e=>e.id==="galasin-betawi"));
+ const games=await(await call("/api/entries?type=mainan&limit=100")).json();assert.ok(games.total>=9);assert.ok(games.entries.every(e=>e.type==="mainan"));
  const tamagotchi=await(await call("/api/entries?q=tamagotchi&type=mainan")).json();assert.equal(tamagotchi.total,1);assert.equal(tamagotchi.entries[0].id,"tamagotchi");
- const music=await(await call("/api/entries?type=musik")).json();assert.ok(music.total>=4);assert.ok(music.entries.every(e=>e.type==="musik"));
+ const music=await(await call("/api/entries?type=musik&limit=100")).json();assert.ok(music.total>=4);assert.ok(music.entries.every(e=>e.type==="musik"));
  const sosro=await(await call("/api/entries?q=sosro&type=jajanan")).json();assert.equal(sosro.total,1);assert.equal(sosro.entries[0].id,"tehbotol-sosro");
 });
 
-test("archive schedules, source ledger and stats are exposed",async()=>{
+test("entries endpoint paginates safely for a 500+ entry catalog",async()=>{
+ const first=await(await call("/api/entries?type=mainan&limit=3&offset=0")).json();
+ assert.equal(first.entries.length,3);assert.ok(first.total>=9);assert.equal(first.offset,0);assert.equal(first.limit,3);assert.equal(first.nextOffset,3);
+ const second=await(await call(`/api/entries?type=mainan&limit=3&offset=${first.nextOffset}`)).json();
+ assert.equal(second.entries.length,3);assert.equal(second.offset,3);assert.equal(new Set([...first.entries,...second.entries].map(e=>e.id)).size,6);
+ const clamped=await(await call("/api/entries?limit=9999&offset=-9")).json();
+ assert.equal(clamped.limit,100);assert.equal(clamped.offset,0);assert.ok(clamped.entries.length<=100);
+});
+
+test("archive schedules, source ledger, stats and facets are exposed",async()=>{
  const archive=await(await call("/api/archive-schedules?date=1995-06-04&station=RCTI")).json();assert.equal(archive.total,1);assert.equal(archive.schedules[0].items[0].title,"Doraemon");
  const sources=await(await call("/api/sources")).json();assert.ok(sources.total>=28);assert.equal(sources.total,sources.sources.length);assert.equal(new Set(sources.sources.map(s=>s.id)).size,sources.total);
  const stats=await(await call("/api/stats")).json();assert.equal(stats.version,catalog.version);assert.equal(stats.total,catalog.entries.length);assert.ok(stats.byType.mainan>=9);assert.ok(stats.byType.kartun>=5);assert.ok(stats.byType.musik>=4);assert.ok(stats.byStatus.verified>=1);
+ const facets=await(await call("/api/facets")).json();assert.equal(facets.version,catalog.version);assert.equal(facets.total,catalog.entries.length);assert.equal(facets.byType.mainan,stats.byType.mainan);assert.ok(facets.byStation.RCTI>=1);assert.ok(Object.keys(facets.byRegion).length>=1);
 });
 
 test("CORS only trusts configured frontend",async()=>{
