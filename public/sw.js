@@ -1,7 +1,8 @@
-const VERSION='wml-time-machine-v3-2';
+const VERSION='wml-time-machine-v3-3';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
-const base=new URL('./',self.location.href).pathname;
+const swBase=new URL('./',self.location.href);
+const base=swBase.pathname;
 const shellUrls=[
  base,
  `${base}manifest.webmanifest`,
@@ -70,7 +71,7 @@ self.addEventListener('message',event=>{
   event.waitUntil((async()=>{
    const urls=data.urls
     .filter(value=>typeof value==='string')
-    .map(value=>new URL(value,self.location.origin))
+    .map(value=>new URL(value,swBase))
     .filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base))
     .map(url=>url.href);
    const cache=await caches.open(MEDIA);
