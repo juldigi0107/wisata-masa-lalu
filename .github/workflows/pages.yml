@@ -36,7 +36,10 @@ jobs:
             const d = await r.json();
             if (path.endsWith('health') && d.ok !== true) throw Error('Health failed');
             if (path.endsWith('catalog') && (!Array.isArray(d.entries) || !d.entries.length)) throw Error('Catalog missing');
-            console.log(path + ': HTTP 200, JSON and CORS verified');
+            const detail = path.endsWith('health')
+              ? `version=${d.version ?? 'unknown'} mode=${d.mode ?? 'unknown'} entries=${d.entries ?? 'unknown'}`
+              : `version=${d.version ?? 'unknown'} entries=${d.entries.length} archiveSchedules=${d.archiveSchedules?.length ?? 0}`;
+            console.log(`${path}: HTTP 200, CORS verified, ${detail}`);
           }
           NODE
       - name: Fetch licensed editorial assets into public/assets/media
