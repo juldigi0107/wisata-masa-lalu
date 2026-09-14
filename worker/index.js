@@ -30,7 +30,14 @@ export default {
 
   if (url.pathname === "/api/health") {
    const audit=auditCatalog(catalog);
-   return reply({ok:true,version:catalog.version,mode:"curated-static-v2",entries:catalog.entries.length,verified:catalog.entries.filter(e=>e.status==="verified").length,archiveSchedules:catalog.archiveSchedules?.length||0,editorialMeanScore:audit.meanScore,editorialNeedsAttention:audit.needsAttention},200,{"Cache-Control":"no-store"});
+   return reply({
+    ok:true,version:catalog.version,mode:"curated-static-v2",entries:catalog.entries.length,
+    verified:catalog.entries.filter(e=>e.status==="verified").length,archiveSchedules:catalog.archiveSchedules?.length||0,
+    editorialMeanScore:audit.meanScore,editorialMedianScore:audit.medianScore,
+    editorialReleaseReady:audit.releaseReady,editorialSolid:audit.solidButIncomplete,
+    editorialNeedsAttention:audit.needsAttention,
+    editorialVerifiedNeedingStrongerEvidence:audit.verifiedNeedingStrongerEvidence
+   },200,{"Cache-Control":"no-store"});
   }
   if (url.pathname === "/api/catalog") return reply(catalog);
 
@@ -94,7 +101,14 @@ export default {
    const byStatus={};
    for(const entry of catalog.entries){byType[entry.type]=(byType[entry.type]||0)+1;byStatus[entry.status]=(byStatus[entry.status]||0)+1;}
    const audit=auditCatalog(catalog);
-   return reply({version:catalog.version,total:catalog.entries.length,byType,byStatus,stations:catalog.stations.length,archiveSchedules:catalog.archiveSchedules?.length||0,editorial:{meanScore:audit.meanScore,medianScore:audit.medianScore,releaseReady:audit.releaseReady,needsAttention:audit.needsAttention,verifiedWithIssues:audit.verifiedWithIssues}});
+   return reply({
+    version:catalog.version,total:catalog.entries.length,byType,byStatus,stations:catalog.stations.length,archiveSchedules:catalog.archiveSchedules?.length||0,
+    editorial:{
+     meanScore:audit.meanScore,medianScore:audit.medianScore,releaseReady:audit.releaseReady,
+     solidButIncomplete:audit.solidButIncomplete,needsAttention:audit.needsAttention,
+     verifiedWithIssues:audit.verifiedWithIssues,verifiedNeedingStrongerEvidence:audit.verifiedNeedingStrongerEvidence
+    }
+   });
   }
   if (url.pathname === "/api/facets") {
    const byType={};
@@ -121,10 +135,11 @@ export default {
    const entries=queue.slice(offset,offset+limit);
    return reply({
     version:audit.version,total:audit.total,meanScore:audit.meanScore,medianScore:audit.medianScore,
-    releaseReady:audit.releaseReady,needsAttention:audit.needsAttention,verifiedWithIssues:audit.verifiedWithIssues,
+    releaseReady:audit.releaseReady,solidButIncomplete:audit.solidButIncomplete,needsAttention:audit.needsAttention,
+    verifiedWithIssues:audit.verifiedWithIssues,verifiedNeedingStrongerEvidence:audit.verifiedNeedingStrongerEvidence,
     byReadiness:audit.byReadiness,byIssue:audit.byIssue,bySourceKind:audit.bySourceKind,byYear:audit.byYear,byType:audit.byType,
     queueTotal:queue.length,offset,limit,nextOffset:offset+entries.length<queue.length?offset+entries.length:null,entries,
-    disclaimer:"Completeness score mengukur kesiapan dokumentasi editorial, bukan menjamin kebenaran historis."
+    disclaimer:"Completeness score mengukur kesiapan dokumentasi editorial, bukan menjamin kebenaran historis. Readiness juga mempertimbangkan blocker provenance dan kekuatan sumber untuk entri verified."
    });
   }
   return reply({error:"Endpoint tidak ditemukan"},404,{"Cache-Control":"no-store"});
