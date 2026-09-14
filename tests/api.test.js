@@ -1,15 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import worker from "../worker/index.js";
-import catalog from "../shared/catalog.js";
+import catalog from "../shared/assembled-catalog.js";
 
 const ORIGIN="https://juldigi0107.github.io";
 const call=(path,options={})=>worker.fetch(new Request("https://example.com"+path,options),{ALLOWED_ORIGIN:ORIGIN});
 
-test("catalog entries, sources, station coverage and schedule references are valid",()=>{
+test("assembled catalog entries, sources, station coverage and schedule references are valid",()=>{
  const ids=new Set(catalog.entries.map(e=>e.id));
  assert.equal(ids.size,catalog.entries.length,"entry ids must be unique");
- assert.ok(catalog.entries.length>=10,"curated v2 catalog unexpectedly small");
+ assert.ok(catalog.entries.length>=16,"assembled v2.1 catalog unexpectedly small");
+ assert.ok(catalog.entries.filter(e=>e.type==="mainan").length>=5,"traditional-game batch missing");
  for(const entry of catalog.entries){
   assert.ok(entry.id&&entry.title&&entry.type&&entry.summary,`core fields missing: ${entry.id||entry.title}`);
   assert.ok(entry.factBox?.text&&entry.quoteBox?.text&&entry.priceTag&&entry.details,`editorial blocks missing: ${entry.id}`);
@@ -24,7 +25,7 @@ test("catalog entries, sources, station coverage and schedule references are val
  assert.ok(Array.isArray(catalog.archiveSchedules)&&catalog.archiveSchedules.length>=1,"archive schedule sample missing");
 });
 
-test("health reports curated v2 and same catalog size",async()=>{
+test("health reports assembled catalog version and size",async()=>{
  const health=await (await call("/api/health")).json();
  const body=await (await call("/api/catalog")).json();
  assert.equal(health.ok,true);assert.equal(health.mode,"curated-static-v2");assert.equal(health.version,catalog.version);assert.equal(health.entries,catalog.entries.length);assert.equal(body.entries.length,catalog.entries.length);assert.equal(body.version,catalog.version);
@@ -33,11 +34,13 @@ test("health reports curated v2 and same catalog size",async()=>{
 test("search supports query, type and station filters",async()=>{
  const doraemon=await(await call("/api/entries?q=doraemon&type=kartun")).json();assert.equal(doraemon.total,1);assert.equal(doraemon.entries[0].id,"doraemon");
  const sctv=await(await call("/api/entries?station=SCTV&type=tv")).json();assert.ok(sctv.total>=1);assert.ok(sctv.entries.every(e=>e.type==="tv"&&e.details?.station==="SCTV"));
+ const games=await(await call("/api/entries?type=mainan")).json();assert.ok(games.total>=5);assert.ok(games.entries.every(e=>e.type==="mainan"));
 });
 
-test("archive schedules and source ledger are exposed separately",async()=>{
+test("archive schedules, source ledger and stats are exposed",async()=>{
  const archive=await(await call("/api/archive-schedules?date=1995-06-04&station=RCTI")).json();assert.equal(archive.total,1);assert.equal(archive.schedules[0].items[0].title,"Doraemon");
- const sources=await(await call("/api/sources")).json();assert.ok(sources.total>=8);assert.equal(sources.total,sources.sources.length);assert.equal(new Set(sources.sources.map(s=>s.id)).size,sources.total);
+ const sources=await(await call("/api/sources")).json();assert.ok(sources.total>=13);assert.equal(sources.total,sources.sources.length);assert.equal(new Set(sources.sources.map(s=>s.id)).size,sources.total);
+ const stats=await(await call("/api/stats")).json();assert.equal(stats.version,catalog.version);assert.equal(stats.total,catalog.entries.length);assert.ok(stats.byType.mainan>=5);assert.ok(stats.byStatus.verified>=1);
 });
 
 test("CORS only trusts configured frontend",async()=>{
