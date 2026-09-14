@@ -1,274 +1,33 @@
-// Satu sumber data untuk frontend dan API.
+// Single Source of Truth untuk frontend dan Cloudflare API.
 export default {
-  "version": "1.0.0",
-  "notice": "Data contoh editorial. Jadwal bukan arsip siaran asli.",
-  "stations": [
-    "TVRI",
-    "RCTI",
-    "SCTV",
-    "TPI",
-    "ANTV",
-    "Indosiar"
-  ],
+  "version": "2.0.0",
+  "notice": "Katalog kurasi v2. Fakta historis memiliki sumber; kutipan nostalgia adalah rekaan editorial. Jadwal simulasi dipisahkan dari sampel arsip komunitas.",
+  "stations": ["TVRI", "RCTI", "SCTV", "TPI", "ANTV", "Indosiar"],
   "entries": [
-    {
-      "id": "si-doel",
-      "type": "tv",
-      "title": "Si Doel Anak Sekolahan",
-      "summary": "Kursi sudah ditarik mendekat. Cerita keluarga mengisi ruang tamu.",
-      "status": "mock",
-      "layout": "clipping",
-      "tags": [
-        "tv",
-        "nostalgia"
-      ],
-      "factBox": {
-        "text": "Catatan riset Si Doel Anak Sekolahan: tahun penayangan, jadwal lokal, dan riwayat produksi masih perlu sumber arsip.",
-        "status": "unverified",
-        "sourceIds": []
-      },
-      "quoteBox": {
-        "text": "Dulu gue sudah duduk manis sebelum acara mulai.",
-        "kind": "editorial-fiction",
-        "attribution": "Rekaan editorial"
-      },
-      "priceTag": {
-        "label": "Biaya menonton",
-        "currency": "IDR",
-        "past": {
-          "year": 1995,
-          "amount": null,
-          "sourceIds": []
-        },
-        "present": {
-          "year": 2026,
-          "amount": null,
-          "sourceIds": []
-        },
-        "basis": "not-applicable",
-        "note": "Belum ada bukti harga untuk perbandingan yang sebanding."
-      },
-      "sources": [],
-      "assets": [],
-      "details": {
-        "station": "RCTI",
-        "genre": "Drama keluarga"
-      }
-    },
-    {
-      "id": "keluarga-cemara",
-      "type": "tv",
-      "title": "Keluarga Cemara",
-      "summary": "Buka lagi kliping tontonan keluarga yang disimpan di laci.",
-      "status": "mock",
-      "layout": "scrapbook",
-      "tags": [
-        "tv",
-        "nostalgia"
-      ],
-      "factBox": {
-        "text": "Catatan riset Keluarga Cemara: tahun penayangan, jadwal lokal, dan riwayat produksi masih perlu sumber arsip.",
-        "status": "unverified",
-        "sourceIds": []
-      },
-      "quoteBox": {
-        "text": "Dulu gue nonton bareng sampai lupa rebutan tempat duduk.",
-        "kind": "editorial-fiction",
-        "attribution": "Rekaan editorial"
-      },
-      "priceTag": {
-        "label": "Biaya menonton",
-        "currency": "IDR",
-        "past": {
-          "year": 1995,
-          "amount": null,
-          "sourceIds": []
-        },
-        "present": {
-          "year": 2026,
-          "amount": null,
-          "sourceIds": []
-        },
-        "basis": "not-applicable",
-        "note": "Belum ada bukti harga untuk perbandingan yang sebanding."
-      },
-      "sources": [],
-      "assets": [],
-      "details": {
-        "station": "RCTI",
-        "genre": "Drama keluarga"
-      }
-    },
-    {
-      "id": "doraemon",
-      "type": "kartun",
-      "title": "Doraemon",
-      "summary": "Bantal di lantai, sarapan di dekat TV. Minggu pagi terasa panjang.",
-      "status": "mock",
-      "layout": "poster",
-      "tags": [
-        "kartun",
-        "nostalgia"
-      ],
-      "factBox": {
-        "text": "Catatan riset Doraemon: tahun penayangan, jadwal lokal, dan riwayat produksi masih perlu sumber arsip.",
-        "status": "unverified",
-        "sourceIds": []
-      },
-      "quoteBox": {
-        "text": "Dulu gue berharap punya pintu ke mana saja buat berangkat sekolah.",
-        "kind": "editorial-fiction",
-        "attribution": "Rekaan editorial"
-      },
-      "priceTag": {
-        "label": "Komik pendamping",
-        "currency": "IDR",
-        "past": {
-          "year": 1995,
-          "amount": null,
-          "sourceIds": []
-        },
-        "present": {
-          "year": 2026,
-          "amount": null,
-          "sourceIds": []
-        },
-        "basis": "unknown",
-        "note": "Belum ada bukti harga untuk perbandingan yang sebanding."
-      },
-      "sources": [],
-      "assets": [],
-      "details": {
-        "voiceActors": []
-      }
-    },
-    {
-      "id": "detective-conan",
-      "type": "kartun",
-      "title": "Detective Conan",
-      "summary": "Menebak petunjuk sambil menunggu misteri terungkap.",
-      "status": "mock",
-      "layout": "timeline",
-      "tags": [
-        "kartun",
-        "nostalgia"
-      ],
-      "factBox": {
-        "text": "Catatan riset Detective Conan: tahun penayangan, jadwal lokal, dan riwayat produksi masih perlu sumber arsip.",
-        "status": "unverified",
-        "sourceIds": []
-      },
-      "quoteBox": {
-        "text": "Dulu gue sok jadi detektif setiap sandal di rumah hilang.",
-        "kind": "editorial-fiction",
-        "attribution": "Rekaan editorial"
-      },
-      "priceTag": {
-        "label": "Komik pendamping",
-        "currency": "IDR",
-        "past": {
-          "year": 1995,
-          "amount": null,
-          "sourceIds": []
-        },
-        "present": {
-          "year": 2026,
-          "amount": null,
-          "sourceIds": []
-        },
-        "basis": "unknown",
-        "note": "Belum ada bukti harga untuk perbandingan yang sebanding."
-      },
-      "sources": [],
-      "assets": [],
-      "details": {
-        "voiceActors": []
-      }
-    }
+    {"id":"dunia-dalam-berita","type":"tv","title":"Dunia Dalam Berita","summary":"Jam sembilan malam pernah punya suara yang terasa seperti tanda hari akan segera selesai.","status":"verified","layout":"clipping","tags":["tv","berita","TVRI"],"factBox":{"text":"Pada era Orde Baru, program ini menjadi berita mancanegara TVRI; stasiun televisi swasta juga pernah diwajibkan merelainya.","status":"verified","sourceIds":["src-dunia-dalam-berita"]},"quoteBox":{"text":"Kalau musik pembukanya terdengar, biasanya orang rumah ikut menoleh.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-dunia-dalam-berita","title":"Dunia Dalam Berita — Wikipedia","url":"https://en.wikipedia.org/wiki/Dunia_Dalam_Berita","kind":"secondary","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"TVRI","genre":"Berita","premiere":"Desember 1978","context":"Program berita mancanegara yang sangat lekat dengan ritme malam televisi Indonesia.","people":"TVRI"}},
+    {"id":"si-doel","type":"tv","title":"Si Doel Anak Sekolahan","summary":"Ruang tamu, keluarga Betawi, dan Jakarta yang berubah pelan-pelan menjadi bagian dari ingatan televisi 90-an.","status":"verified","layout":"story","tags":["tv","sinetron","Betawi","RCTI"],"factBox":{"text":"Serial karya Rano Karno ini tayang perdana di RCTI pada 16 Januari 1994 dan berakar kuat pada kehidupan keluarga Betawi di Jakarta.","status":"verified","sourceIds":["src-si-doel"]},"quoteBox":{"text":"Dulu satu rumah bisa ikut diam kalau ceritanya mulai serius.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-si-doel","title":"Si Doel Anak Sekolahan — Wikipedia","url":"https://en.wikipedia.org/wiki/Si_Doel_Anak_Sekolahan","kind":"secondary","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"RCTI","genre":"Drama komedi keluarga","premiere":"16 Januari 1994","context":"Kisah keluarga Betawi di tengah modernisasi Jakarta.","people":"Rano Karno; Benyamin Sueb; Cornelia Agatha; Maudy Koesnaedi"}},
+    {"id":"keluarga-cemara","type":"tv","title":"Keluarga Cemara","summary":"Cerita tentang keluarga yang sederhana membuat layar televisi terasa dekat dengan percakapan di meja makan.","status":"verified","layout":"scrapbook","tags":["tv","sinetron","keluarga","RCTI"],"factBox":{"text":"Keluarga Cemara dibuat dari karya Arswendo Atmowiloto dan pertama kali ditayangkan di RCTI pada 6 Oktober 1996.","status":"verified","sourceIds":["src-keluarga-cemara"]},"quoteBox":{"text":"Kalau Abah bicara, rasanya ikut disuruh duduk yang rapi.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-keluarga-cemara","title":"Keluarga Cemara (TV series) — Wikipedia","url":"https://en.wikipedia.org/wiki/Keluarga_Cemara_(TV_series)","kind":"secondary","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"RCTI","genre":"Drama keluarga","premiere":"6 Oktober 1996","context":"Adaptasi karya Arswendo Atmowiloto dengan tema keluarga dan ketahanan hidup.","people":"Arswendo Atmowiloto; Adi Kurdi; Novia Kolopaking"}},
+    {"id":"tuyul-mbak-yul","type":"tv","title":"Tuyul & Mbak Yul","summary":"Fantasi, komedi, dan karakter yang gampang ditiru membuat acara ini menempel kuat di ingatan anak sekolah.","status":"verified","layout":"poster","tags":["tv","sinetron","fantasi","RCTI"],"factBox":{"text":"Tuyul & Mbak Yul ditayangkan perdana di RCTI pada 1 April 1997; seri ini diproduksi Multivision Plus.","status":"verified","sourceIds":["src-tuyul"]},"quoteBox":{"text":"Besok di sekolah pasti ada yang menirukan Ucil.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-tuyul","title":"Tuyul & Mbak Yul — Ensiklopedia STEKOM","url":"https://p2k.stekom.ac.id/ensiklopedia/Tuyul_%26_Mbak_Yul","kind":"secondary","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"RCTI","genre":"Komedi fantasi","premiere":"1 April 1997","context":"Fantasi-komedi produksi Multivision Plus yang populer pada akhir 1990-an.","people":"Ony Syahrial; Dominique Sanda; Slamet Djoyo"}},
+    {"id":"jinny-oh-jinny","type":"tv","title":"Jinny oh Jinny","summary":"Sebuah kisah fantasi-komedi yang membuat kendi dan jin terasa seperti benda biasa di ruang keluarga.","status":"curated","layout":"poster","tags":["tv","sinetron","fantasi","RCTI"],"factBox":{"text":"Sumber yang tersedia sama-sama menempatkan penayangan perdana Jinny oh Jinny pada Desember 1997 di RCTI; tanggal persisnya berbeda di dalam rujukan, sehingga aplikasi hanya menampilkan bulan dan tahun.","status":"curated","sourceIds":["src-jinny"]},"quoteBox":{"text":"Kalau ada kendi di rumah, pasti sempat kepikiran macam-macam.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-jinny","title":"Jinny oh Jinny — Ensiklopedia STEKOM","url":"https://p2k.stekom.ac.id/ensiklopedia/Jinny_Oh_Jinny","kind":"secondary","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"RCTI","genre":"Drama komedi fantasi","premiere":"Desember 1997","context":"Tanggal perdana berbeda dalam satu rujukan, sehingga hanya bulan/tahun yang ditampilkan.","people":"Diana Pungky; Indra L. Bruggman; Eko DJ"}},
+    {"id":"spontan","type":"tv","title":"Spontan","summary":"Humor kamera tersembunyi dan seruan “uhuy” menjadi salah satu bunyi yang mudah dikenali dari televisi era itu.","status":"verified","layout":"poster","tags":["tv","komedi","SCTV"],"factBox":{"text":"Spontan pertama kali tayang di SCTV pada 6 Januari 1996. Program ini menggabungkan prank, pantomim, karakter komedi, dan pembawa acara.","status":"verified","sourceIds":["src-spontan"]},"quoteBox":{"text":"Uhuy! Satu kata saja sudah cukup bikin ingat acaranya.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-spontan","title":"Uhuy! Saat Pelawak dan Pantomim Bersatu, Jadilah Spontan — Tirto","url":"https://tirto.id/uhuy-saat-pelawak-dan-pantomim-bersatu-jadilah-spontan-cCMa","kind":"editorial","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"SCTV","genre":"Komedi","premiere":"6 Januari 1996","context":"Komedi kamera tersembunyi yang kemudian sangat identik dengan Komeng dan seruan 'uhuy'.","people":"Septian Dwi Cahyo; Komeng; Ulfa Dwiyanti"}},
+    {"id":"kuis-dangdut","type":"tv","title":"Kuis Dangdut","summary":"Kuis, musik dangdut, dan gaya pembawa acara yang khas bercampur menjadi tontonan keluarga akhir pekan.","status":"verified","layout":"catalog","tags":["tv","kuis","dangdut","TPI"],"factBox":{"text":"Kuis Dangdut mulai tayang di TPI pada 3 September 1994 dan dikenal luas dengan Jaja Mihardja sebagai pembawa acara.","status":"verified","sourceIds":["src-kuis-dangdut"]},"quoteBox":{"text":"Apaan tuh? Pertanyaannya kadang lebih bikin ramai daripada jawabannya.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-kuis-dangdut","title":"Kuis Dangdut — Ensiklopedia STEKOM","url":"https://p2k.stekom.ac.id/ensiklopedia/Kuis_Dangdut","kind":"secondary","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"TPI","genre":"Kuis musik","premiere":"3 September 1994","context":"Kuis televisi bertema dangdut yang bertahan lama di TPI.","people":"Jaja Mihardja; Dorce Gamalama"}},
+    {"id":"famili-100","type":"tv","title":"Famili 100","summary":"Menebak jawaban survei terasa gampang sampai tiga tanda silang muncul berturut-turut.","status":"verified","layout":"catalog","tags":["tv","kuis","keluarga","ANTV"],"factBox":{"text":"Musim pertama Famili 100 ditayangkan di ANTV pada 1996–1998 dan dibawakan Sonny Tulung; formatnya mempertemukan dua keluarga atau kelompok untuk menebak jawaban survei.","status":"verified","sourceIds":["src-famili100"]},"quoteBox":{"text":"Di rumah semua orang ikut jawab, seolah-olah sedang berdiri di podium.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-famili100","title":"Strategi Kreatif Fremantle Indonesia Dalam Memastikan Program Family 100 Tetap Diminati — Jurnal Media Penyiaran","url":"https://jurnal.bsi.ac.id/index.php/jmp/article/download/2893/1548/14482","kind":"academic","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"ANTV","genre":"Kuis keluarga","premiere":"1 April 1996","context":"Musim awal Famili 100 tayang di ANTV pada 1996–1998 dengan Sonny Tulung sebagai host.","people":"Sonny Tulung"}},
+    {"id":"saras-008","type":"tv","title":"Saras 008","summary":"Pahlawan super lokal hadir di layar dengan transformasi, musuh unik, dan imajinasi khas akhir 90-an.","status":"curated","layout":"poster","tags":["tv","sinetron","superhero","Indosiar"],"factBox":{"text":"Saras 008 mulai ditayangkan Indosiar pada 1998. Karena rujukan yang tersedia memuat inkonsistensi tanggal, aplikasi hanya menampilkan tahunnya.","status":"curated","sourceIds":["src-saras008"]},"quoteBox":{"text":"Kalau lari pakai gaya tertentu, rasanya bisa ikut berubah jadi pahlawan.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-saras008","title":"Saras 008 — Ensiklopedia STEKOM","url":"https://p2k.stekom.ac.id/ensiklopedia/Saras_008","kind":"secondary","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"Indosiar","genre":"Superhero","premiere":"1998","context":"Sinetron pahlawan super lokal dari akhir 1990-an; tanggal perdana tidak ditampilkan karena rujukan tidak konsisten.","people":"Sindy Dewiana; Devi Permatasari; Johan Saimima"}},
+    {"id":"panji-manusia-millenium","type":"tv","title":"Panji Manusia Millenium","summary":"Menjelang tahun 2000, televisi ikut penuh imajinasi tentang manusia super dan masa depan.","status":"verified","layout":"poster","tags":["tv","sinetron","superhero","RCTI"],"factBox":{"text":"Panji Manusia Millenium ditayangkan perdana 13 September 1999 di RCTI dan dibintangi Primus Yustisio, Tia Ivanka, dan Pangky Suwito.","status":"verified","sourceIds":["src-panji"]},"quoteBox":{"text":"Kata 'millenium' dulu terdengar seperti masa depan yang jauh sekali.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Biaya menonton","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"not-applicable","note":"Program televisi tidak diperlakukan sebagai barang dengan harga yang dapat dibandingkan langsung."},"sources":[{"id":"src-panji","title":"Panji Manusia Millenium — Ensiklopedia STEKOM","url":"https://p2k.stekom.ac.id/ensiklopedia/Panji_Manusia_Millenium","kind":"secondary","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"RCTI","genre":"Superhero","premiere":"13 September 1999","context":"Sinetron superhero yang hadir tepat menjelang pergantian milenium.","people":"Primus Yustisio; Tia Ivanka; Pangky Suwito"}},
+    {"id":"doraemon","type":"kartun","title":"Doraemon","summary":"Minggu pagi, suara TV, dan kantong ajaib menjadi ritual yang bertahan lintas generasi.","status":"verified","layout":"timeline","tags":["kartun","minggu pagi","RCTI"],"factBox":{"text":"Setelah sempat muncul saat siaran percobaan RCTI pada 1988, Doraemon kembali sebagai siaran reguler pada 7 Desember 1990. Jam Minggunya kemudian bergeser hingga menjadi pukul 08.00 pada 1991.","status":"verified","sourceIds":["src-doraemon-id"]},"quoteBox":{"text":"Pintu ke mana saja terdengar seperti solusi untuk semua masalah sekolah.","kind":"editorial-fiction","attribution":"Rekaan editorial"},"priceTag":{"label":"Komik pendamping","currency":"IDR","past":{"year":1995,"amount":null,"sourceIds":[]},"present":{"year":2026,"amount":null,"sourceIds":[]},"basis":"unknown","note":"Harga komik belum ditampilkan sampai ada katalog harga yang setara dan dapat diverifikasi."},"sources":[{"id":"src-doraemon-id","title":"List of non-Japanese Doraemon versions — Wikipedia","url":"https://en.wikipedia.org/wiki/List_of_non-Japanese_Doraemon_versions","kind":"secondary","checkedAt":"2026-09-14"}],"assets":[],"details":{"station":"RCTI","genre":"Animasi","premiere":"7 Desember 1990 (siaran reguler RCTI)","context":"Salah satu ritual Minggu pagi yang paling lama bertahan di televisi Indonesia.","people":"Doraemon dan Nobita"}}
   ],
   "schedules": [
-    {
-      "id": "s1",
-      "entryId": "doraemon",
-      "station": "RCTI",
-      "day": "Minggu",
-      "startMinute": 390,
-      "endMinute": 450,
-      "status": "simulation"
-    },
-    {
-      "id": "s2",
-      "entryId": "detective-conan",
-      "station": "Indosiar",
-      "day": "Minggu",
-      "startMinute": 660,
-      "endMinute": 720,
-      "status": "simulation"
-    },
-    {
-      "id": "s3",
-      "entryId": "si-doel",
-      "station": "RCTI",
-      "day": "Senin",
-      "startMinute": 1140,
-      "endMinute": 1200,
-      "status": "simulation"
-    },
-    {
-      "id": "s4",
-      "entryId": "keluarga-cemara",
-      "station": "RCTI",
-      "day": "Selasa",
-      "startMinute": 1080,
-      "endMinute": 1140,
-      "status": "simulation"
-    }
+    {"id":"sim-1","entryId":"doraemon","station":"RCTI","day":"Minggu","startMinute":390,"endMinute":450,"status":"simulation"},
+    {"id":"sim-2","entryId":"saras-008","station":"Indosiar","day":"Minggu","startMinute":660,"endMinute":720,"status":"simulation"},
+    {"id":"sim-3","entryId":"si-doel","station":"RCTI","day":"Senin","startMinute":1140,"endMinute":1200,"status":"simulation"},
+    {"id":"sim-4","entryId":"keluarga-cemara","station":"RCTI","day":"Selasa","startMinute":1080,"endMinute":1140,"status":"simulation"}
   ],
+  "archiveSchedules": [{"id":"rcti-1995-06-04","date":"1995-06-04","day":"Minggu","station":"RCTI","status":"community-archive","source":{"title":"Jadwal RCTI Juni 1995 — JADWAL TV PERIODE 1990-1999","url":"https://jadwaltv1990an.blogspot.com/1995/06/jadwal-rcti-1-6-8-14-16-17-20-26-29-30.html","note":"Arsip komunitas daring; bukan scan atau transkripsi yang diverifikasi langsung dari Koran Kompas."},"items":[{"time":"08:00","title":"Doraemon"},{"time":"08:30","title":"Candy-Candy"},{"time":"09:00","title":"Remi"},{"time":"09:30","title":"Mighty Morphin Power Rangers"},{"time":"10:00","title":"Si Buta Dari Goa Hantu"},{"time":"11:00","title":"Tai Chi Master 2"}]}],
   "regions": [
-    {
-      "name": "Betawi",
-      "lon": 106.8,
-      "lat": -6.2,
-      "games": [
-        "Galasin",
-        "Gundu"
-      ]
-    },
-    {
-      "name": "Jawa",
-      "lon": 110.4,
-      "lat": -7.8,
-      "games": [
-        "Gobak sodor",
-        "Engklek"
-      ]
-    },
-    {
-      "name": "Sunda",
-      "lon": 107.6,
-      "lat": -6.9,
-      "games": [
-        "Oray-orayan",
-        "Congklak"
-      ]
-    },
-    {
-      "name": "Medan",
-      "lon": 98.7,
-      "lat": 3.6,
-      "games": [
-        "Gasing",
-        "Layang-layang"
-      ]
-    },
-    {
-      "name": "Makassar",
-      "lon": 119.4,
-      "lat": -5.1,
-      "games": [
-        "Kelereng",
-        "Gasing"
-      ]
-    }
+    {"name":"Betawi","lon":106.8,"lat":-6.2,"games":["Galasin","Congklak","Petak Umpet","Bentengan"]},
+    {"name":"Jawa","lon":110.4,"lat":-7.8,"games":["Gobak Sodor","Engklek","Dakon","Bentengan"]},
+    {"name":"Sunda","lon":107.6,"lat":-6.9,"games":["Oray-orayan","Congklak","Gatrik","Perepet Jengkol"]},
+    {"name":"Medan","lon":98.7,"lat":3.6,"games":["Gasing","Layang-layang","Kelereng","Petak Umpet"]},
+    {"name":"Makassar","lon":119.4,"lat":-5.1,"games":["Maggaleceng","Kelereng","Gasing","Layang-layang"]}
   ]
 };
