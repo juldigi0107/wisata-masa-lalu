@@ -56,5 +56,15 @@ export const assetCredits = [
  {file:'yoyo.jpg',label:'Plastic Yo-Yo',author:'Evan-Amos',license:'Public domain',url:'https://commons.wikimedia.org/wiki/File:Yo-Yo-Plastic-Toy-Green.jpg'},
  {file:'floppy.jpg',label:'3.5 inch floppy disk',author:'Load',license:'Public domain',url:'https://commons.wikimedia.org/wiki/File:3.5%22_floppy_disk.jpg'},
  {file:'phone.jpg',label:'Old rotary phone',author:'Hari mei harso',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Old_rotary_phone.jpg'},
- {file:'camera.jpg',label:'Olympus Trip 505',author:'Peachyeung316',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Olympus_Trip_505.jpg'}
+ {file:'camera.jpg',label:'Olympus Trip 505',author:'Peachyeung316',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Olympus_Trip_505.jpg'},
+ {file:'bobo-logo.png',label:'Logo Majalah Bobo',author:'Majalah Bobo / Kompas Gramedia',license:'Public-domain text logo; trademarked',url:'https://commons.wikimedia.org/wiki/File:Logo_Majalah_Bobo.png'},
+ {file:'gramedia-comics.jpg',label:'Rak komik Gramedia',author:'Esther Rossini',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Bookshelf_Comics_in_Gramedia.jpg'},
+ {file:'gramedia-books.jpg',label:'Rak buku Gramedia',author:'Esther Rossini',license:'CC0 1.0',url:'https://commons.wikimedia.org/wiki/File:Books_stack_in_Gramedia_Book_Store.jpg'},
+ {file:'indomie.jpg',label:'Boxes of Indo Mie instant noodles',author:'Graham Hills',license:'CC BY 2.0',url:'https://commons.wikimedia.org/wiki/File:Boxes_of_Indo_Mie_instant_noodles.jpg'},
+ {file:'discman.jpg',label:'Sony Discman D-50',author:'lihat rekaman kreator Commons',license:'Public domain',url:'https://commons.wikimedia.org/wiki/File:Sony_Discman_D_50.jpg'},
+ {file:'dr-grip.jpg',label:'Pilot Dr. Grip object study',author:'Tomo suzuki',license:'Public domain',url:'https://commons.wikimedia.org/wiki/File:GrGRIP.jpg'},
+ {file:'pilot-pens.jpg',label:'Pilot Hi-Tec-C pen collection',author:'lihat halaman sumber Commons',license:'Wikimedia Commons — lihat halaman sumber',url:'https://commons.wikimedia.org/wiki/File:My_Hi-TEC-Cs_and_Erk%27s_Pens_(498161156).jpg'},
+ {file:'gameboy-color.jpg',label:'Nintendo Game Boy Color',author:'Evan-Amos',license:'Public domain',url:'https://commons.wikimedia.org/wiki/File:Nintendo-Game-Boy-Color-BL.jpg'},
+ {file:'pager.jpg',label:'Motorola Advisor Pager',author:'rfdigitalwpg',license:'CC BY 2.0',url:'https://commons.wikimedia.org/wiki/File:Motorola_Advisor_Pager_(5005137730).jpg'},
+ {file:'rollerskates.png',label:'Quad roller skates',author:'David Ring / Europeana Fashion',license:'CC0 1.0',url:'https://commons.wikimedia.org/wiki/File:Rollerskates.png'}
 ];
