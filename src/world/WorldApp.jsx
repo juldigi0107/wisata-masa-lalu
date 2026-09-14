@@ -2,14 +2,16 @@ import {useEffect,useMemo,useRef,useState} from 'react';
 import LegacyArchive from '../App.jsx';
 import catalog from '../../shared/assembled-catalog.js';
 import {memoryTriggers,getTrigger} from '../../shared/memory-triggers.js';
+import {mechanicFamilyFor} from '../../shared/mechanic-registry.js';
 import {
  scenes,years,yearWorldState,nostalgiaProfiles,onboardingChoices,dayCampaign,weightedRandomEvent,
  collections,achievements,getScene,getWorldTrigger,worldVersion
 } from '../../shared/world-model.js';
+import SpecialMechanic from './SpecialMechanics.jsx';
+import ContextualArchivePage from './ContextualArchivePage.jsx';
 import './world.css';
 
 const STORAGE='wml-v3-profile';
-const BASE=import.meta.env.BASE_URL||'/';
 const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
 const pseudoRandomFromDate=()=>{
  const value=new Date().toISOString().slice(0,10).replaceAll('-','');
@@ -188,22 +190,22 @@ function CameraMechanic({onComplete}){
 }
 
 function GenericMechanic({trigger,onComplete}){
- const mechanic=trigger.mechanic;
- if(['signal'].includes(mechanic))return <SliderMechanic onComplete={onComplete}/>;
- if(['timing','aim','race','chase','gesture','fold','wipe','drive'].includes(mechanic))return <TimingMechanic onComplete={onComplete}/>;
- if(['compose'].includes(mechanic))return <ComposeMechanic onComplete={onComplete}/>;
- if(['choice'].includes(mechanic))return <ChoiceMechanic onComplete={onComplete}/>;
- if(['find','search'].includes(mechanic))return <FindMechanic onComplete={onComplete}/>;
- if(['dial','tv'].includes(mechanic))return <DialMechanic onComplete={onComplete}/>;
- if(['phone'].includes(mechanic))return <PhoneMechanic onComplete={onComplete}/>;
- if(['billing'].includes(mechanic))return <BillingMechanic onComplete={onComplete}/>;
- if(['chat'].includes(mechanic))return <ChatMechanic onComplete={onComplete}/>;
- if(['repair','cassette','vhs','disk'].includes(mechanic))return <RepairMechanic onComplete={onComplete}/>;
- if(['arcade'].includes(mechanic))return <ArcadeMechanic onComplete={onComplete}/>;
- if(['builder'].includes(mechanic))return <BuilderMechanic onComplete={onComplete}/>;
- if(['shop','trade','collection'].includes(mechanic))return <ShopMechanic onComplete={onComplete}/>;
- if(['camera','studio','album','print'].includes(mechanic))return <CameraMechanic onComplete={onComplete}/>;
- return <div className="mechanic-box"><p>{trigger.interaction}</p><button onClick={()=>onComplete('selesai')}>LAKUKAN ↘</button></div>;
+ const family=mechanicFamilyFor(trigger.mechanic);
+ if(family==='slider')return <SliderMechanic onComplete={onComplete}/>;
+ if(family==='timing')return <TimingMechanic onComplete={onComplete}/>;
+ if(family==='compose')return <ComposeMechanic onComplete={onComplete}/>;
+ if(family==='choice')return <ChoiceMechanic onComplete={onComplete}/>;
+ if(family==='find')return <FindMechanic onComplete={onComplete}/>;
+ if(family==='dial')return <DialMechanic onComplete={onComplete}/>;
+ if(family==='phone')return <PhoneMechanic onComplete={onComplete}/>;
+ if(family==='billing')return <BillingMechanic onComplete={onComplete}/>;
+ if(family==='chat')return <ChatMechanic onComplete={onComplete}/>;
+ if(family==='repair')return <RepairMechanic onComplete={onComplete}/>;
+ if(family==='arcade')return <ArcadeMechanic onComplete={onComplete}/>;
+ if(family==='builder')return <BuilderMechanic onComplete={onComplete}/>;
+ if(family==='shop')return <ShopMechanic onComplete={onComplete}/>;
+ if(family==='camera')return <CameraMechanic onComplete={onComplete}/>;
+ return <SpecialMechanic family={family} trigger={trigger} onComplete={onComplete}/>;
 }
 
 function ContextArchive({trigger,onOpenArchive}){
@@ -212,8 +214,8 @@ function ContextArchive({trigger,onOpenArchive}){
   const haystack=`${item.title} ${(item.tags||[]).join(' ')}`.toLocaleLowerCase('id');
   return haystack.includes(trigger?.object?.toLocaleLowerCase('id')||'__none__');
  });
- if(!entry)return <div className="context-archive muted"><small>ARSIP KONTEKSTUAL</small><p>Belum ada entri sejarah spesifik untuk objek ini. Experience tetap dapat dimainkan tanpa mengarang fakta.</p><button onClick={onOpenArchive}>Buka arsip penuh</button></div>;
- return <div className="context-archive"><small>ARSIP KONTEKSTUAL · {entry.status}</small><h4>{entry.title}</h4><p>{entry.factBox?.text||entry.summary}</p><div className="context-sources">{(entry.sources||[]).slice(0,2).map(source=><a key={source.id} href={source.url} target="_blank" rel="noreferrer">{source.title} ↗</a>)}</div><button onClick={onOpenArchive}>Buka arsip penuh ↘</button></div>;
+ if(!entry)return <div className="context-archive muted"><small>ARSIP KONTEKSTUAL</small><p>Belum ada entri sejarah spesifik untuk objek ini. Experience tetap dapat dimainkan tanpa mengarang fakta.</p><button onClick={()=>onOpenArchive(null)}>Buka arsip penuh</button></div>;
+ return <div className="context-archive"><small>ARSIP KONTEKSTUAL · {entry.status}</small><h4>{entry.title}</h4><p>{entry.factBox?.text||entry.summary}</p><div className="context-sources">{(entry.sources||[]).slice(0,2).map(source=><a key={source.id} href={source.url} target="_blank" rel="noreferrer">{source.title} ↗</a>)}</div><button onClick={()=>onOpenArchive(entry)}>Buka arsip terkait ↘</button></div>;
 }
 
 function InteractionDrawer({object,trigger,onClose,onComplete,onPickTrigger,onOpenArchive}){
@@ -317,6 +319,16 @@ export default function WorldApp(){
   },26000);
   return()=>clearInterval(timer);
  },[profile,sceneId]);
+ useEffect(()=>{
+  function onKey(event){
+   if(event.key!=='Escape')return;
+   if(activeObject){setActiveObject(null);setTrigger(null);return;}
+   if(overlay){setOverlay(null);setArchiveEntry(null);return;}
+   if(event){setEvent(null)}
+  }
+  window.addEventListener('keydown',onKey);
+  return()=>window.removeEventListener('keydown',onKey);
+ },[activeObject,overlay,event]);
 
  function chooseProfile(type){
   const choice=nostalgiaProfiles.find(item=>item.id===type)||nostalgiaProfiles[0];
@@ -345,13 +357,13 @@ export default function WorldApp(){
   setTimeout(()=>setToast(''),3500);audio.cue(item.mechanic==='arcade'?'arcade':item.mechanic==='phone'?'phone':item.mechanic==='dialup'?'dialup':'default');
  }
  function teleport(){const ids=Object.keys(scenes);travelScene(ids[Math.floor(Math.random()*ids.length)]);setToast('Kamu dilempar ke bagian lain dari 90-an.');setTimeout(()=>setToast(''),2500)}
- function launchTrigger(item){travelScene(item.scene);const target=getScene(item.scene).objects.find(object=>object.triggerIds.includes(item.id));if(target){setActiveObject(target);setTrigger(item)}}
- function openArchiveForEntry(entry){setArchiveEntry(entry);setOverlay('archive')}
+ function launchTrigger(item){if(!item)return;travelScene(item.scene);const target=getScene(item.scene).objects.find(object=>object.triggerIds.includes(item.id));if(target){setActiveObject(target);setTrigger(item)}}
+ function openArchiveForEntry(entry){setArchiveEntry(entry||null);setOverlay('archive')}
  const phase=new Date().getHours()<10?'pagi':new Date().getHours()<15?'siang':new Date().getHours()<18?'sore':'malam';
 
  if(intro)return <Intro onDone={()=>setIntro(false)}/>;
  if(!profile)return <Onboarding onChoose={chooseProfile}/>;
- if(overlay==='archive')return <div className="archive-mode"><div className="archive-return"><button onClick={()=>{setOverlay(null);setArchiveEntry(null)}}>← Kembali ke dunia</button>{archiveEntry&&<span>Arsip terkait: {archiveEntry.title}</span>}</div><LegacyArchive/></div>;
+ if(overlay==='archive')return <div className="archive-mode"><div className="archive-return"><button onClick={()=>{setOverlay(null);setArchiveEntry(null)}}>← Kembali ke dunia</button>{archiveEntry&&<span>Arsip terkait: {archiveEntry.title}</span>}</div>{archiveEntry?<ContextualArchivePage entry={archiveEntry}/>:<LegacyArchive/>}</div>;
 
  return <div className={`world-app intensity-${settings.intensity}`} style={{'--year-accent':yearWorldState[year].accent}}>
   <a className="world-skip" href="#world-main">Langsung ke dunia</a>
@@ -375,7 +387,7 @@ export default function WorldApp(){
     <button onClick={()=>{const next=weightedRandomEvent(sceneId);setEvent(next);launchTrigger(getTrigger(next.trigger))}}><span>MEMORY ENGINE</span><b>Picu kejadian</b></button>
     <button onClick={()=>setSpecialMode(m=>m==='ramadan'?'normal':'ramadan')}><span>SEASON</span><b>{specialMode==='ramadan'?'Keluar Ramadan':'Mode Ramadan'}</b></button>
     <button onClick={()=>setSpecialMode(m=>m==='agustusan'?'normal':'agustusan')}><span>17 AGUSTUS</span><b>{specialMode==='agustusan'?'Mode normal':'Kampung Merdeka'}</b></button>
-    <button onClick={()=>setOverlay('archive')}><span>{catalog.entries.length} ENTRI</span><b>Arsip 90-an</b></button>
+    <button onClick={()=>openArchiveForEntry(null)}><span>{catalog.entries.length} ENTRI</span><b>Arsip 90-an</b></button>
    </section>
 
    <section className="profile-strip">
@@ -385,7 +397,7 @@ export default function WorldApp(){
    </section>
   </main>
 
-  <InteractionDrawer object={activeObject} trigger={trigger} onClose={()=>{setActiveObject(null);setTrigger(null)}} onComplete={completeTrigger} onPickTrigger={setTrigger} onOpenArchive={()=>setOverlay('archive')}/>
+  <InteractionDrawer object={activeObject} trigger={trigger} onClose={()=>{setActiveObject(null);setTrigger(null)}} onComplete={completeTrigger} onPickTrigger={setTrigger} onOpenArchive={openArchiveForEntry}/>
   {overlay==='time'&&<TimeMachine year={year} onYear={travelYear} onClose={()=>setOverlay(null)}/>} 
   {overlay==='collection'&&<CollectionPanel owned={owned} onClose={()=>setOverlay(null)}/>} 
   {overlay==='search'&&<SearchPanel query={searchQuery} setQuery={setSearchQuery} onClose={()=>setOverlay(null)} onSelectTrigger={item=>{setOverlay(null);launchTrigger(item)}} onOpenEntry={openArchiveForEntry}/>} 
