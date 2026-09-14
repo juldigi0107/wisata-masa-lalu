@@ -68,19 +68,6 @@ export const digitalLifeEntries = [
   assets:[],details:{region:'Global / konteks kepemilikan Indonesia belum diklaim',genre:'Portable digital audio',premiere:'November 1992 (Jepang)',context:'Fakta perangkat diverifikasi dari Sony. Aplikasi tidak menyamakan sukses Jepang/global dengan popularitas MiniDisc di Indonesia tanpa sumber lokal.',people:'Sony'}
  },
  {
-  id:'tehbotol-sosro-kaca',type:'jajanan',title:'Tehbotol Sosro Botol Kaca',
-  summary:'Botol beling berembun di warung dan meja makan adalah object-memory yang lebih tua dari dekade 90-an, tetapi tetap hadir kuat dalam lanskap minuman Indonesia pada masa itu.',
-  status:'verified',layout:'catalog',tags:['jajanan','minuman','Tehbotol Sosro','Sinar Sosro','botol kaca','warung','1969','1990-an'],
-  factBox:{text:'Profil resmi PT Sinar Sosro mencatat ide menjual teh siap minum dalam botol dengan nama Tehbotol Sosro muncul pada 1969; desain kemasan berubah pada 1969, 1972, dan 1974, sementara PT Sinar Sosro resmi didaftarkan 17 Juli 1974. Halaman produk perusahaan menyebut botol beling returnable glass bottle sebagai kemasan utama Tehbotol Sosro.',status:'verified',sourceIds:['src-sosro-profile','src-sosro-product']},
-  quoteBox:{text:'Suara tutup botol dibuka di warung kadang lebih cepat memanggil haus daripada iklan mana pun.',kind:'editorial-fiction',attribution:'Rekaan editorial'},
-  priceTag:noPrice('Harga warung era 90-an berbeda menurut kota dan tahun; aplikasi tidak mengarang satu harga nasional.'),
-  sources:[
-   {id:'src-sosro-profile',title:'Profil Perusahaan — PT Sinar Sosro',url:'https://sinarsosro.id/profile',kind:'official',checkedAt:'2026-09-15'},
-   {id:'src-sosro-product',title:'Produk — PT Sinar Sosro',url:'https://sinarsosro.id/produk',kind:'official',checkedAt:'2026-09-15'}
-  ],
-  assets:[],details:{region:'Indonesia',genre:'Minuman teh siap minum / warung',premiere:'Tehbotol Sosro 1969; perusahaan 1974',context:'Produk mendahului 1990-an. Entri memasukkannya sebagai benda budaya yang sudah eksis saat dekade 90-an, bukan sebagai produk yang diluncurkan pada dekade tersebut.',people:'Keluarga Sosrodjojo; PT Sinar Sosro'}
- },
- {
   id:'daun-di-atas-bantal',type:'film',title:'Daun di Atas Bantal',
   summary:'Garin Nugroho membawa kehidupan anak jalanan ke bentuk fiksi yang bersinggungan dekat dengan realitas, menghasilkan salah satu film Indonesia akhir 90-an yang banyak bergerak di festival.',
   status:'curated',layout:'story',tags:['film','Daun di Atas Bantal','Garin Nugroho','Christine Hakim','1997','1998','anak jalanan'],
