@@ -1,16 +1,20 @@
 import React from "react";
 import {createRoot} from "react-dom/client";
-import App from "./App.jsx";
+import WorldApp from "./world/WorldApp.jsx";
 import baseCatalog from "../shared/catalog.js";
 import assembledCatalog from "../shared/assembled-catalog.js";
 import "./styles.css";
 import "./details.css";
 
-// App.jsx imports the base object directly. Mutating that shared object before
-// the first render keeps the frontend and Worker on the same assembled dataset
-// without duplicating the large historical catalog file.
+// Keep the historical SSOT shared by the immersive layer, contextual archive,
+// tests, and Worker API. The legacy editorial experience remains accessible
+// from inside WorldApp as the deep archive rather than the primary navigation.
 Object.assign(baseCatalog, assembledCatalog);
 
 createRoot(document.getElementById("root")).render(
- <React.StrictMode><App/></React.StrictMode>
+ <React.StrictMode><WorldApp/></React.StrictMode>
 );
+
+if('serviceWorker' in navigator){
+ window.addEventListener('load',()=>navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(()=>{}));
+}
