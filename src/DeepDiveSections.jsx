@@ -12,7 +12,7 @@ const ISSUE_LABELS={
 const READINESS_LABELS={'release-ready':'Release-ready','solid':'Solid','needs-research':'Perlu riset','incomplete':'Belum lengkap'};
 
 export default function DeepDiveSections({data,onOpenEntry}){
- const [readinessFilter,setReadinessFilter]=useState('attention');
+ const [readinessFilter,setReadinessFilter]=useState('improvable');
  const [issueFilter,setIssueFilter]=useState('semua');
  const audit=useMemo(()=>auditCatalog(data),[data]);
  const typeStats=data.entries.reduce((acc,entry)=>{
@@ -32,7 +32,7 @@ export default function DeepDiveSections({data,onOpenEntry}){
  const yearRows=Array.from({length:10},(_,index)=>1990+index).map(year=>[year,audit.byYear[year]||0]);
  const maxYear=Math.max(...yearRows.map(([,count])=>count),1);
  const priorityQueue=audit.priorityQueue.filter(item=>{
-  const readinessOkay=readinessFilter==='semua'||(readinessFilter==='attention'?(item.readiness==='needs-research'||item.readiness==='incomplete'):item.readiness===readinessFilter);
+  const readinessOkay=readinessFilter==='semua'||(readinessFilter==='improvable'?item.readiness!=='release-ready':item.readiness===readinessFilter);
   const issueOkay=issueFilter==='semua'||item.issues.includes(issueFilter);
   return readinessOkay&&issueOkay;
  }).slice(0,12);
@@ -96,27 +96,27 @@ export default function DeepDiveSections({data,onOpenEntry}){
    <div className="wrap">
     <div className="section-head audit-head">
      <div><p className="eyebrow">RUANG REDAKSI / QUALITY CONTROL</p><h2>Kenangan boleh hangat. Provenance harus dingin.</h2></div>
-     <p>Skor di bawah mengukur <b>kelengkapan dokumentasi editorial</b>, bukan kebenaran sejarah. Entri berskor tinggi tetap harus dinilai dari mutu sumbernya.</p>
+     <p>Skor mengukur <b>kelengkapan dokumentasi editorial</b>, bukan kebenaran sejarah. Readiness lebih ketat: verified tanpa strong-source tidak boleh disebut release-ready. Saat ini <b>{audit.verifiedNeedingStrongerEvidence}</b> verified entry masih membutuhkan penguatan sumber.</p>
     </div>
 
     <div className="audit-scoreboard" aria-label="Ringkasan audit editorial">
      <article className="audit-score hero-score"><small>MEAN COMPLETENESS</small><strong>{audit.meanScore}</strong><span>/100</span><p>Rata-rata kesiapan struktur dokumentasi.</p></article>
-     <article className="audit-score"><small>MEDIAN</small><strong>{audit.medianScore}</strong><span>/100</span><p>Titik tengah kualitas seluruh katalog.</p></article>
-     <article className="audit-score"><small>RELEASE-READY</small><strong>{audit.releaseReady}</strong><span>entri</span><p>{editorialReadiness['release-ready']}</p></article>
-     <article className="audit-score alert"><small>NEEDS ATTENTION</small><strong>{audit.needsAttention}</strong><span>entri</span><p>Prioritas riset sebelum ekspansi besar.</p></article>
+     <article className="audit-score"><small>RELEASE-READY</small><strong>{audit.releaseReady}</strong><span>entri</span><p>Nol issue terdeteksi dan evidence gate terpenuhi.</p></article>
+     <article className="audit-score"><small>SOLID / IMPROVABLE</small><strong>{audit.solidButIncomplete}</strong><span>entri</span><p>Layak ditampilkan, tetapi masih ada gap non-blocking seperti visual.</p></article>
+     <article className="audit-score alert"><small>NEEDS RESEARCH</small><strong>{audit.needsAttention}</strong><span>entri</span><p>Prioritas evidence/provenance sebelum disebut matang.</p></article>
     </div>
 
     <div className="audit-grid">
      <article className="audit-panel research-queue">
-      <div className="audit-panel-head"><div><span>01</span><h3>Antrean riset</h3></div><p>Verified yang masih punya gap ditempatkan lebih dulu, kemudian skor terendah.</p></div>
+      <div className="audit-panel-head"><div><span>01</span><h3>Antrean perbaikan</h3></div><p>Urutan dimulai dari blocker, verified tanpa strong-source, lalu gap non-blocking dan skor terendah.</p></div>
       <div className="audit-controls">
-       <label>Kesiapan<select value={readinessFilter} onChange={event=>setReadinessFilter(event.target.value)}><option value="attention">Perlu perhatian</option><option value="semua">Semua</option><option value="release-ready">Release-ready</option><option value="solid">Solid</option><option value="needs-research">Perlu riset</option><option value="incomplete">Belum lengkap</option></select></label>
+       <label>Kesiapan<select value={readinessFilter} onChange={event=>setReadinessFilter(event.target.value)}><option value="improvable">Semua yang perlu diperbaiki</option><option value="semua">Semua</option><option value="release-ready">Release-ready</option><option value="solid">Solid</option><option value="needs-research">Perlu riset</option><option value="incomplete">Belum lengkap</option></select></label>
        <label>Gap<select value={issueFilter} onChange={event=>setIssueFilter(event.target.value)}><option value="semua">Semua gap</option>{issueRows.map(([issue,count])=><option value={issue} key={issue}>{ISSUE_LABELS[issue]||issue} · {count}</option>)}</select></label>
       </div>
       <div className="queue-list">
        {priorityQueue.length?priorityQueue.map((item,index)=><button className="queue-item" key={item.id} onClick={()=>openAuditEntry(item)}>
         <span className="queue-rank">{String(index+1).padStart(2,'0')}</span>
-        <span className="queue-copy"><b>{item.title}</b><small>{item.type} · {item.status} · {READINESS_LABELS[item.readiness]}</small><em>{item.issues.slice(0,3).map(issue=>ISSUE_LABELS[issue]||issue).join(' · ')||'Tidak ada gap terdeteksi'}</em></span>
+        <span className="queue-copy"><b>{item.title}</b><small>{item.type} · {item.status} · {READINESS_LABELS[item.readiness]} · {item.strongSourceCount} strong source</small><em>{item.issues.slice(0,3).map(issue=>ISSUE_LABELS[issue]||issue).join(' · ')||'Tidak ada gap terdeteksi'}</em></span>
         <span className={`queue-score ${item.readiness}`}>{item.completenessScore}</span>
        </button>):<p className="audit-empty">Tidak ada entri pada kombinasi filter ini.</p>}
       </div>
@@ -128,7 +128,7 @@ export default function DeepDiveSections({data,onOpenEntry}){
      </article>
 
      <article className="audit-panel source-map">
-      <div className="audit-panel-head"><div><span>03</span><h3>DNA sumber</h3></div><p>Jenis sumber dihitung per entri yang menggunakannya; ini bukan ranking otomatis kredibilitas.</p></div>
+      <div className="audit-panel-head"><div><span>03</span><h3>DNA sumber</h3></div><p>Jenis sumber dihitung per entri yang menggunakannya; strong-source membantu readiness tetapi tidak otomatis membuktikan semua klaim.</p></div>
       <div className="micro-bars compact">{sourceRows.map(([kind,count])=><div className="micro-row" key={kind}><div><b>{kind}</b><span>{count}</span></div><i><u style={{width:`${Math.max(5,count/maxSource*100)}%`}}/></i></div>)}</div>
      </article>
 
@@ -138,7 +138,7 @@ export default function DeepDiveSections({data,onOpenEntry}){
      </article>
     </div>
 
-    <p className="audit-disclaimer"><b>Interpretasi skor:</b> {Object.entries(editorialReadiness).map(([key,value],index)=><span key={key}>{index?' · ':''}<strong>{READINESS_LABELS[key]}</strong> — {value}</span>)}</p>
+    <p className="audit-disclaimer"><b>Interpretasi readiness:</b> {Object.entries(editorialReadiness).map(([key,value],index)=><span key={key}>{index?' · ':''}<strong>{READINESS_LABELS[key]}</strong> — {value}</span>)}</p>
    </div>
   </section>
  </>;
