@@ -1,11 +1,12 @@
 import baseCatalog from './catalog.js';
 import {extraEntries} from './enrichment.js';
 import {popCultureEntries} from './enrichment-popculture.js';
-import {youthEntries,youthVersion} from './enrichment-youth.js';
+import {youthEntries} from './enrichment-youth.js';
+import {printSnackEntries,printSnackVersion} from './enrichment-print-snacks.js';
 
 const seen = new Set();
 const entries = [];
-for (const entry of [...baseCatalog.entries,...extraEntries,...popCultureEntries,...youthEntries]) {
+for (const entry of [...baseCatalog.entries,...extraEntries,...popCultureEntries,...youthEntries,...printSnackEntries]) {
  if (seen.has(entry.id)) continue;
  seen.add(entry.id);
  entries.push(entry);
@@ -13,8 +14,8 @@ for (const entry of [...baseCatalog.entries,...extraEntries,...popCultureEntries
 
 const catalog = {
  ...baseCatalog,
- version: youthVersion,
- notice: `${baseCatalog.notice} Katalog v${youthVersion} menggabungkan TV/kartun, permainan rakyat, musik, Ramadhan, warung, anime, dan benda permainan dengan provenance per entri.`,
+ version: printSnackVersion,
+ notice: `${baseCatalog.notice} Katalog v${printSnackVersion} menggabungkan TV/kartun, permainan rakyat, musik, Ramadhan, warung, anime, benda permainan, budaya baca, makanan/minuman, dan personal audio dengan provenance per entri.`,
  entries
 };
 
