@@ -8,6 +8,7 @@ on:
       - 'shared/**'
       - 'tests/**'
       - 'scripts/verify-worker.mjs'
+      - 'scripts/editorial-report.mjs'
       - 'wrangler.jsonc'
       - 'package.json'
       - '.github/workflows/worker.yml'
@@ -33,11 +34,13 @@ jobs:
       - run: npm install
       - name: Validate API and editorial contracts
         run: npm test
+      - name: Editorial intelligence report
+        run: npm run audit:editorial
       - name: Deploy Worker
         id: deploy
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' }}
         run: npm run deploy:worker
-      - name: Verify live Worker matches assembled SSOT
+      - name: Verify live Worker matches assembled SSOT and audit contract
         if: ${{ steps.deploy.outcome == 'success' }}
         env:
           VERIFY_ATTEMPTS: '8'
