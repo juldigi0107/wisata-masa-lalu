@@ -5,7 +5,8 @@
 - Frontend: GitHub Pages — `https://juldigi0107.github.io/wisata-masa-lalu/`
 - Backend target: Cloudflare Worker — `https://wisata-masa-lalu.juldigi.workers.dev`
 - Katalog lokal/SSOT aplikasi: `shared/assembled-catalog.js`
-- Versi katalog saat ini: **v2.1.0**
+- Versi katalog saat ini: **v2.3.0**
+- Jumlah katalog teruji: **32 entri** lintas TV, kartun/anime, permainan, benda/game, musik, Ramadhan, dan budaya warung.
 - Frontend memiliki **safe fallback**: Worker hanya dipakai saat versi dan jumlah entrinya sama persis dengan katalog lokal. Worker yang tertinggal tidak boleh menurunkan isi aplikasi.
 
 ## Frontend GitHub Pages
@@ -52,17 +53,24 @@ Jangan menyimpan token di source code, file `.env` yang di-commit, issue, atau c
 
 Workflow `.github/workflows/worker.yml` selalu menjalankan test. Langkah deploy hanya berjalan jika kedua secret tersedia; jika tidak, workflow tetap melaporkan validasi kode berhasil tetapi deployment dilewati.
 
-## Endpoint API v2.1
+## Endpoint API — kontrak skala 500+
 
 - `GET /api/health`
 - `GET /api/catalog`
 - `GET /api/entries?q=doraemon&type=kartun`
-- `GET /api/entries?type=mainan`
+- `GET /api/entries?type=mainan&limit=24&offset=0`
 - `GET /api/entries?station=RCTI&type=tv`
+- `GET /api/entries?status=verified`
+- `GET /api/entries?region=betawi`
+- `GET /api/facets`
 - `GET /api/schedules?day=Minggu`
 - `GET /api/archive-schedules?date=1995-06-04&station=RCTI`
 - `GET /api/sources`
 - `GET /api/stats`
+
+`/api/entries` mendukung filter `q`, `type`, `station`, `status`, dan `region`. Pagination memakai `limit` dan `offset`; `limit` dibatasi maksimal 100. Respons mengembalikan `total`, `offset`, `limit`, dan `nextOffset` agar client tidak perlu memuat seluruh katalog sekaligus.
+
+`/api/facets` mengembalikan agregasi `byType`, `byStatus`, `byStation`, dan `byRegion` sehingga navigasi kategori dapat dibangun tanpa mengambil semua record.
 
 `/api/health` harus melaporkan versi yang sama dengan katalog lokal sebelum frontend mengaktifkan runtime binding ke Worker.
 
@@ -74,14 +82,17 @@ Sumber, kreator, dan lisensi dicatat di `public/assets/ATTRIBUTION.md`.
 
 Aset vektor orisinal proyek berada di `public/assets/`.
 
+Build v2.3 terakhir berhasil mengambil **15/15 aset visual**.
+
 ## Data dan provenance
 
 - Fakta historis menggunakan `status: verified` atau `status: curated`.
 - `verified` wajib mempunyai sumber.
 - Kutipan nostalgia rekaan selalu diberi label editorial.
+- Tanggal karya asli anime dapat terverifikasi dari studio/pemegang hak, tetapi konteks penayangan Indonesia tetap `curated` bila arsip jadwal lokal belum cukup kuat.
 - Jadwal simulasi dipisahkan dari `archiveSchedules`.
 - Sampel jadwal komunitas tidak diklaim sebagai scan koran primer.
-- Harga jajanan yang belum memiliki sumber historis tetap diberi disclaimer dan tidak diperlakukan sebagai indeks inflasi resmi.
+- Harga jajanan dan barang yang belum memiliki sumber historis tetap kosong/disclaimer; tidak diubah menjadi angka perkiraan seolah fakta.
 
 ## Verifikasi minimum sebelum rilis
 
@@ -91,12 +102,13 @@ Aset vektor orisinal proyek berada di `public/assets/`.
 4. Semua `sourceIds` dapat diselesaikan ke daftar sumber entri.
 5. Entri `verified` mempunyai sumber.
 6. Semua enam stasiun TV memiliki sedikitnya satu entri kurasi.
-7. Artifact visual berhasil diambil atau memenuhi minimum build.
-8. Pages publish berhasil.
-9. Worker `/api/health` diperiksa versinya secara eksplisit.
+7. Pagination, filter, facets, CORS, dan error path API lulus test.
+8. Artifact visual berhasil diambil atau memenuhi minimum build.
+9. Pages publish berhasil.
+10. Worker `/api/health` diperiksa versinya secara eksplisit.
 
 ## Cakupan saat ini
 
-Aplikasi bukan lagi Batch 1. Katalog v2.1 menggabungkan kurasi TV/kartun dengan batch permainan rakyat bersumber resmi, sementara UI sudah mempunyai CRT simulator, arsip Minggu pagi, blueprint permainan, object cabinet, kalkulator warung, Ramadhan experience, kaset/kamus gaul, quiz 20 pertanyaan, pencarian arsip, dan source ledger.
+Aplikasi bukan lagi Batch 1. Katalog v2.3 berisi 32 entri terkurasi dan UI mempunyai CRT simulator, arsip Minggu pagi, blueprint permainan, object cabinet, kalkulator warung, Ramadhan experience, kaset/kamus gaul, quiz 20 pertanyaan, pencarian + filter kategori arsip, detail provenance, dan source ledger.
 
-Target jangka lanjut tetap **500+ entri**. Penambahan dilakukan per batch terkurasi melalui file enrichment agar data lama tidak rusak.
+API sudah disiapkan untuk pertumbuhan ke **500+ entri** melalui pagination dan facets. Penambahan konten tetap dilakukan per batch enrichment supaya data lama tidak rusak dan setiap fakta baru mempunyai provenance yang jelas.
