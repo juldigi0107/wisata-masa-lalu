@@ -2,11 +2,12 @@ import baseCatalog from './catalog.js';
 import {extraEntries} from './enrichment.js';
 import {popCultureEntries} from './enrichment-popculture.js';
 import {youthEntries} from './enrichment-youth.js';
-import {printSnackEntries,printSnackVersion} from './enrichment-print-snacks.js';
+import {printSnackEntries} from './enrichment-print-snacks.js';
+import {schoolMediaEntries,schoolMediaVersion} from './enrichment-school-media.js';
 
 const seen = new Set();
 const entries = [];
-for (const entry of [...baseCatalog.entries,...extraEntries,...popCultureEntries,...youthEntries,...printSnackEntries]) {
+for (const entry of [...baseCatalog.entries,...extraEntries,...popCultureEntries,...youthEntries,...printSnackEntries,...schoolMediaEntries]) {
  if (seen.has(entry.id)) continue;
  seen.add(entry.id);
  entries.push(entry);
@@ -14,8 +15,8 @@ for (const entry of [...baseCatalog.entries,...extraEntries,...popCultureEntries
 
 const catalog = {
  ...baseCatalog,
- version: printSnackVersion,
- notice: `${baseCatalog.notice} Katalog v${printSnackVersion} menggabungkan TV/kartun, permainan rakyat, musik, Ramadhan, warung, anime, benda permainan, budaya baca, makanan/minuman, dan personal audio dengan provenance per entri.`,
+ version: schoolMediaVersion,
+ notice: `${baseCatalog.notice} Katalog v${schoolMediaVersion} menggabungkan TV/kartun, permainan rakyat, musik, Ramadhan, warung, anime, benda permainan, budaya baca, makanan/minuman, personal audio, budaya sekolah, teknologi komunikasi, dan film dengan provenance per entri.`,
  entries
 };
 
