@@ -28,6 +28,7 @@ export default function App(){
  const [region,setRegion]=useState('Betawi');
  const [query,setQuery]=useState('');
  const [typeFilter,setTypeFilter]=useState('semua');
+ const [visibleCount,setVisibleCount]=useState(12);
  const [active,setActive]=useState(bundled.entries[0]);
  const [snackIndex,setSnackIndex]=useState(0);
  const [qty,setQty]=useState(5);
@@ -64,6 +65,7 @@ export default function App(){
  },[]);
 
  useEffect(()=>()=>{if(ctx.current?.state!=='closed')ctx.current?.close()},[]);
+ useEffect(()=>{setVisibleCount(12)},[query,typeFilter]);
 
  async function click(force=false){
   if(!audio&&!force)return;
@@ -103,6 +105,7 @@ export default function App(){
   const haystack=`${e.title} ${(e.tags||[]).join(' ')} ${e.summary} ${e.details?.station||''} ${e.details?.region||''}`.toLocaleLowerCase('id');
   return matchesType&&haystack.includes(query.trim().toLocaleLowerCase('id'));
  }),[data.entries,query,typeFilter]);
+ const visibleEntries=filtered.slice(0,visibleCount);
  const filteredSlang=useMemo(()=>slang.filter(x=>(x.term+' '+x.meaning).toLocaleLowerCase('id').includes(slangQuery.toLocaleLowerCase('id'))),[slangQuery]);
  const snack=snacks[snackIndex];
  const game=gameGuides[gameIndex];
@@ -110,6 +113,7 @@ export default function App(){
  const archive=data.archiveSchedules?.[0];
  const verifiedCount=data.entries.filter(e=>e.status==='verified').length;
  const quizPercent=Math.round(quizScore/quizQuestions.length*100);
+ const trackedAssetCount=assetCredits.length+5;
 
  return <div className={night?'app-shell night-ready':'app-shell'}>
   <a className="skip" href="#main">Langsung ke konten</a>
@@ -122,7 +126,7 @@ export default function App(){
   <main id="main">
    <section id="top" className="hero editorial-grid">
     <div className="hero-photo"><Picture src={`${MEDIA}jakarta-1991.jpg`} alt="Kawasan Senen, Jakarta pada 1991"/><div className="film-grain"/><span className="hero-credit">ARSIP VISUAL • JAKARTA 1991 • CC BY-SA</span></div>
-    <div className="hero-copy"><Eyebrow>ISSUE 02 · 1990—1999 · INDONESIA</Eyebrow><h1>Yang kita rindukan ternyata <em>bukan cuma zamannya.</em></h1><p className="hero-lead">Masuk lewat suara TV ruang tengah, uang receh di saku seragam, permainan sore, benda teknologi yang dulu terasa futuristis, sampai malam Ramadan ketika jalan kampung belum cepat sepi.</p><div className="hero-actions"><a className="primary" href="#index">Buka ensiklopedia</a><a className="text-link" href="#tv">Mulai dari TV tabung ↘</a></div><div className="hero-meta"><span><b>{data.entries.length}</b> entri kurasi</span><span><b>{verifiedCount}</b> terverifikasi</span><span><b>{assetCredits.length}</b> aset terlacak</span></div></div>
+    <div className="hero-copy"><Eyebrow>ISSUE 03 · 1990—1999 · INDONESIA</Eyebrow><h1>Yang kita rindukan ternyata <em>bukan cuma zamannya.</em></h1><p className="hero-lead">Masuk lewat suara TV ruang tengah, uang receh di saku seragam, permainan sore, komik yang berpindah tangan, benda teknologi yang dulu terasa futuristis, sampai malam Ramadan ketika jalan kampung belum cepat sepi.</p><div className="hero-actions"><a className="primary" href="#index">Buka ensiklopedia</a><a className="text-link" href="#tv">Mulai dari TV tabung ↘</a></div><div className="hero-meta"><span><b>{data.entries.length}</b> entri kurasi</span><span><b>{verifiedCount}</b> terverifikasi</span><span><b>{trackedAssetCount}</b> aset terlacak</span></div></div>
     <aside className="hero-stub"><Eyebrow>BOARDING PASS</Eyebrow><strong>90<br/>AN</strong><dl><div><dt>Gate</dt><dd>Ruang Tamu</dd></div><div><dt>Kursi</dt><dd>Lesehan</dd></div><div><dt>Bagasi</dt><dd>Kenangan</dd></div></dl><div className="barcode"/></aside>
    </section>
    <div className="connection"><span className="pulse"/> {connection}{soundError&&` · ${soundError}`}</div>
@@ -153,14 +157,16 @@ export default function App(){
 
    <section id="quiz" className="quiz wrap"><div className="quiz-ticket"><Eyebrow>08 / NOSTALGIA METER</Eyebrow>{quizDone?<><div className="score-ring"><strong>{quizPercent}</strong><span>/100</span></div><h2>{quizPercent>=80?'Anak 90-an garis keras.':quizPercent>=50?'Memorinya masih hangat.':'Kamu tamu kehormatan di mesin waktu.'}</h2><p>Skor dihitung dari 20 pertanyaan ringan tentang kebiasaan sehari-hari era analog.</p><button onClick={resetQuiz}>Ulangi quiz</button></>:<><span className="quiz-progress">PERTANYAAN {quizStep+1} / {quizQuestions.length}</span><h2>{quizQuestions[quizStep][0]}</h2><div className="quiz-options">{quizQuestions[quizStep][1].map((o,i)=><button key={o} onClick={()=>answer(i)}>{String.fromCharCode(65+i)}. {o}</button>)}</div></>}</div><aside><Eyebrow>BOARDING SCORE</Eyebrow><p>Jawaban tidak disimpan ke server.</p><div className="barcode tall"/></aside></section>
 
-   <section id="collection" className="collection wrap"><div className="section-head"><div><Eyebrow>ARSIP / KLIPING</Eyebrow><h2>Buka laci kenangan.</h2></div><label>Cari judul, kanal, daerah, atau topik<input type="search" placeholder="Coba: RCTI, anime, permainan, Sony" value={query} onChange={e=>setQuery(e.target.value)}/></label></div>
+   <section id="collection" className="collection wrap"><div className="section-head"><div><Eyebrow>ARSIP / KLIPING</Eyebrow><h2>Buka laci kenangan.</h2></div><label>Cari judul, kanal, daerah, atau topik<input type="search" placeholder="Coba: RCTI, anime, Bobo, Indomie, Sony" value={query} onChange={e=>setQuery(e.target.value)}/></label></div>
     <div className="type-filter" role="group" aria-label="Filter kategori arsip"><button aria-pressed={typeFilter==='semua'} onClick={()=>setTypeFilter('semua')}>Semua <span>{data.entries.length}</span></button>{entryTypes.map(type=><button key={type} aria-pressed={typeFilter===type} onClick={()=>setTypeFilter(type)}>{type} <span>{typeStats[type]}</span></button>)}</div>
-    <p className="collection-count" aria-live="polite">Menampilkan <b>{filtered.length}</b> dari {data.entries.length} entri · katalog v{data.version}</p>
-    <div className="clip-grid">{filtered.map((e,i)=><button className={`clip-card c${i%4}`} key={e.id} onClick={()=>openEntry(e)}><span>{String(i+1).padStart(2,'0')}</span><small>{e.type} · {e.details?.station||e.details?.region||''}</small><h3>{e.title}</h3><p>{e.summary}</p><b>Buka kliping ↗</b></button>)}</div>{!filtered.length&&<p className="empty-state">Belum ada entri yang cocok dengan filter atau pencarian itu.</p>}
+    <p className="collection-count" aria-live="polite">Menampilkan <b>{visibleEntries.length}</b> dari {filtered.length} hasil · total katalog {data.entries.length} · v{data.version}</p>
+    <div className="clip-grid">{visibleEntries.map((e,i)=><button className={`clip-card c${i%4}`} key={e.id} onClick={()=>openEntry(e)}><span>{String(i+1).padStart(2,'0')}</span><small>{e.type} · {e.details?.station||e.details?.region||''}</small><h3>{e.title}</h3><p>{e.summary}</p><b>Buka kliping ↗</b></button>)}</div>
+    {visibleCount<filtered.length&&<div className="load-more"><button onClick={()=>setVisibleCount(v=>Math.min(v+12,filtered.length))}>Muat 12 lagi <span>{filtered.length-visibleEntries.length} tersisa</span></button></div>}
+    {!filtered.length&&<p className="empty-state">Belum ada entri yang cocok dengan filter atau pencarian itu.</p>}
     <article ref={detail} tabIndex="-1" className="feature-story"><div className="story-main"><Eyebrow>FOCUS STORY / {active.type?.toUpperCase()}</Eyebrow><h2>{active.title}</h2><div className="meta-chips"><span>{active.status==='verified'?'✓ VERIFIED':'◌ CURATED'}</span>{active.details?.station&&<span>{active.details.station}</span>}{active.details?.region&&<span>{active.details.region}</span>}{active.details?.premiere&&<span>{active.details.premiere}</span>}{active.details?.genre&&<span>{active.details.genre}</span>}</div><p className="dropcap">{active.summary}</p>{active.details?.context&&<p>{active.details.context}</p>}{active.details?.people&&<p className="people"><b>Tokoh/kredit terpilih:</b> {active.details.people}</p>}<div className="story-sources"><Eyebrow>SUMBER RISET</Eyebrow>{(active.sources||[]).map(s=><a key={s.id} href={s.url} target="_blank" rel="noreferrer"><b>{s.title}</b><small>{s.kind} · dicek {s.checkedAt}</small></a>)}</div></div><div className="story-notes"><section><span>FUN FACT</span><p>{active.factBox?.text}</p></section><section><span>SUARA NOSTALGIA</span><blockquote>“{active.quoteBox?.text}”</blockquote><small>{active.quoteBox?.attribution}</small></section><section><span>PRICE TAG</span><p>{active.priceTag?.note}</p></section></div></article>
    </section>
 
-   <section className="credits wrap"><div><Eyebrow>VISUAL SOURCE LEDGER</Eyebrow><h2>Aset internet tetap punya nama.</h2><p>Foto diunduh saat build dari Wikimedia Commons dan disimpan lokal di folder aset hasil deployment. Tidak ada hotlink runtime ke file foto sumber. Aset vektor dibuat khusus untuk proyek ini.</p></div><div className="credit-list">{assetCredits.map(c=><a key={c.file} href={c.url} target="_blank" rel="noreferrer"><b>{c.label}</b><span>{c.author} · {c.license}</span></a>)}</div></section>
+   <section className="credits wrap"><div><Eyebrow>VISUAL SOURCE LEDGER</Eyebrow><h2>Aset internet tetap punya nama.</h2><p>Foto diunduh saat build dari Wikimedia Commons dan disimpan lokal di folder aset hasil deployment. Tidak ada hotlink runtime ke file foto sumber. Aset vektor dibuat khusus untuk proyek ini. Batch v2.4 menambah lima aset yang provenance-nya dicatat di `ATTRIBUTION-v2.4.md`.</p></div><div className="credit-list">{assetCredits.map(c=><a key={c.file} href={c.url} target="_blank" rel="noreferrer"><b>{c.label}</b><span>{c.author} · {c.license}</span></a>)}</div></section>
   </main>
   <footer><img src={`${ASSET}brand-seal.svg`} alt=""/><p>Wisata Masa Lalu: Edisi Tahun 90-an | Web Engine v1.0 | © Kolektor 90an</p></footer>
  </div>;
