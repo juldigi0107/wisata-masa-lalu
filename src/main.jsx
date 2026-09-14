@@ -7,6 +7,7 @@ import {scenes,years} from "../shared/world-model.js";
 import "./styles.css";
 import "./details.css";
 import "./world/premium.css";
+import "./world/scene-art.css";
 
 // Keep the historical SSOT shared by the immersive layer, contextual archive,
 // tests, and Worker API. The legacy editorial experience remains accessible
