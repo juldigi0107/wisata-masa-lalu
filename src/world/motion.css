@@ -1,0 +1,19 @@
+/* Temporal motion language: subtle, short, and fully disabled by reduced-motion. */
+.scene-rumah{animation:sceneRumah .58s cubic-bezier(.2,.8,.2,1) both}
+.scene-kampung{animation:sceneKampung .58s cubic-bezier(.2,.8,.2,1) both}
+.scene-sekolah{animation:sceneSekolah .58s cubic-bezier(.2,.8,.2,1) both}
+.scene-kota{animation:sceneKota .58s cubic-bezier(.2,.8,.2,1) both}
+.scene-digital{animation:sceneDigital .58s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sceneRumah{from{opacity:.25;filter:blur(8px) brightness(.72);transform:scale(1.018)}to{opacity:1;filter:none;transform:none}}
+@keyframes sceneKampung{from{opacity:.25;filter:blur(8px) saturate(.55);transform:scale(1.018)}to{opacity:1;filter:none;transform:none}}
+@keyframes sceneSekolah{from{opacity:.25;filter:blur(8px) sepia(.22);transform:scale(1.018)}to{opacity:1;filter:none;transform:none}}
+@keyframes sceneKota{from{opacity:.25;filter:blur(8px) contrast(1.12);transform:scale(1.018)}to{opacity:1;filter:none;transform:none}}
+@keyframes sceneDigital{from{opacity:.15;filter:blur(10px) brightness(.55);transform:scale(1.025)}to{opacity:1;filter:none;transform:none}}
+.scene-object{animation:objectMaterialize .44s cubic-bezier(.2,.8,.2,1) backwards}
+.scene-object:nth-of-type(2n){animation-delay:.05s}.scene-object:nth-of-type(3n){animation-delay:.09s}.scene-object:nth-of-type(5n){animation-delay:.13s}
+@keyframes objectMaterialize{from{opacity:0;transform:translate(-50%,-45%) scale(.82)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.scene-caption{animation:captionReveal .54s .08s cubic-bezier(.2,.8,.2,1) backwards}@keyframes captionReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.environment-nav,.memory-ribbon,.experience-dock,.profile-strip{animation:hudReveal .42s .16s cubic-bezier(.2,.8,.2,1) backwards}@keyframes hudReveal{from{opacity:0}to{opacity:1}}
+.intensity-total .scene-architecture{animation:totalBreath 12s ease-in-out infinite alternate}@keyframes totalBreath{from{transform:scale(1)}to{transform:scale(1.012)}}
+.intensity-imersif .scene-grain{animation:grainDrift 7s steps(7,end) infinite}@keyframes grainDrift{0%{transform:translate(0)}25%{transform:translate(1px,-1px)}50%{transform:translate(-1px,1px)}75%{transform:translate(1px,1px)}100%{transform:translate(0)}}
+@media(prefers-reduced-motion:reduce){.scene-rumah,.scene-kampung,.scene-sekolah,.scene-kota,.scene-digital,.scene-object,.scene-caption,.environment-nav,.memory-ribbon,.experience-dock,.profile-strip,.intensity-total .scene-architecture,.intensity-imersif .scene-grain{animation:none!important}}
