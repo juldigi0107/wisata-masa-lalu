@@ -1,4 +1,4 @@
-import catalog from "../shared/catalog.js";
+import catalog from "../shared/assembled-catalog.js";
 
 export default {
  async fetch(request, env = {}) {
@@ -19,7 +19,7 @@ export default {
   }
   if (request.method !== "GET") return reply({error:"Method tidak didukung"},405,{Allow:"GET, OPTIONS","Cache-Control":"no-store"});
 
-  if (url.pathname === "/api/health") return reply({ok:true,version:catalog.version,mode:"curated-static-v2",entries:catalog.entries.length,archiveSchedules:catalog.archiveSchedules?.length||0},200,{"Cache-Control":"no-store"});
+  if (url.pathname === "/api/health") return reply({ok:true,version:catalog.version,mode:"curated-static-v2",entries:catalog.entries.length,verified:catalog.entries.filter(e=>e.status==="verified").length,archiveSchedules:catalog.archiveSchedules?.length||0},200,{"Cache-Control":"no-store"});
   if (url.pathname === "/api/catalog") return reply(catalog);
   if (url.pathname === "/api/entries") {
    const q=(url.searchParams.get("q")||"").toLocaleLowerCase("id");
@@ -42,6 +42,12 @@ export default {
    const seen=new Map();
    for (const entry of catalog.entries) for (const source of entry.sources||[]) seen.set(source.id,source);
    return reply({sources:[...seen.values()],total:seen.size});
+  }
+  if (url.pathname === "/api/stats") {
+   const byType={};
+   const byStatus={};
+   for(const entry of catalog.entries){byType[entry.type]=(byType[entry.type]||0)+1;byStatus[entry.status]=(byStatus[entry.status]||0)+1;}
+   return reply({version:catalog.version,total:catalog.entries.length,byType,byStatus,stations:catalog.stations.length,archiveSchedules:catalog.archiveSchedules?.length||0});
   }
   return reply({error:"Endpoint tidak ditemukan"},404,{"Cache-Control":"no-store"});
  }
