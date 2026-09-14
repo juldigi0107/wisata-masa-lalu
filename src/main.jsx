@@ -8,6 +8,7 @@ import "./styles.css";
 import "./details.css";
 import "./world/premium.css";
 import "./world/scene-art.css";
+import "./world/motion.css";
 
 // Keep the historical SSOT shared by the immersive layer, contextual archive,
 // tests, and Worker API. The legacy editorial experience remains accessible
