@@ -5,8 +5,8 @@
 - Frontend: GitHub Pages — `https://juldigi0107.github.io/wisata-masa-lalu/`
 - Backend target: Cloudflare Worker — `https://wisata-masa-lalu.juldigi.workers.dev`
 - Katalog lokal/SSOT aplikasi: `shared/assembled-catalog.js`
-- Versi katalog saat ini: **v2.4.0**
-- Jumlah katalog teruji: **39 entri** lintas TV, kartun/anime, permainan, benda/game, musik/personal audio, Ramadhan, budaya warung, makanan/minuman, dan budaya baca.
+- Versi katalog saat ini: **v2.5.0**
+- Jumlah katalog teruji: **46 entri** lintas TV, kartun/anime, permainan, benda/game, musik/personal audio, Ramadhan, budaya warung, makanan/minuman, budaya baca, sekolah/alat tulis, teknologi komunikasi, dan film.
 - Frontend memiliki **safe fallback**: Worker hanya dipakai saat versi dan jumlah entrinya sama persis dengan katalog lokal. Worker yang tertinggal tidak boleh menurunkan isi aplikasi.
 
 ## Frontend GitHub Pages
@@ -78,11 +78,13 @@ Workflow `.github/workflows/worker.yml` selalu menjalankan test. Langkah deploy 
 
 Aset eksternal diambil dari sumber berlisensi melalui `scripts/fetch-assets.mjs`. Downloader memiliki retry/backoff untuk HTTP 429/5xx dan build menolak hasil yang terlalu tidak lengkap.
 
-Sumber, kreator, dan lisensi awal dicatat di `public/assets/ATTRIBUTION.md`. Tambahan batch v2.4 dicatat di `public/assets/ATTRIBUTION-v2.4.md`.
+Sumber, kreator, dan lisensi awal dicatat di `public/assets/ATTRIBUTION.md`; batch v2.4 di `public/assets/ATTRIBUTION-v2.4.md`; batch v2.5 di `public/assets/ATTRIBUTION-v2.5.md`.
 
 Aset vektor orisinal proyek berada di `public/assets/`.
 
-Pipeline v2.4 menargetkan **20 aset visual lokal** dan mensyaratkan minimal 18 berhasil diunduh agar build boleh diteruskan.
+Pipeline v2.5 menargetkan **25 aset visual lokal** dan mensyaratkan minimal 23 berhasil diunduh agar build boleh diteruskan.
+
+Poster film, frame film, dan cover majalah yang hak pakainya tidak cukup jelas tidak dimasukkan ke pipeline aset publik. Sebagai gantinya, aplikasi memakai object-study bebas lisensi dan tetap menautkan sumber fakta secara terpisah.
 
 ## Data dan provenance
 
@@ -93,7 +95,8 @@ Pipeline v2.4 menargetkan **20 aset visual lokal** dan mensyaratkan minimal 18 b
 - Jadwal simulasi dipisahkan dari `archiveSchedules`.
 - Sampel jadwal komunitas tidak diklaim sebagai scan koran primer.
 - Harga jajanan dan barang yang belum memiliki sumber historis tetap kosong/disclaimer; tidak diubah menjadi angka perkiraan seolah fakta.
-- Batch budaya baca, makanan/minuman, dan personal audio v2.4 memakai sumber penerbit/produsen resmi bila tersedia; sumber sekunder tetap diberi jenis sumber secara eksplisit.
+- Batch v2.5 memisahkan fakta produk global (PILOT, Nintendo, Motorola) dari klaim popularitas lokal. Konteks Indonesia yang belum punya data distribusi/pangsa pasar tidak ditulis sebagai fakta kuantitatif.
+- Film memakai database perfilman sebagai sumber sejarah; poster dan still berhak cipta tidak disalin ke aset lokal.
 
 ## Verifikasi minimum sebelum rilis
 
@@ -110,8 +113,8 @@ Pipeline v2.4 menargetkan **20 aset visual lokal** dan mensyaratkan minimal 18 b
 
 ## Cakupan saat ini
 
-Aplikasi bukan lagi Batch 1. Katalog v2.4 berisi 39 entri terkurasi dan UI mempunyai CRT simulator, arsip Minggu pagi, blueprint permainan, object cabinet, kalkulator warung, Ramadhan experience, kaset/kamus gaul, quiz 20 pertanyaan, pencarian + filter kategori arsip, progressive loading 12 entri per batch, detail provenance, dan source ledger.
+Katalog v2.5 berisi **46 entri terkurasi**. UI mempunyai CRT simulator, arsip Minggu pagi, blueprint permainan, object cabinet, kalkulator warung, Ramadhan experience, kaset/kamus gaul, quiz 20 pertanyaan, pencarian + filter kategori arsip, progressive loading 12 entri per batch, detail provenance, dan source ledger.
 
-Batch v2.4 menambahkan budaya baca (Majalah Bobo, gelombang manga Elex, Toko Buku Gramedia), makanan/minuman (Indomie Mi Goreng dan AQUA), serta personal audio (Walkman dan Discman/CD portable). API dan rendering arsip sudah disiapkan untuk pertumbuhan ke **500+ entri** melalui pagination, facets, progressive rendering, dan `content-visibility` pada kartu off-screen.
+Batch v2.4 menambahkan budaya baca, makanan/minuman, dan personal audio. Batch v2.5 menambah Majalah HAI, Pilot Dr. Grip, Pilot Hi-Tec-C, Game Boy Color, pager Motorola, Olga dan Sepatu Roda, dan Kuldesak. API dan rendering arsip tetap disiapkan untuk pertumbuhan ke **500+ entri** melalui pagination, facets, progressive rendering, dan `content-visibility` pada kartu off-screen.
 
 Penambahan konten tetap dilakukan per batch enrichment supaya data lama tidak rusak dan setiap fakta baru mempunyai provenance yang jelas.
