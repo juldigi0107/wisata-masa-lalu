@@ -1,62 +1,60 @@
 export const modules = [
-  {id:'tv',no:'01',title:'TV Tabung',subtitle:'Sinetron, kuis & jadwal layar kaca',icon:'▣',tone:'violet'},
-  {id:'sunday',no:'02',title:'Minggu Pagi',subtitle:'Kartun, cereal dan remote yang direbut',icon:'☀',tone:'coral'},
-  {id:'games',no:'03',title:'Permainan Kampung',subtitle:'Gundu, congklak, benteng dan sore panjang',icon:'◎',tone:'lime'},
-  {id:'rental',no:'04',title:'Rental & Game',subtitle:'PS1, dingdong, Tazos dan Tamagotchi',icon:'✦',tone:'blue'},
-  {id:'warung',no:'05',title:'Warung SD',subtitle:'Jajanan, uang saku dan kalkulator nostalgia',icon:'¤',tone:'yellow'},
-  {id:'ramadan',no:'06',title:'Ramadhan 90-an',subtitle:'Bedug, obor, sahur dan mudik',icon:'☾',tone:'emerald'},
-  {id:'music',no:'07',title:'Kaset & Kamus Gaul',subtitle:'Mixtape, fashion dan bahasa tongkrongan',icon:'▶',tone:'magenta'},
-  {id:'quiz',no:'08',title:'Nostalgia Meter',subtitle:'Seberapa 90-an memori kamu?',icon:'?',tone:'orange'}
+ {id:'tv',no:'01',title:'TV Tabung',subtitle:'Sinetron, kuis & jadwal layar kaca',icon:'▣',tone:'violet'},
+ {id:'sunday',no:'02',title:'Minggu Pagi',subtitle:'Kartun, cereal dan remote yang direbut',icon:'☀',tone:'coral'},
+ {id:'games',no:'03',title:'Permainan Kampung',subtitle:'Gundu, congklak, benteng dan sore panjang',icon:'◎',tone:'lime'},
+ {id:'rental',no:'04',title:'Rental & Game',subtitle:'PS1, dingdong, Tazos dan Tamagotchi',icon:'✦',tone:'blue'},
+ {id:'warung',no:'05',title:'Warung SD',subtitle:'Jajanan, uang saku dan kalkulator nostalgia',icon:'¤',tone:'yellow'},
+ {id:'ramadan',no:'06',title:'Ramadhan 90-an',subtitle:'Bedug, obor, sahur dan mudik',icon:'☾',tone:'emerald'},
+ {id:'music',no:'07',title:'Kaset & Kamus Gaul',subtitle:'Mixtape, fashion dan bahasa tongkrongan',icon:'▶',tone:'magenta'},
+ {id:'quiz',no:'08',title:'Nostalgia Meter',subtitle:'Seberapa 90-an memori kamu?',icon:'?',tone:'orange'}
 ];
 
 export const snacks = [
-  {name:'Mi kremes anak sekolah',past:500,present:3000,year:1997,note:'Perbandingan editorial, bukan indeks harga resmi.'},
-  {name:'Es lilin / es mambo',past:250,present:2000,year:1995,note:'Harga sangat bervariasi menurut daerah.'},
-  {name:'Permen karet satuan',past:100,present:1000,year:1996,note:'Disederhanakan untuk simulasi pengalaman.'},
-  {name:'Minuman teh botol',past:1000,present:6000,year:1998,note:'Ukuran kemasan dapat berbeda antarperiode.'}
+ {name:'Mi kremes anak sekolah',past:500,present:3000,year:1997,note:'Perbandingan editorial, bukan indeks harga resmi.'},
+ {name:'Es lilin / es mambo',past:250,present:2000,year:1995,note:'Harga sangat bervariasi menurut daerah.'},
+ {name:'Permen karet satuan',past:100,present:1000,year:1996,note:'Disederhanakan untuk simulasi pengalaman.'},
+ {name:'Minuman teh botol',past:1000,present:6000,year:1998,note:'Ukuran kemasan dapat berbeda antarperiode.'}
+];
+
+export const gameGuides = [
+ {id:'galasin',name:'Galasin / Gobak Sodor',region:'Betawi',players:'2 tim × 3–8 pemain',tools:'Lapangan bergaris; kapur bila perlu',sourceLabel:'Direktorat Warisan dan Diplomasi Budaya',source:'https://kebudayaan.kemdikbud.go.id/ditwdb/galasin-betawi/',facts:'Salah satu bentuk lapangan yang didokumentasikan berukuran sekitar 9 × 4 meter dan dibagi menjadi enam bagian.',steps:['Bagi pemain menjadi dua tim dengan jumlah seimbang.','Tentukan tim penjaga dan tim penyerang.','Penjaga bergerak di garis horizontal/vertikal yang menjadi wilayah tugasnya.','Penyerang berusaha melewati baris demi baris tanpa tersentuh penjaga.','Satu tim menuntaskan perjalanan ketika seluruh anggotanya berhasil pergi dan kembali melewati area permainan.']},
+ {id:'congklak',name:'Congklak / Dakon',region:'Nusantara',players:'2 pemain',tools:'Papan 16 lubang + 98 biji',sourceLabel:'Direktorat Warisan dan Diplomasi Budaya',source:'https://kebudayaan.kemdikbud.go.id/ditwdb/congklak-betawi/',facts:'Dokumentasi Kemdikbud menjelaskan papan umum dengan 14 lubang kecil, dua lubang induk, dan tujuh biji pada tiap lubang kecil.',steps:['Duduk berhadapan, masing-masing memiliki tujuh lubang kecil dan satu lubang induk.','Isi setiap lubang kecil dengan tujuh biji.','Ambil seluruh biji dari satu lubang di sisi sendiri.','Sebarkan satu per satu ke lubang berikutnya sesuai arah permainan, termasuk lubang induk sendiri.','Permainan selesai ketika biji kecil habis; jumlah terbanyak di lubang induk menjadi pemenang.']},
+ {id:'petak-umpet',name:'Petak Umpet',region:'Betawi',players:'Kelompok; lazimnya 5–6 orang atau lebih',tools:'Satu titik “hong”/base',sourceLabel:'Budaya Betawi — Institut Kesenian Jakarta',source:'https://budayabetawi.ikj.ac.id/petak-umpet/',facts:'Versi Betawi mendokumentasikan sebuah titik hong sebagai tempat penjaga menghitung dan menjadi base yang harus disentuh.',steps:['Tentukan penjaga melalui hompimpa atau kesepakatan.','Penjaga menutup mata di titik hong dan menghitung sampai angka yang disepakati.','Pemain lain bersembunyi selama hitungan berlangsung.','Penjaga mencari pemain sambil tetap memperhatikan titik hong.','Saat menemukan pemain, penjaga menyebut nama dan menyentuh hong sesuai aturan kelompok.']},
+ {id:'bentengan',name:'Bentengan',region:'Betawi / Nusantara',players:'2 kelompok',tools:'Dua benda/tiang sebagai benteng',sourceLabel:'Data Warisan Budaya — Kemdikbud',source:'https://budaya.data.kemdikbud.go.id/wbtb/objek/AA000942',facts:'Bentengan terdokumentasi sebagai permainan kelompok; variasi aturan lokal dapat berbeda antardaerah.',steps:['Bentuk dua kelompok dan tentukan benteng masing-masing.','Setiap tim menjaga benteng sambil mencoba mendekati area lawan.','Pemain lawan dapat dikejar dan ditawan sesuai kesepakatan permainan.','Rekan satu tim dapat berusaha membebaskan pemain yang tertawan.','Tim menang berdasarkan keberhasilan menyentuh/menguasai benteng lawan sesuai aturan setempat.']}
+];
+
+export const objectCabinet = [
+ {id:'playstation',name:'PlayStation',year:'1994',image:'playstation.jpg',kicker:'RENTAL ICON',story:'Sony meluncurkan konsol PlayStation pertama di Jepang pada 1994. Di Indonesia, bentuk abu-abunya kemudian sangat identik dengan budaya rental konsol akhir 90-an.',source:'https://www.sony.com/en/SonyInfo/CorporateInfo/History/company/',sourceLabel:'Sony — Corporate History'},
+ {id:'tamagotchi',name:'Tamagotchi',year:'1996',image:'tamagotchi.jpg',kicker:'DIGITAL PET',story:'Bandai mencatat Tamagotchi diluncurkan pada November 1996. Hewan peliharaan digital berbentuk telur ini menjadi simbol mainan elektronik saku.',source:'https://www.bandainamco.co.jp/en/about/history/all.html',sourceLabel:'Bandai Namco — History'},
+ {id:'hyper-yoyo',name:'Hyper Yo-Yo',year:'1997',image:'yoyo.jpg',kicker:'SKILL TOY',story:'Bandai Namco mencatat Hyper Yo-Yo diluncurkan pada April 1997, saat trik yo-yo kembali menjadi fenomena besar anak sekolah.',source:'https://www.bandainamco.co.jp/en/about/history/all.html',sourceLabel:'Bandai Namco — History'},
+ {id:'walkman',name:'Portable Cassette Player',year:'1990-an',image:'walkman.jpg',kicker:'PERSONAL AUDIO',story:'Pemutar kaset portabel membuat mixtape dan radio bisa dibawa ke mana-mana. Foto objek yang dipakai adalah Sony Walkman WM-EX116 dari pertengahan 1990-an.',source:'https://commons.wikimedia.org/wiki/File:Sony_Walkman_WM-EX116_cassette_player.jpg',sourceLabel:'Wikimedia Commons — object study'},
+ {id:'floppy',name:'Disket 3½ inci',year:'1990-an',image:'floppy.jpg',kicker:'SAVE ICON',story:'Jauh sebelum cloud storage, disket menjadi benda sehari-hari di sekolah dan kantor—bahkan ikon “save” masih mewarisi siluetnya.',source:'https://commons.wikimedia.org/wiki/File:3.5%22_floppy_disk.jpg',sourceLabel:'Wikimedia Commons — object study'},
+ {id:'phone',name:'Telepon Rumah',year:'era analog',image:'phone.jpg',kicker:'HOUSEHOLD TECH',story:'Satu nomor telepon bisa menjadi milik seluruh rumah. Menerima panggilan berarti kadang harus meneriakkan nama orang lain dari ruang depan.',source:'https://commons.wikimedia.org/wiki/File:Old_rotary_phone.jpg',sourceLabel:'Wikimedia Commons — object study'},
+ {id:'camera',name:'Kamera Film Saku',year:'1990-an',image:'camera.jpg',kicker:'WAIT FOR THE PRINT',story:'Foto baru benar-benar terlihat setelah film dicuci dan dicetak. Ketidakpastian hasil justru menjadi bagian dari pengalaman memotret.',source:'https://commons.wikimedia.org/wiki/File:Olympus_Trip_505.jpg',sourceLabel:'Wikimedia Commons — object study'}
 ];
 
 export const slang = [
-  {term:'Bokap',meaning:'Ayah. Populer dalam ragam gaul perkotaan.'},
-  {term:'Nyokap',meaning:'Ibu. Pasangan kata yang sering muncul bersama “bokap”.'},
-  {term:'Jayus',meaning:'Lelucon yang dianggap tidak lucu atau garing.'},
-  {term:'Cuek',meaning:'Tidak terlalu ambil pusing; santai atau acuh.'},
-  {term:'Doi',meaning:'Dia—sering dipakai untuk orang yang disukai.'},
-  {term:'Nongkrong',meaning:'Berkumpul santai bersama teman.'},
-  {term:'Gaul',meaning:'Akrab dengan tren, pertemanan, dan gaya zaman.'},
-  {term:'Kece',meaning:'Keren atau enak dipandang dalam bahasa percakapan.'}
+ {term:'Bokap',meaning:'Ayah. Populer dalam ragam gaul perkotaan.'},{term:'Nyokap',meaning:'Ibu. Pasangan kata yang sering muncul bersama “bokap”.'},{term:'Jayus',meaning:'Lelucon yang dianggap tidak lucu atau garing.'},{term:'Cuek',meaning:'Tidak terlalu ambil pusing; santai atau acuh.'},{term:'Doi',meaning:'Dia—sering dipakai untuk orang yang disukai.'},{term:'Nongkrong',meaning:'Berkumpul santai bersama teman.'},{term:'Gaul',meaning:'Akrab dengan tren, pertemanan, dan gaya zaman.'},{term:'Kece',meaning:'Keren atau enak dipandang dalam bahasa percakapan.'},{term:'Cupu',meaning:'Sebutan gaul untuk orang yang dianggap kurang luwes atau kurang mengikuti tren.'},{term:'Jutek',meaning:'Kesan galak, dingin, atau kurang ramah.'},{term:'Ilfil',meaning:'Singkatan populer dari “ilang feeling”; kehilangan rasa suka atau ketertarikan.'},{term:'PD',meaning:'Singkatan dari percaya diri.'}
 ];
 
 export const quizQuestions = [
-  ['Kalau hari Minggu pagi, benda pertama yang dicari?', ['Remote TV','Laptop kerja','Kartu parkir'],0],
-  ['Pernah meniup cartridge game supaya “jalan lagi”?', ['Sering','Tidak pernah','Cartridge itu apa?'],0],
-  ['Pernah punya koleksi kelereng, Tazos, atau kartu gambar?', ['Iya','Sedikit','Tidak'],0],
-  ['Telepon rumah berdering malam hari biasanya bikin…', ['Semua orang penasaran','Biasa saja','Tak pernah punya'],0],
-  ['Pernah menunggu lagu favorit di radio untuk direkam ke kaset?', ['Pernah','Hampir','Tidak'],0],
-  ['Kalau dengar “Rental PS”, yang terbayang?', ['Kursi plastik & antrean','Cloud gaming','Tidak tahu'],0],
-  ['Main sore selesai karena…', ['Dipanggil pulang','Baterai habis','Wi-Fi mati'],0],
-  ['Pernah menulis biodata di buku teman?', ['Pernah','Lupa','Tidak'],0],
-  ['Pernah menunggu foto dicuci/cetak sebelum bisa melihat hasil?', ['Pernah','Sekali-dua kali','Tidak'],0],
-  ['Suara modem dial-up terdengar seperti…', ['Mesin masa depan','Normal','Belum pernah dengar'],0],
-  ['Pernah membeli jajanan dengan uang receh yang sangat berarti?', ['Iya','Kadang','Tidak'],0],
-  ['Kalau listrik mati malam hari, kegiatan paling masuk akal?', ['Ngobrol/keluar rumah','Scroll ponsel','Streaming'],0],
-  ['Pernah hafal jingle iklan tanpa sengaja?', ['Banyak','Beberapa','Tidak'],0],
-  ['Kamus gaul dulu menyebar lewat…', ['Tongkrongan & TV','Push notification','AI assistant'],0],
-  ['Pernah punya agenda/binder penuh stiker?', ['Iya','Tidak yakin','Tidak'],0],
-  ['Kalau ada telepon untuk kakak, kamu…', ['Teriak manggil','Forward chat','Tidak pernah'],0],
-  ['Pernah main benteng/gobak sodor/engklek?', ['Sering','Pernah','Tidak'],0],
-  ['Menyewa VCD/PS/game dulu berarti…', ['Harus balikin tepat waktu','Cukup logout','Tidak tahu'],0],
-  ['Pernah menyusun mixtape sendiri?', ['Kaset/CD','Playlist digital saja','Tidak pernah'],0],
-  ['Kalimat “pulang sebelum magrib” terasa familiar?', ['Banget','Sedikit','Tidak'],0]
+ ['Kalau hari Minggu pagi, benda pertama yang dicari?',['Remote TV','Laptop kerja','Kartu parkir'],0],['Pernah meniup cartridge game supaya “jalan lagi”?',['Sering','Tidak pernah','Cartridge itu apa?'],0],['Pernah punya koleksi kelereng, Tazos, atau kartu gambar?',['Iya','Sedikit','Tidak'],0],['Telepon rumah berdering malam hari biasanya bikin…',['Semua orang penasaran','Biasa saja','Tak pernah punya'],0],['Pernah menunggu lagu favorit di radio untuk direkam ke kaset?',['Pernah','Hampir','Tidak'],0],['Kalau dengar “Rental PS”, yang terbayang?',['Kursi plastik & antrean','Cloud gaming','Tidak tahu'],0],['Main sore selesai karena…',['Dipanggil pulang','Baterai habis','Wi-Fi mati'],0],['Pernah menulis biodata di buku teman?',['Pernah','Lupa','Tidak'],0],['Pernah menunggu foto dicuci/cetak sebelum bisa melihat hasil?',['Pernah','Sekali-dua kali','Tidak'],0],['Suara modem dial-up terdengar seperti…',['Mesin masa depan','Normal','Belum pernah dengar'],0],['Pernah membeli jajanan dengan uang receh yang sangat berarti?',['Iya','Kadang','Tidak'],0],['Kalau listrik mati malam hari, kegiatan paling masuk akal?',['Ngobrol/keluar rumah','Scroll ponsel','Streaming'],0],['Pernah hafal jingle iklan tanpa sengaja?',['Banyak','Beberapa','Tidak'],0],['Kamus gaul dulu menyebar lewat…',['Tongkrongan & TV','Push notification','AI assistant'],0],['Pernah punya agenda/binder penuh stiker?',['Iya','Tidak yakin','Tidak'],0],['Kalau ada telepon untuk kakak, kamu…',['Teriak manggil','Forward chat','Tidak pernah'],0],['Pernah main benteng/gobak sodor/engklek?',['Sering','Pernah','Tidak'],0],['Menyewa VCD/PS/game dulu berarti…',['Harus balikin tepat waktu','Cukup logout','Tidak tahu'],0],['Pernah menyusun mixtape sendiri?',['Kaset/CD','Playlist digital saja','Tidak pernah'],0],['Kalimat “pulang sebelum magrib” terasa familiar?',['Banget','Sedikit','Tidak'],0]
 ];
 
 export const assetCredits = [
-  {file:'jakarta-1991.jpg',label:'Jalan Kramat Raya, Senen, Jakarta (1991)',author:'Hideo Izumida',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Jakarta-Senen-Shophouse4.jpg'},
-  {file:'kelereng.jpg',label:'Bermain Kelereng',author:'Moh. Ali Zaenal',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Bermain_Kelereng.jpg'},
-  {file:'congklak.jpg',label:'Permainan Tradisional Congklak',author:'Annidafattiya',license:'CC BY 4.0',url:'https://commons.wikimedia.org/wiki/File:01_Permainan_Tradisional_Congklak.jpg'},
-  {file:'permainan-tradisional.jpg',label:'Permainan Tradisional Indonesia',author:'Ivuvisual',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Permainan_Tradisional_Indonesia.jpg'},
-  {file:'warung.jpg',label:'Makanan warung',author:'Wiwik P',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Makanan_warung.jpg'},
-  {file:'ramadan.jpg',label:'Malam Ramadan di Masjid Ubay bin Ka’ab',author:'Muhamad Izzul Fiqih',license:'Wikimedia Commons — lihat halaman sumber',url:'https://commons.wikimedia.org/wiki/File:On_the_night_of_the_21st_of_Ramadan_1446_at_the_Ubay_bin_Ka%27ab_Mosque.jpg'},
-  {file:'cassette.jpg',label:'TDK D 90 cassette tape',author:'Joost J. Bakker IJmuiden',license:'CC BY 2.0',url:'https://commons.wikimedia.org/wiki/File:TDK_D_90_IEC_Type_I_normal_transparent_orange_Cassette_Tape_(51878709668).jpg'},
-  {file:'crt.jpg',label:'Retro CRT Television',author:'Nabunje Leticia',license:'Wikimedia Commons — lihat halaman sumber',url:'https://commons.wikimedia.org/wiki/File:Retro_CRT_Television.jpg'}
+ {file:'jakarta-1991.jpg',label:'Jalan Kramat Raya, Senen, Jakarta (1991)',author:'Hideo Izumida',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Jakarta-Senen-Shophouse4.jpg'},
+ {file:'kelereng.jpg',label:'Bermain Kelereng',author:'Moh. Ali Zaenal',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Bermain_Kelereng.jpg'},
+ {file:'congklak.jpg',label:'Permainan Tradisional Congklak',author:'Annidafattiya',license:'CC BY 4.0',url:'https://commons.wikimedia.org/wiki/File:01_Permainan_Tradisional_Congklak.jpg'},
+ {file:'permainan-tradisional.jpg',label:'Permainan Tradisional Indonesia',author:'Ivuvisual',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Permainan_Tradisional_Indonesia.jpg'},
+ {file:'warung.jpg',label:'Makanan warung',author:'Wiwik P',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Makanan_warung.jpg'},
+ {file:'ramadan.jpg',label:'Malam Ramadan di Masjid Ubay bin Ka’ab',author:'Muhamad Izzul Fiqih',license:'Wikimedia Commons — lihat halaman sumber',url:'https://commons.wikimedia.org/wiki/File:On_the_night_of_the_21st_of_Ramadan_1446_at_the_Ubay_bin_Ka%27ab_Mosque.jpg'},
+ {file:'cassette.jpg',label:'TDK D 90 cassette tape',author:'Joost J. Bakker IJmuiden',license:'CC BY 2.0',url:'https://commons.wikimedia.org/wiki/File:TDK_D_90_IEC_Type_I_normal_transparent_orange_Cassette_Tape_(51878709668).jpg'},
+ {file:'crt.jpg',label:'Retro CRT Television',author:'Nabunje Leticia',license:'Wikimedia Commons — lihat halaman sumber',url:'https://commons.wikimedia.org/wiki/File:Retro_CRT_Television.jpg'},
+ {file:'playstation.jpg',label:'PlayStation SCPH-1000 with Controller',author:'Evan-Amos',license:'Public domain',url:'https://commons.wikimedia.org/wiki/File:PlayStation-SCPH-1000-with-Controller.jpg'},
+ {file:'tamagotchi.jpg',label:'Gele tamagotchi, objectnr 78041',author:'Museum Rotterdam',license:'CC BY-SA 3.0',url:'https://commons.wikimedia.org/wiki/File:Gele_tamagotchi,_objectnr_78041.JPG'},
+ {file:'walkman.jpg',label:'Sony Walkman WM-EX116 cassette player',author:'Lankyrider',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Sony_Walkman_WM-EX116_cassette_player.jpg'},
+ {file:'yoyo.jpg',label:'Plastic Yo-Yo',author:'Evan-Amos',license:'Public domain',url:'https://commons.wikimedia.org/wiki/File:Yo-Yo-Plastic-Toy-Green.jpg'},
+ {file:'floppy.jpg',label:'3.5 inch floppy disk',author:'Load',license:'Public domain',url:'https://commons.wikimedia.org/wiki/File:3.5%22_floppy_disk.jpg'},
+ {file:'phone.jpg',label:'Old rotary phone',author:'Hari mei harso',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Old_rotary_phone.jpg'},
+ {file:'camera.jpg',label:'Olympus Trip 505',author:'Peachyeung316',license:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Olympus_Trip_505.jpg'}
 ];
