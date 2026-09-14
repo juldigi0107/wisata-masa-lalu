@@ -11,7 +11,7 @@ concurrency:
   group: pages
   cancel-in-progress: true
 env:
-  VITE_API_BASE_URL: https://wisata-masa-lalu.juldigi.workers.dev
+  API_CANDIDATE: https://wisata-masa-lalu.juldigi.workers.dev
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,24 +22,45 @@ jobs:
           node-version: '22'
       - run: npm install
       - run: npm test
-      - name: Verify live Cloudflare API
+      - name: Select compatible Cloudflare API or local fallback
         run: |
           node --input-type=module <<'NODE'
-          const base = process.env.VITE_API_BASE_URL;
-          for (const path of ['/api/health', '/api/catalog']) {
-            const r = await fetch(base + path, {
-              headers: { Origin: 'https://juldigi0107.github.io' },
+          import { appendFileSync } from 'node:fs';
+          const base = process.env.API_CANDIDATE;
+          const origin = 'https://juldigi0107.github.io';
+          try {
+            const healthResponse = await fetch(base + '/api/health', {
+              headers: { Origin: origin },
               signal: AbortSignal.timeout(20000)
             });
-            if (!r.ok) throw Error(path + ': HTTP ' + r.status);
-            if (r.headers.get('access-control-allow-origin') !== 'https://juldigi0107.github.io') throw Error(path + ': CORS mismatch');
-            const d = await r.json();
-            if (path.endsWith('health') && d.ok !== true) throw Error('Health failed');
-            if (path.endsWith('catalog') && (!Array.isArray(d.entries) || !d.entries.length)) throw Error('Catalog missing');
-            const detail = path.endsWith('health')
-              ? `version=${d.version ?? 'unknown'} mode=${d.mode ?? 'unknown'} entries=${d.entries ?? 'unknown'}`
-              : `version=${d.version ?? 'unknown'} entries=${d.entries.length} archiveSchedules=${d.archiveSchedules?.length ?? 0}`;
-            console.log(`${path}: HTTP 200, CORS verified, ${detail}`);
+            if (!healthResponse.ok) throw Error('health HTTP ' + healthResponse.status);
+            if (healthResponse.headers.get('access-control-allow-origin') !== origin) throw Error('health CORS mismatch');
+            const health = await healthResponse.json();
+
+            const catalogResponse = await fetch(base + '/api/catalog', {
+              headers: { Origin: origin },
+              signal: AbortSignal.timeout(20000)
+            });
+            if (!catalogResponse.ok) throw Error('catalog HTTP ' + catalogResponse.status);
+            if (catalogResponse.headers.get('access-control-allow-origin') !== origin) throw Error('catalog CORS mismatch');
+            const catalog = await catalogResponse.json();
+
+            const compatible = health.ok === true &&
+              String(health.version || '').startsWith('2.') &&
+              health.mode === 'curated-static-v2' &&
+              Array.isArray(catalog.entries) && catalog.entries.length >= 10 &&
+              String(catalog.version || '').startsWith('2.');
+
+            if (!compatible) {
+              console.log(`Cloudflare API reachable but stale/incompatible: health=${health.version ?? 'unknown'} mode=${health.mode ?? 'unknown'} catalog=${catalog.version ?? 'unknown'} entries=${catalog.entries?.length ?? 0}`);
+              console.log('Building with bundled curated v2 catalog instead.');
+              process.exit(0);
+            }
+
+            appendFileSync(process.env.GITHUB_ENV, `VITE_API_BASE_URL=${base}\n`);
+            console.log(`Cloudflare API accepted: v${catalog.version}, ${catalog.entries.length} entries.`);
+          } catch (error) {
+            console.log(`Cloudflare API unavailable/incompatible (${error.message}); building with bundled curated v2 catalog.`);
           }
           NODE
       - name: Fetch licensed editorial assets into public/assets/media
