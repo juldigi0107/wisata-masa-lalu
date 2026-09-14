@@ -27,6 +27,7 @@ export default function App(){
  const [minute,setMinute]=useState(390);
  const [region,setRegion]=useState('Betawi');
  const [query,setQuery]=useState('');
+ const [typeFilter,setTypeFilter]=useState('semua');
  const [active,setActive]=useState(bundled.entries[0]);
  const [snackIndex,setSnackIndex]=useState(0);
  const [qty,setQty]=useState(5);
@@ -95,7 +96,13 @@ export default function App(){
  const slot=data.schedules?.find(s=>s.day==='Minggu'&&minute>=s.startMinute&&minute<s.endMinute);
  const cartoon=data.entries.find(e=>e.id===slot?.entryId);
  const chosen=data.regions?.find(r=>r.name===region)||data.regions?.[0];
- const filtered=useMemo(()=>data.entries.filter(e=>(`${e.title} ${(e.tags||[]).join(' ')} ${e.summary}`).toLocaleLowerCase('id').includes(query.trim().toLocaleLowerCase('id'))),[data.entries,query]);
+ const typeStats=useMemo(()=>data.entries.reduce((acc,e)=>{acc[e.type]=(acc[e.type]||0)+1;return acc},{}),[data.entries]);
+ const entryTypes=useMemo(()=>Object.keys(typeStats).sort((a,b)=>a.localeCompare(b,'id')),[typeStats]);
+ const filtered=useMemo(()=>data.entries.filter(e=>{
+  const matchesType=typeFilter==='semua'||e.type===typeFilter;
+  const haystack=`${e.title} ${(e.tags||[]).join(' ')} ${e.summary} ${e.details?.station||''} ${e.details?.region||''}`.toLocaleLowerCase('id');
+  return matchesType&&haystack.includes(query.trim().toLocaleLowerCase('id'));
+ }),[data.entries,query,typeFilter]);
  const filteredSlang=useMemo(()=>slang.filter(x=>(x.term+' '+x.meaning).toLocaleLowerCase('id').includes(slangQuery.toLocaleLowerCase('id'))),[slangQuery]);
  const snack=snacks[snackIndex];
  const game=gameGuides[gameIndex];
@@ -146,7 +153,10 @@ export default function App(){
 
    <section id="quiz" className="quiz wrap"><div className="quiz-ticket"><Eyebrow>08 / NOSTALGIA METER</Eyebrow>{quizDone?<><div className="score-ring"><strong>{quizPercent}</strong><span>/100</span></div><h2>{quizPercent>=80?'Anak 90-an garis keras.':quizPercent>=50?'Memorinya masih hangat.':'Kamu tamu kehormatan di mesin waktu.'}</h2><p>Skor dihitung dari 20 pertanyaan ringan tentang kebiasaan sehari-hari era analog.</p><button onClick={resetQuiz}>Ulangi quiz</button></>:<><span className="quiz-progress">PERTANYAAN {quizStep+1} / {quizQuestions.length}</span><h2>{quizQuestions[quizStep][0]}</h2><div className="quiz-options">{quizQuestions[quizStep][1].map((o,i)=><button key={o} onClick={()=>answer(i)}>{String.fromCharCode(65+i)}. {o}</button>)}</div></>}</div><aside><Eyebrow>BOARDING SCORE</Eyebrow><p>Jawaban tidak disimpan ke server.</p><div className="barcode tall"/></aside></section>
 
-   <section id="collection" className="collection wrap"><div className="section-head"><div><Eyebrow>ARSIP / KLIPING</Eyebrow><h2>Buka laci kenangan.</h2></div><label>Cari judul, kanal, atau topik<input type="search" placeholder="Coba: RCTI, superhero, keluarga" value={query} onChange={e=>setQuery(e.target.value)}/></label></div><div className="clip-grid">{filtered.map((e,i)=><button className={`clip-card c${i%4}`} key={e.id} onClick={()=>openEntry(e)}><span>{String(i+1).padStart(2,'0')}</span><small>{e.type} · {e.details?.station||e.details?.region||''}</small><h3>{e.title}</h3><p>{e.summary}</p><b>Buka kliping ↗</b></button>)}</div>{!filtered.length&&<p className="empty-state">Belum ada entri yang cocok dengan pencarian itu.</p>}
+   <section id="collection" className="collection wrap"><div className="section-head"><div><Eyebrow>ARSIP / KLIPING</Eyebrow><h2>Buka laci kenangan.</h2></div><label>Cari judul, kanal, daerah, atau topik<input type="search" placeholder="Coba: RCTI, anime, permainan, Sony" value={query} onChange={e=>setQuery(e.target.value)}/></label></div>
+    <div className="type-filter" role="group" aria-label="Filter kategori arsip"><button aria-pressed={typeFilter==='semua'} onClick={()=>setTypeFilter('semua')}>Semua <span>{data.entries.length}</span></button>{entryTypes.map(type=><button key={type} aria-pressed={typeFilter===type} onClick={()=>setTypeFilter(type)}>{type} <span>{typeStats[type]}</span></button>)}</div>
+    <p className="collection-count" aria-live="polite">Menampilkan <b>{filtered.length}</b> dari {data.entries.length} entri · katalog v{data.version}</p>
+    <div className="clip-grid">{filtered.map((e,i)=><button className={`clip-card c${i%4}`} key={e.id} onClick={()=>openEntry(e)}><span>{String(i+1).padStart(2,'0')}</span><small>{e.type} · {e.details?.station||e.details?.region||''}</small><h3>{e.title}</h3><p>{e.summary}</p><b>Buka kliping ↗</b></button>)}</div>{!filtered.length&&<p className="empty-state">Belum ada entri yang cocok dengan filter atau pencarian itu.</p>}
     <article ref={detail} tabIndex="-1" className="feature-story"><div className="story-main"><Eyebrow>FOCUS STORY / {active.type?.toUpperCase()}</Eyebrow><h2>{active.title}</h2><div className="meta-chips"><span>{active.status==='verified'?'✓ VERIFIED':'◌ CURATED'}</span>{active.details?.station&&<span>{active.details.station}</span>}{active.details?.region&&<span>{active.details.region}</span>}{active.details?.premiere&&<span>{active.details.premiere}</span>}{active.details?.genre&&<span>{active.details.genre}</span>}</div><p className="dropcap">{active.summary}</p>{active.details?.context&&<p>{active.details.context}</p>}{active.details?.people&&<p className="people"><b>Tokoh/kredit terpilih:</b> {active.details.people}</p>}<div className="story-sources"><Eyebrow>SUMBER RISET</Eyebrow>{(active.sources||[]).map(s=><a key={s.id} href={s.url} target="_blank" rel="noreferrer"><b>{s.title}</b><small>{s.kind} · dicek {s.checkedAt}</small></a>)}</div></div><div className="story-notes"><section><span>FUN FACT</span><p>{active.factBox?.text}</p></section><section><span>SUARA NOSTALGIA</span><blockquote>“{active.quoteBox?.text}”</blockquote><small>{active.quoteBox?.attribution}</small></section><section><span>PRICE TAG</span><p>{active.priceTag?.note}</p></section></div></article>
    </section>
 
