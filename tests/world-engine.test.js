@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {memoryTriggers,getTrigger} from '../shared/memory-triggers.js';
+import {mechanicFamilyFor,supportedMechanics} from '../shared/mechanic-registry.js';
 import {
  scenes,years,yearWorldState,nostalgiaProfiles,onboardingChoices,dayCampaign,
  randomMemoryEvents,collections,achievements,worldVersion
@@ -17,6 +18,8 @@ test('immersive engine exposes exactly 100 unique, numbered, actionable memory t
   assert.ok(Number.isFinite(item.points)&&item.points>0,`invalid points: ${item.id}`);
   assert.ok(scenes[item.scene],`unknown scene ${item.scene} in ${item.id}`);
   assert.equal(getTrigger(item.id)?.id,item.id,`getTrigger failed: ${item.id}`);
+  assert.ok(supportedMechanics.has(item.mechanic),`trigger mechanic has no renderer contract: ${item.id}/${item.mechanic}`);
+  assert.ok(mechanicFamilyFor(item.mechanic),`trigger mechanic has no renderer family: ${item.id}/${item.mechanic}`);
  }
 });
 
