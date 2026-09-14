@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --test tests/*.test.js",
+    "audit:editorial": "node scripts/editorial-report.mjs",
     "deploy:worker": "wrangler deploy"
   },
   "dependencies": {
