@@ -1,5 +1,7 @@
 import catalog from '../shared/assembled-catalog.js';
+import {auditCatalog} from '../shared/editorial-audit.js';
 
+const expectedAudit=auditCatalog(catalog);
 const base=(process.env.WORKER_BASE_URL||'https://wisata-masa-lalu.juldigi.workers.dev').replace(/\/$/,'');
 const origin=process.env.ALLOWED_ORIGIN||'https://juldigi0107.github.io';
 const attempts=Math.max(1,Number.parseInt(process.env.VERIFY_ATTEMPTS||'6',10));
@@ -19,7 +21,7 @@ async function getJson(path){
  return body;
 }
 
-function validate(health,remote){
+function validate(health,remote,audit){
  const problems=[];
  if(health.ok!==true)problems.push('health.ok !== true');
  if(health.mode!=='curated-static-v2')problems.push(`mode ${health.mode??'missing'} != curated-static-v2`);
@@ -37,17 +39,31 @@ function validate(health,remote){
   if(missing.length)problems.push(`remote missing IDs: ${missing.slice(0,8).join(', ')}${missing.length>8?'…':''}`);
   if(unexpected.length)problems.push(`remote unexpected IDs: ${unexpected.slice(0,8).join(', ')}${unexpected.length>8?'…':''}`);
  }
+ if(!audit||typeof audit!=='object')problems.push('audit endpoint missing/invalid');
+ else{
+  if(audit.version!==catalog.version)problems.push(`audit version ${audit.version??'missing'} != ${catalog.version}`);
+  if(audit.total!==catalog.entries.length)problems.push(`audit total ${audit.total??'missing'} != ${catalog.entries.length}`);
+  if(audit.meanScore!==expectedAudit.meanScore)problems.push(`audit mean ${audit.meanScore??'missing'} != ${expectedAudit.meanScore}`);
+  if(audit.medianScore!==expectedAudit.medianScore)problems.push(`audit median ${audit.medianScore??'missing'} != ${expectedAudit.medianScore}`);
+  if(!audit.byReadiness||Object.values(audit.byReadiness).reduce((sum,count)=>sum+count,0)!==catalog.entries.length)problems.push('audit readiness totals do not cover SSOT');
+  if(typeof audit.disclaimer!=='string'||!audit.disclaimer.toLowerCase().includes('bukan menjamin kebenaran historis'))problems.push('audit disclaimer missing');
+ }
  return problems;
 }
 
 let lastError;
 for(let attempt=1;attempt<=attempts;attempt++){
  try{
-  const [health,remote]=await Promise.all([getJson('/api/health?verify='+Date.now()),getJson('/api/catalog?verify='+Date.now())]);
-  const problems=validate(health,remote);
-  console.log(`Verification ${attempt}/${attempts}: live v${health.version??'?'} · ${health.entries??'?'} entries · mode=${health.mode??'?'}; expected v${catalog.version} · ${catalog.entries.length} entries.`);
+  const nonce=Date.now();
+  const [health,remote,audit]=await Promise.all([
+   getJson('/api/health?verify='+nonce),
+   getJson('/api/catalog?verify='+nonce),
+   getJson('/api/audit?limit=1&verify='+nonce)
+  ]);
+  const problems=validate(health,remote,audit);
+  console.log(`Verification ${attempt}/${attempts}: live v${health.version??'?'} · ${health.entries??'?'} entries · mode=${health.mode??'?'} · audit mean=${audit?.meanScore??'?'}; expected v${catalog.version} · ${catalog.entries.length} entries · audit mean=${expectedAudit.meanScore}.`);
   if(!problems.length){
-   console.log('Live Worker exactly matches the assembled SSOT, entry IDs, mode, and CORS contract.');
+   console.log('Live Worker exactly matches the assembled SSOT, entry IDs, editorial audit, mode, and CORS contract.');
    process.exit(0);
   }
   lastError=new Error(problems.join('; '));
