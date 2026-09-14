@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v3-1';
+const VERSION='wml-time-machine-v3-2';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const base=new URL('./',self.location.href).pathname;
@@ -7,6 +7,11 @@ const shellUrls=[
  `${base}manifest.webmanifest`,
  `${base}assets/world/brand-orbit.svg`,
  `${base}assets/world/portal-grid.svg`,
+ `${base}assets/world/scenes/rumah-90.svg`,
+ `${base}assets/world/scenes/kampung-90.svg`,
+ `${base}assets/world/scenes/sekolah-90.svg`,
+ `${base}assets/world/scenes/kota-90.svg`,
+ `${base}assets/world/scenes/digital-90.svg`,
  `${base}assets/brand-seal.svg`
 ];
 
@@ -69,8 +74,9 @@ self.addEventListener('message',event=>{
     .filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base))
     .map(url=>url.href);
    const cache=await caches.open(MEDIA);
-   await Promise.allSettled(urls.map(url=>cache.add(url)));
-   event.source?.postMessage?.({type:'MEMORY_PACK_READY',count:urls.length});
+   const results=await Promise.allSettled(urls.map(url=>cache.add(url)));
+   const ready=results.filter(result=>result.status==='fulfilled').length;
+   event.source?.postMessage?.({type:'MEMORY_PACK_READY',count:ready,requested:urls.length});
   })());
  }
 });
