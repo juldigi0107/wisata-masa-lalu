@@ -20,7 +20,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install
+          cache: npm
+      - run: npm ci
       - run: npm test
       - name: Select compatible Cloudflare API or local fallback
         run: |
@@ -67,6 +68,13 @@ jobs:
             console.log(`Cloudflare API unavailable/incompatible (${error.message}); building with bundled catalog.`);
           }
           NODE
+      - name: Restore licensed visual cache
+        uses: actions/cache@v4
+        with:
+          path: public/assets/media
+          key: visual-assets-v2-${{ runner.os }}-${{ hashFiles('scripts/fetch-assets.mjs') }}
+          restore-keys: |
+            visual-assets-v2-${{ runner.os }}-
       - name: Fetch licensed editorial assets into public/assets/media
         run: node scripts/fetch-assets.mjs
       - run: npm run build
