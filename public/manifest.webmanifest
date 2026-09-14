@@ -1,0 +1,21 @@
+{
+  "name": "Wisata Masa Lalu — Indonesia 90-an",
+  "short_name": "Wisata 90-an",
+  "description": "Mesin waktu digital menuju Indonesia 1990–1999.",
+  "start_url": "/wisata-masa-lalu/",
+  "scope": "/wisata-masa-lalu/",
+  "display": "standalone",
+  "background_color": "#171916",
+  "theme_color": "#171916",
+  "lang": "id-ID",
+  "orientation": "any",
+  "categories": ["education", "entertainment", "games", "lifestyle"],
+  "icons": [
+    {"src":"assets/brand-seal.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ],
+  "shortcuts": [
+    {"name":"Rumah 90-an","short_name":"Rumah","url":"/wisata-masa-lalu/?scene=rumah"},
+    {"name":"Sekolah","short_name":"Sekolah","url":"/wisata-masa-lalu/?scene=sekolah"},
+    {"name":"Dunia Digital","short_name":"Digital","url":"/wisata-masa-lalu/?scene=digital"}
+  ]
+}
