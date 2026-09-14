@@ -22,6 +22,8 @@ jobs:
           node-version: '22'
       - run: npm install
       - run: npm test
+      - name: Editorial intelligence report
+        run: npm run audit:editorial
       - name: Select exact-compatible Cloudflare API or local fallback
         run: |
           node --input-type=module <<'NODE'
