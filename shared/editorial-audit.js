@@ -1,11 +1,14 @@
 // Editorial intelligence shared by browser, tests, and Cloudflare Worker.
 // IMPORTANT: completenessScore measures documentation/readiness, NOT historical truth.
+// Readiness is intentionally stricter than the numeric score: a visually/source-incomplete
+// record can score well on structure but must not be labelled release-ready.
 
 const SOURCE_WEIGHTS={
- primary:5,official:5,government:5,institutional:5,archive:5,academic:5,
- editorial:4,secondary:3,community:2,unknown:1
+ primary:5,official:5,government:5,institutional:5,archive:5,academic:5,museum:5,library:5,
+ database:4,'film-database':4,editorial:3,secondary:3,press:3,news:3,community:2,unknown:1
 };
-const STRONG_SOURCE_KINDS=new Set(['primary','official','government','institutional','archive','academic']);
+const STRONG_SOURCE_KINDS=new Set(['primary','official','government','institutional','archive','academic','museum','library']);
+const BLOCKING_ISSUES=new Set(['core-metadata','missing-source','invalid-source-url','source-check-date','unresolved-fact-source','fact-provenance','quote-metadata','price-evidence','details-context','tags','layout','verified-provenance-mismatch']);
 const YEAR_RE=/\b(199[0-9])\b/g;
 
 const uniq=values=>[...new Set(values.filter(Boolean))];
@@ -81,13 +84,22 @@ export function auditEntry(entry){
  score+=verifiedAligned?7:0;
  score=clamp(score);
 
- const readiness=score>=85?'release-ready':score>=70?'solid':score>=50?'needs-research':'incomplete';
+ const uniqueIssues=uniq(issues);
+ const blockingIssues=uniqueIssues.filter(issue=>BLOCKING_ISSUES.has(issue));
+ const verifiedNeedsStrongerEvidence=entry?.status==='verified'&&sources.length>0&&!strongSourceCount;
+ let readiness;
+ if(blockingIssues.length||score<50)readiness='incomplete';
+ else if(verifiedNeedsStrongerEvidence||score<70)readiness='needs-research';
+ else if(score>=90&&uniqueIssues.length===0)readiness='release-ready';
+ else readiness='solid';
+
  return {
   id:entry?.id||null,title:entry?.title||null,type:entry?.type||null,status:entry?.status||null,
-  completenessScore:score,readiness,issues:uniq(issues),
+  completenessScore:score,readiness,issues:uniqueIssues,blockingIssues,
   sourceCount:sources.length,strongSourceCount,sourceKinds,strongestSourceWeight,
   factSourceCount:factSourceIds.length,unresolvedFactSources,
-  imageCount:images.length,years:extractEntryYears(entry),priceEvidence:Boolean(priceHasEvidence)
+  imageCount:images.length,years:extractEntryYears(entry),priceEvidence:Boolean(priceHasEvidence),
+  verifiedNeedsStrongerEvidence
  };
 }
 
@@ -110,9 +122,12 @@ export function auditCatalog(catalog){
  const sortedScores=entries.map(item=>item.completenessScore).sort((a,b)=>a-b);
  const mid=Math.floor(sortedScores.length/2);
  const medianScore=sortedScores.length?(sortedScores.length%2?sortedScores[mid]:Math.round((sortedScores[mid-1]+sortedScores[mid])/2)):0;
+ const severity={'incomplete':0,'needs-research':1,'solid':2,'release-ready':3};
  const priorityQueue=[...entries].sort((a,b)=>{
-  const aVerified=a.status==='verified'?0:1,bVerified=b.status==='verified'?0:1;
-  return aVerified-bVerified||a.completenessScore-b.completenessScore||a.title.localeCompare(b.title,'id');
+  const severityDiff=severity[a.readiness]-severity[b.readiness];
+  if(severityDiff)return severityDiff;
+  const verifiedDiff=(a.status==='verified'?0:1)-(b.status==='verified'?0:1);
+  return verifiedDiff||a.completenessScore-b.completenessScore||a.title.localeCompare(b.title,'id');
  });
  return {
   version:catalog?.version||null,total:entries.length,
@@ -120,14 +135,16 @@ export function auditCatalog(catalog){
   byReadiness,byIssue,bySourceKind,byYear,byType,
   releaseReady:entries.filter(item=>item.readiness==='release-ready').length,
   needsAttention:entries.filter(item=>item.readiness==='needs-research'||item.readiness==='incomplete').length,
+  solidButIncomplete:entries.filter(item=>item.readiness==='solid').length,
   verifiedWithIssues:entries.filter(item=>item.status==='verified'&&item.issues.length>0).length,
+  verifiedNeedingStrongerEvidence:entries.filter(item=>item.verifiedNeedsStrongerEvidence).length,
   priorityQueue,entries
  };
 }
 
 export const editorialReadiness={
- 'release-ready':'Dokumentasi editorial sangat lengkap; tetap bergantung pada kualitas sumber historisnya.',
- 'solid':'Struktur dan provenance cukup kuat, tetapi masih ada komponen yang dapat diperdalam.',
- 'needs-research':'Ada gap riset/provenance yang nyata dan layak diprioritaskan sebelum ekspansi publik.',
- 'incomplete':'Metadata/provenance inti belum cukup untuk pengalaman ensiklopedia yang matang.'
+ 'release-ready':'Dokumentasi, provenance, dan visual entry lengkap menurut quality gate; kualitas historis tetap bergantung pada sumber.',
+ 'solid':'Struktur dan provenance cukup kuat untuk ditampilkan, tetapi masih ada gap non-blocking seperti visual atau penguatan sumber.',
+ 'needs-research':'Ada kebutuhan riset nyata—terutama verified entry tanpa strong-source—yang harus diprioritaskan sebelum disebut matang.',
+ 'incomplete':'Ada blocker pada metadata/provenance inti atau kelengkapan minimum yang harus diperbaiki sebelum rilis.'
 };
