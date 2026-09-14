@@ -26,6 +26,7 @@ jobs:
         run: |
           node --input-type=module <<'NODE'
           import { appendFileSync } from 'node:fs';
+          import localCatalog from './shared/assembled-catalog.js';
           const base = process.env.API_CANDIDATE;
           const origin = 'https://juldigi0107.github.io';
           try {
@@ -46,21 +47,24 @@ jobs:
             const catalog = await catalogResponse.json();
 
             const compatible = health.ok === true &&
-              String(health.version || '').startsWith('2.') &&
+              health.version === localCatalog.version &&
               health.mode === 'curated-static-v2' &&
-              Array.isArray(catalog.entries) && catalog.entries.length >= 10 &&
-              String(catalog.version || '').startsWith('2.');
+              Array.isArray(catalog.entries) &&
+              catalog.version === localCatalog.version &&
+              catalog.entries.length === localCatalog.entries.length;
+
+            console.log(`Local catalog: v${localCatalog.version}, ${localCatalog.entries.length} entries.`);
+            console.log(`Live Worker: v${health.version ?? 'unknown'}, mode=${health.mode ?? 'unknown'}, catalog=${catalog.version ?? 'unknown'}, entries=${catalog.entries?.length ?? 0}.`);
 
             if (!compatible) {
-              console.log(`Cloudflare API reachable but stale/incompatible: health=${health.version ?? 'unknown'} mode=${health.mode ?? 'unknown'} catalog=${catalog.version ?? 'unknown'} entries=${catalog.entries?.length ?? 0}`);
-              console.log('Building with bundled curated v2 catalog instead.');
+              console.log('Worker is reachable but not an exact catalog match; building with bundled catalog to prevent a runtime downgrade.');
               process.exit(0);
             }
 
             appendFileSync(process.env.GITHUB_ENV, `VITE_API_BASE_URL=${base}\n`);
-            console.log(`Cloudflare API accepted: v${catalog.version}, ${catalog.entries.length} entries.`);
+            console.log('Exact API/catalog match accepted; runtime Cloudflare binding enabled.');
           } catch (error) {
-            console.log(`Cloudflare API unavailable/incompatible (${error.message}); building with bundled curated v2 catalog.`);
+            console.log(`Cloudflare API unavailable/incompatible (${error.message}); building with bundled catalog.`);
           }
           NODE
       - name: Fetch licensed editorial assets into public/assets/media
