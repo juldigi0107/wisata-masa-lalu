@@ -4,10 +4,10 @@
 // record can score well on structure but must not be labelled release-ready.
 
 const SOURCE_WEIGHTS={
- primary:5,official:5,government:5,institutional:5,archive:5,academic:5,museum:5,library:5,
+ primary:5,official:5,'official-site':5,government:5,institutional:5,archive:5,academic:5,museum:5,library:5,
  database:4,'film-database':4,editorial:3,secondary:3,press:3,news:3,community:2,unknown:1
 };
-const STRONG_SOURCE_KINDS=new Set(['primary','official','government','institutional','archive','academic','museum','library']);
+const STRONG_SOURCE_KINDS=new Set(['primary','official','official-site','government','institutional','archive','academic','museum','library']);
 const BLOCKING_ISSUES=new Set(['core-metadata','missing-source','invalid-source-url','source-check-date','unresolved-fact-source','fact-provenance','quote-metadata','price-evidence','details-context','tags','layout','verified-provenance-mismatch']);
 const YEAR_RE=/\b(199[0-9])\b/g;
 
