@@ -4,11 +4,14 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('archive implementation is lazy loaded instead of inflating the initial world bundle',async()=>{
- const wrapper=await text('src/App.jsx');
- assert.match(wrapper,/lazy\(\(\)=>import\('\.\/ArchiveAppFull\.jsx'\)\)/);
+test('archive implementation and archive styles are lazy loaded together instead of inflating initial world load',async()=>{
+ const [wrapper,route,main]=await Promise.all([text('src/App.jsx'),text('src/ArchiveRoute.jsx'),text('src/main.jsx')]);
+ assert.match(wrapper,/lazy\(\(\)=>import\('\.\/ArchiveRoute\.jsx'\)\)/);
  assert.match(wrapper,/Suspense/);
  assert.match(wrapper,/archive-loading/);
+ assert.match(route,/archive-styles\.js/);
+ assert.match(route,/ArchiveAppFull\.jsx/);
+ assert.equal(main.includes('archive-styles.js'),false);
 });
 
 test('nostalgia meter produces a local downloadable and shareable boarding pass without server submission',async()=>{
