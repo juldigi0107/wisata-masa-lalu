@@ -67,8 +67,8 @@ test('search dialog prioritizes its explicitly marked autofocus target and resto
 
 test('startup deep links accept scene and year independently',async()=>{
  const main=await text('src/main.jsx');
- assert.match(main,/const hasScene=/);
- assert.match(main,/const hasYear=/);
+ assert.match(main,/hasScene=Boolean\(requestedScene&&scenes\[requestedScene\]\)/);
+ assert.match(main,/hasYear=years\.includes\(requestedYear\)/);
  assert.match(main,/if\(hasScene\|\|hasYear\)/);
  assert.match(main,/if\(hasScene\)/);
  assert.match(main,/if\(hasYear\)/);
