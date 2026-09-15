@@ -7,17 +7,25 @@ const looks={
 };
 
 function RadioLab(){
- const [dial,setDial]=useState(46);const [status,setStatus]=useState('Putar tuner lalu tekan salah satu cue.');const ctx=useRef(null);
- useEffect(()=>()=>{ctx.current?.close?.()},[]);
- async function audio(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){setStatus('Web Audio tidak tersedia pada perangkat ini.');return null}ctx.current??=new AC();await ctx.current.resume();return ctx.current}
- async function tone(freq,duration=.12,type='sine',gain=.025){const c=await audio();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(freq,c.currentTime);g.gain.setValueAtTime(gain,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+duration);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+duration)}
- async function noise(duration=.28,gain=.016){const c=await audio();if(!c)return;const size=Math.floor(c.sampleRate*duration),buffer=c.createBuffer(1,size,c.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<size;i++)data[i]=(Math.random()*2-1)*(1-i/size);const source=c.createBufferSource(),g=c.createGain();source.buffer=buffer;g.gain.value=gain;source.connect(g);g.connect(c.destination);source.start()}
+ const [dial,setDial]=useState(46);const [status,setStatus]=useState('Putar tuner lalu tekan salah satu cue.');const ctx=useRef(null);const timers=useRef([]);
+ useEffect(()=>()=>{timers.current.forEach(clearTimeout);ctx.current?.close?.()},[]);
+ async function audio(){
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC){setStatus('Web Audio tidak tersedia pada perangkat ini.');return null}
+  try{
+   if(!ctx.current||ctx.current.state==='closed')ctx.current=new AC();
+   await ctx.current.resume();return ctx.current;
+  }catch{setStatus('Audio tidak dapat dimulai pada browser ini. Fitur visual tetap tersedia.');return null}
+ }
+ async function tone(freq,duration=.12,type='sine',gain=.025){const c=await audio();if(!c)return;try{const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(freq,c.currentTime);g.gain.setValueAtTime(gain,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+duration);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+duration)}catch{setStatus('Cue audio gagal diputar. Kontrol visual tetap aman digunakan.')}}
+ async function noise(duration=.28,gain=.016){const c=await audio();if(!c)return;try{const size=Math.floor(c.sampleRate*duration),buffer=c.createBuffer(1,size,c.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<size;i++)data[i]=(Math.random()*2-1)*(1-i/size);const source=c.createBufferSource(),g=c.createGain();source.buffer=buffer;g.gain.value=gain;source.connect(g);g.connect(c.destination);source.start()}catch{setStatus('Noise sintetis tidak dapat diputar pada perangkat ini.')}}
+ function later(callback,delay){const id=setTimeout(callback,delay);timers.current.push(id)}
  async function cue(id){
-  if(id==='radio'){await noise(.18,.011);setTimeout(()=>tone(220+dial*5,.16,'sine',.017),90);setStatus('Tuner menangkap cue sintetis. Bukan rekaman stasiun historis.');return}
-  if(id==='tv'){await noise(.22,.018);setTimeout(()=>tone(95,.08,'square',.012),70);setStatus('TV static original sintetis.');return}
-  if(id==='phone'){await tone(440,.16,'sine',.02);setTimeout(()=>tone(480,.16,'sine',.02),180);setStatus('Ringback sintetis original.');return}
-  if(id==='modem'){await tone(620,.1,'square',.018);setTimeout(()=>tone(980,.12,'sawtooth',.015),110);setTimeout(()=>noise(.28,.017),220);setStatus('Handshake-inspired sintetis; bukan sampel modem arsip.');return}
-  await tone(880,.06,'square',.02);setTimeout(()=>tone(1320,.08,'square',.018),70);setStatus('Arcade blip original sintetis.');
+  if(id==='radio'){await noise(.18,.011);later(()=>tone(220+dial*5,.16,'sine',.017),90);setStatus('Tuner menangkap cue sintetis. Bukan rekaman stasiun historis.');return}
+  if(id==='tv'){await noise(.22,.018);later(()=>tone(95,.08,'square',.012),70);setStatus('TV static original sintetis.');return}
+  if(id==='phone'){await tone(440,.16,'sine',.02);later(()=>tone(480,.16,'sine',.02),180);setStatus('Ringback sintetis original.');return}
+  if(id==='modem'){await tone(620,.1,'square',.018);later(()=>tone(980,.12,'sawtooth',.015),110);later(()=>noise(.28,.017),220);setStatus('Handshake-inspired sintetis; bukan sampel modem arsip.');return}
+  await tone(880,.06,'square',.02);later(()=>tone(1320,.08,'square',.018),70);setStatus('Arcade blip original sintetis.');
  }
  const frequency=(88+dial/100*20).toFixed(1);
  return <div className="culture-radio"><div className="radio-face"><small>FM-STYLE / SIMULASI</small><strong>{frequency}</strong><span>MHz · dial visual</span><input aria-label="Tuner radio simulasi" type="range" min="0" max="100" value={dial} onChange={event=>setDial(Number(event.target.value))}/><button onClick={()=>cue('radio')}>SCAN CUE ↗</button></div><div className="soundboard"><p>Soundboard ini dibuat dengan Web Audio saat tombol ditekan. Tidak memakai potongan siaran, jingle merek, atau rekaman berhak cipta.</p><div>{[['tv','TV static'],['phone','Telepon'],['modem','Dial-up inspired'],['arcade','Arcade blip']].map(([id,label])=><button key={id} onClick={()=>cue(id)}>{label}<span>▶</span></button>)}</div><output aria-live="polite">{status}</output></div></div>;
