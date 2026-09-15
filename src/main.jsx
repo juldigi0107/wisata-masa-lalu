@@ -8,6 +8,7 @@ import "./styles.css";
 import "./details.css";
 import "./world/premium.css";
 import "./world/scene-art.css";
+import "./world/runtime-assets.css";
 import "./world/motion.css";
 import "./world/polish.css";
 import "./world/archive-premium.css";
