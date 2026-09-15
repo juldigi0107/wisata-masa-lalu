@@ -38,10 +38,10 @@ Object.assign(baseCatalog, assembledCatalog);
 const appBase=import.meta.env.BASE_URL||"/";
 const runtimeAsset=path=>`url("${appBase}${path}")`;
 const rootStyle=document.documentElement.style;
-rootStyle.setProperty("--wml-portal-grid",runtimeAsset("assets/world/portal-grid.svg"));
-rootStyle.setProperty("--wml-brand-orbit",runtimeAsset("assets/world/brand-orbit.svg"));
+rootStyle.setProperty("--wml-portal-grid",runtimeAsset("assets/world/raster/portal-grid.webp"));
+rootStyle.setProperty("--wml-brand-orbit",runtimeAsset("assets/world/raster/brand-orbit.webp"));
 for(const id of Object.keys(scenes)){
- rootStyle.setProperty(`--wml-scene-${id}`,runtimeAsset(`assets/world/scenes/${id}-90.svg`));
+ rootStyle.setProperty(`--wml-scene-${id}`,runtimeAsset(`assets/world/raster/${id}-90.webp`));
 }
 
 try{
@@ -62,7 +62,7 @@ try{
  if(stored){
   const completed=[...new Set(Array.isArray(stored.completed)?stored.completed:[])].filter(id=>Boolean(getTrigger(id)));
   stored.completed=completed;
-  stored.score=completed.reduce((sum,id)=>sum+(getTrigger(id)?.points||0),0);
+  stored.score=completed.reduce((sum,id)=>sum+(getTrigger(id)?.points||0),0;
   stored.schema=4;
   if(hasScene){
    stored.scene=requestedScene;
