@@ -16,6 +16,7 @@ import "./world/polish.css";
 import "./world/special-mechanics.css";
 import "./world/mechanics-v2.css";
 import "./world/mechanics-diversity-v4.css";
+import "./world/simulation-provenance-v4.css";
 import "./world/device-controls.css";
 import "./world/resilience.css";
 import "./world/mobile-premium.css";
