@@ -4,10 +4,11 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('ambient runtime is mounted beside the World app and remains renderless',async()=>{
- const [main,ambient]=await Promise.all([text('src/main.jsx'),text('src/world/AmbientRuntimeV4.jsx')]);
+test('ambient runtime is mounted beside the World experience shell and remains renderless',async()=>{
+ const [main,shell,ambient]=await Promise.all([text('src/main.jsx'),text('src/world/WorldExperienceShell.jsx'),text('src/world/AmbientRuntimeV4.jsx')]);
  assert.match(main,/import AmbientRuntimeV4/);
- assert.match(main,/<WorldApp\/><AmbientRuntimeV4\/>/);
+ assert.match(main,/<WorldExperienceShell\/><AmbientRuntimeV4\/>/);
+ assert.match(shell,/<WorldAppV4\/>/);
  assert.match(ambient,/return null/);
 });
 
