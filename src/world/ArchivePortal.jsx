@@ -9,6 +9,9 @@ function ArchiveLoading({entry}){
 
 export default function ArchivePortal({entry,total,onClose}){
  const returnButton=useRef(null);
- useEffect(()=>{returnButton.current?.focus()},[]);
- return <div className="archive-mode"><div className="archive-return"><button ref={returnButton} onClick={onClose}>← Kembali ke dunia</button>{entry?<span>Arsip terkait: {entry.title}</span>:<span>Arsip lengkap · {total} entri</span>}</div><Suspense fallback={<ArchiveLoading entry={entry}/>}>{entry?<ContextualArchive entry={entry}/>:<FullArchive/>}</Suspense></div>;
+ useEffect(()=>{
+  returnButton.current?.focus();
+  return()=>setTimeout(()=>document.querySelector('.brand-ticket')?.focus(),0);
+ },[]);
+ return <div className="archive-mode"><div className="archive-return"><button ref={returnButton} aria-label="Kembali dari Arsip ke World Engine" onClick={onClose}>← Kembali ke dunia</button>{entry?<span>Arsip terkait: {entry.title}</span>:<span>Arsip lengkap · {total} entri</span>}</div><Suspense fallback={<ArchiveLoading entry={entry}/>}>{entry?<ContextualArchive entry={entry}/>:<FullArchive/>}</Suspense></div>;
 }
