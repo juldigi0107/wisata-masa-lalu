@@ -1,6 +1,7 @@
 import {useMemo,useState} from 'react';
 import {decadeMoments,provenanceTiers} from './deepDive.js';
 import {auditCatalog,editorialReadiness} from '../shared/editorial-audit.js';
+import CultureStudioV4 from './CultureStudioV4.jsx';
 
 const ISSUE_LABELS={
  'core-metadata':'Metadata inti','missing-source':'Tanpa sumber','invalid-source-url':'URL sumber bermasalah',
@@ -68,6 +69,8 @@ export default function DeepDiveSections({data,onOpenEntry}){
     </div>
    </div>
   </section>
+
+  <CultureStudioV4 data={data} onOpenEntry={onOpenEntry}/>
 
   <section id="coverage" className="coverage-section wrap">
    <div className="coverage-copy">
