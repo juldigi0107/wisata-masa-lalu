@@ -4,13 +4,15 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('production entry uses modular WorldAppV4 and defers non-first-paint interaction styling',async()=>{
- const [main,interactionStyles]=await Promise.all([text('src/main.jsx'),text('src/world/interaction-runtime-styles.js')]);
- assert.match(main,/WorldAppV4\.jsx/);
+test('production entry uses World Experience Shell over modular WorldAppV4 and defers non-first-paint interaction styling',async()=>{
+ const [main,shell,interactionStyles]=await Promise.all([text('src/main.jsx'),text('src/world/WorldExperienceShell.jsx'),text('src/world/interaction-runtime-styles.js')]);
+ assert.match(main,/WorldExperienceShell\.jsx/);
+ assert.match(shell,/WorldAppV4\.jsx/);
  assert.match(main,/import\("\.\/world\/interaction-runtime-styles\.js"\)/);
  assert.match(interactionStyles,/feature-deep-dive-v4\.css/);
  assert.equal(main.includes('feature-deep-dive-v4.css'),false);
  assert.match(main,/seasonal-function-v4\.css/);
+ assert.match(main,/social-memory\.css/);
 });
 
 test('v4 profile migration sanitizes scene year arrays settings and corrupted progress',async()=>{
@@ -130,4 +132,11 @@ test('archive portal dynamically loads both full archive and contextual dossier 
  assert.match(portal,/setRetryToken/);
  assert.match(portal,/returnButton\.current\?\.focus\(\)/);
  assert.match(contextRoute,/archive-styles\.js/);
+});
+
+test('seasonal model includes Ramadan Lebaran Agustusan Sunday and Malam Minggu with real trigger references',async()=>{
+ const source=await text('shared/world-v4-experience.js');
+ for(const value of ['ramadan','lebaran','agustusan','minggu','malam-minggu'])assert.ok(source.includes(value));
+ assert.match(source,/getSeasonalMemory/);
+ assert.match(source,/getSeasonalEvent/);
 });
