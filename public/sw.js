@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v4-2';
+const VERSION='wml-time-machine-v4-3';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
@@ -26,10 +26,12 @@ async function installShell(){
  const response=await fetch(base,{cache:'reload'});
  if(!response.ok)throw Error(`shell HTML ${response.status}`);
  const html=await response.clone().text();
- await cache.put(base,response);
  const discovered=shellAssetUrls(html);
- const results=await Promise.allSettled([...shellUrls,...discovered].map(url=>cache.add(url)));
- const failed=results.filter(result=>result.status==='rejected').length;
+ if(!discovered.some(url=>url.endsWith('.js')))throw Error('production JS bundle not discoverable');
+ await cache.put(base,response);
+ await Promise.all(discovered.map(url=>cache.add(url)));
+ const optional=await Promise.allSettled(shellUrls.map(url=>cache.add(url)));
+ const failed=optional.filter(result=>result.status==='rejected').length;
  if(failed)console.warn(`Offline shell installed with ${failed} optional asset cache failures.`);
 }
 
