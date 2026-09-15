@@ -4,10 +4,12 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('production entry uses modular WorldAppV4 and its feature-state layer',async()=>{
- const main=await text('src/main.jsx');
+test('production entry uses modular WorldAppV4 and defers non-first-paint interaction styling',async()=>{
+ const [main,interactionStyles]=await Promise.all([text('src/main.jsx'),text('src/world/interaction-runtime-styles.js')]);
  assert.match(main,/WorldAppV4\.jsx/);
- assert.match(main,/feature-deep-dive-v4\.css/);
+ assert.match(main,/import\("\.\/world\/interaction-runtime-styles\.js"\)/);
+ assert.match(interactionStyles,/feature-deep-dive-v4\.css/);
+ assert.equal(main.includes('feature-deep-dive-v4.css'),false);
  assert.match(main,/seasonal-function-v4\.css/);
 });
 
