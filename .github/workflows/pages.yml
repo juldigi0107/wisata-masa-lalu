@@ -85,7 +85,10 @@ jobs:
             visual-assets-v2-${{ runner.os }}-
       - name: Fetch licensed editorial assets into public/assets/media
         run: node scripts/fetch-assets.mjs
-      - run: npm run build
+      - name: Build production bundle
+        run: npm run build
+      - name: Enforce production performance budget
+        run: node scripts/check-build-budget.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
