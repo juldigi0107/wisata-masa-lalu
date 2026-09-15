@@ -1,0 +1,9 @@
+/* Premium V5 integration with existing Nostalgia Intensity and year accent. */
+.premium-lightfield:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 42%,var(--year-accent,#79d7cc),transparent 56%);opacity:.026;mix-blend-mode:screen}
+.world-app.intensity-ringan .premium-lightfield{opacity:.48}.world-app.intensity-ringan .premium-atmospheric-depth{opacity:.16}.world-app.intensity-ringan .premium-optical-frame:after{opacity:.035}.world-app.intensity-ringan .premium-season-motif{filter:saturate(.72);opacity:.28}
+.world-app.intensity-imersif .premium-lightfield{opacity:.82}.world-app.intensity-imersif .premium-atmospheric-depth{opacity:.38}
+.world-app.intensity-total .premium-lightfield{opacity:.96}.world-app.intensity-total .premium-atmospheric-depth{opacity:.5}.world-app.intensity-total .premium-optical-frame:after{opacity:.12}.world-app.intensity-total .premium-season-motif{filter:saturate(1.08) contrast(1.02)}
+.world-app.intensity-total .scene-object .object-pulse{opacity:.78!important}.world-app.intensity-ringan .scene-object .object-pulse{opacity:.34!important}
+.world-app.intensity-total .memory-ribbon,.world-app.intensity-total .world-hud,.world-app.intensity-total .experience-dock{backdrop-filter:blur(26px) saturate(1.28)!important}
+@media(max-width:720px){.world-app.intensity-total .premium-atmospheric-depth{opacity:.34}.world-app.intensity-ringan .premium-atmospheric-depth{opacity:.1}}
+@media(prefers-reduced-motion:reduce){.world-app.intensity-total .premium-atmospheric-depth,.world-app.intensity-imersif .premium-atmospheric-depth,.world-app.intensity-ringan .premium-atmospheric-depth{opacity:.18}}
