@@ -1,58 +1,58 @@
 /* Portrait Focus Pan
-   16:9 scene art keeps its proportions on narrow screens. When an object is selected,
+   16:9 scene art keeps its proportions on narrow screens. When an object is selected or keyboard-focused,
    the art pans so that the same authored x-coordinate moves toward the hotspot.
    Browsers without :has() simply retain the centered cinematic crop. */
 @media (max-width:760px){
  .scene-architecture{transition:background-position .36s cubic-bezier(.2,.8,.2,1),filter .28s ease!important;will-change:background-position}
- .world-scene:has(.scene-object.active) .scene-architecture{filter:saturate(.9) contrast(1.06) brightness(.9)}
+ .world-scene:has(.scene-object.active) .scene-architecture,.world-scene:has(.scene-object:focus-visible) .scene-architecture{filter:saturate(.9) contrast(1.06) brightness(.9)}
 
- .scene-rumah:has(.scene-object:nth-of-type(1).active) .scene-architecture{background-position:20% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(2).active) .scene-architecture{background-position:35% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(3).active) .scene-architecture{background-position:56% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(4).active) .scene-architecture{background-position:68% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(5).active) .scene-architecture{background-position:80% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(6).active) .scene-architecture{background-position:88% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(7).active) .scene-architecture{background-position:72% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(8).active) .scene-architecture{background-position:30% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(9).active) .scene-architecture{background-position:48% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(10).active) .scene-architecture{background-position:60% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(11).active) .scene-architecture{background-position:64% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(12).active) .scene-architecture{background-position:84% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(13).active) .scene-architecture{background-position:92% bottom!important}
- .scene-rumah:has(.scene-object:nth-of-type(14).active) .scene-architecture{background-position:15% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(1):is(.active,:focus-visible)) .scene-architecture{background-position:20% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(2):is(.active,:focus-visible)) .scene-architecture{background-position:35% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(3):is(.active,:focus-visible)) .scene-architecture{background-position:56% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(4):is(.active,:focus-visible)) .scene-architecture{background-position:68% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(5):is(.active,:focus-visible)) .scene-architecture{background-position:80% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(6):is(.active,:focus-visible)) .scene-architecture{background-position:88% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(7):is(.active,:focus-visible)) .scene-architecture{background-position:72% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(8):is(.active,:focus-visible)) .scene-architecture{background-position:30% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(9):is(.active,:focus-visible)) .scene-architecture{background-position:48% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(10):is(.active,:focus-visible)) .scene-architecture{background-position:60% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(11):is(.active,:focus-visible)) .scene-architecture{background-position:64% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(12):is(.active,:focus-visible)) .scene-architecture{background-position:84% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(13):is(.active,:focus-visible)) .scene-architecture{background-position:92% bottom!important}
+ .scene-rumah:has(.scene-object:nth-of-type(14):is(.active,:focus-visible)) .scene-architecture{background-position:15% bottom!important}
 
- .scene-kampung:has(.scene-object:nth-of-type(1).active) .scene-architecture{background-position:18% bottom!important}
- .scene-kampung:has(.scene-object:nth-of-type(2).active) .scene-architecture{background-position:52% bottom!important}
- .scene-kampung:has(.scene-object:nth-of-type(3).active) .scene-architecture{background-position:40% bottom!important}
- .scene-kampung:has(.scene-object:nth-of-type(4).active) .scene-architecture{background-position:76% bottom!important}
- .scene-kampung:has(.scene-object:nth-of-type(5).active) .scene-architecture{background-position:82% bottom!important}
- .scene-kampung:has(.scene-object:nth-of-type(6).active) .scene-architecture{background-position:28% bottom!important}
- .scene-kampung:has(.scene-object:nth-of-type(7).active) .scene-architecture{background-position:66% bottom!important}
- .scene-kampung:has(.scene-object:nth-of-type(8).active) .scene-architecture{background-position:86% bottom!important}
+ .scene-kampung:has(.scene-object:nth-of-type(1):is(.active,:focus-visible)) .scene-architecture{background-position:18% bottom!important}
+ .scene-kampung:has(.scene-object:nth-of-type(2):is(.active,:focus-visible)) .scene-architecture{background-position:52% bottom!important}
+ .scene-kampung:has(.scene-object:nth-of-type(3):is(.active,:focus-visible)) .scene-architecture{background-position:40% bottom!important}
+ .scene-kampung:has(.scene-object:nth-of-type(4):is(.active,:focus-visible)) .scene-architecture{background-position:76% bottom!important}
+ .scene-kampung:has(.scene-object:nth-of-type(5):is(.active,:focus-visible)) .scene-architecture{background-position:82% bottom!important}
+ .scene-kampung:has(.scene-object:nth-of-type(6):is(.active,:focus-visible)) .scene-architecture{background-position:28% bottom!important}
+ .scene-kampung:has(.scene-object:nth-of-type(7):is(.active,:focus-visible)) .scene-architecture{background-position:66% bottom!important}
+ .scene-kampung:has(.scene-object:nth-of-type(8):is(.active,:focus-visible)) .scene-architecture{background-position:86% bottom!important}
 
- .scene-sekolah:has(.scene-object:nth-of-type(1).active) .scene-architecture{background-position:35% bottom!important}
- .scene-sekolah:has(.scene-object:nth-of-type(2).active) .scene-architecture{background-position:52% bottom!important}
- .scene-sekolah:has(.scene-object:nth-of-type(3).active) .scene-architecture{background-position:20% bottom!important}
- .scene-sekolah:has(.scene-object:nth-of-type(4).active) .scene-architecture{background-position:52% bottom!important}
- .scene-sekolah:has(.scene-object:nth-of-type(5).active) .scene-architecture{background-position:86% bottom!important}
- .scene-sekolah:has(.scene-object:nth-of-type(6).active) .scene-architecture{background-position:74% bottom!important}
- .scene-sekolah:has(.scene-object:nth-of-type(7).active) .scene-architecture{background-position:16% bottom!important}
- .scene-sekolah:has(.scene-object:nth-of-type(8).active) .scene-architecture{background-position:88% bottom!important}
+ .scene-sekolah:has(.scene-object:nth-of-type(1):is(.active,:focus-visible)) .scene-architecture{background-position:35% bottom!important}
+ .scene-sekolah:has(.scene-object:nth-of-type(2):is(.active,:focus-visible)) .scene-architecture{background-position:52% bottom!important}
+ .scene-sekolah:has(.scene-object:nth-of-type(3):is(.active,:focus-visible)) .scene-architecture{background-position:20% bottom!important}
+ .scene-sekolah:has(.scene-object:nth-of-type(4):is(.active,:focus-visible)) .scene-architecture{background-position:52% bottom!important}
+ .scene-sekolah:has(.scene-object:nth-of-type(5):is(.active,:focus-visible)) .scene-architecture{background-position:86% bottom!important}
+ .scene-sekolah:has(.scene-object:nth-of-type(6):is(.active,:focus-visible)) .scene-architecture{background-position:74% bottom!important}
+ .scene-sekolah:has(.scene-object:nth-of-type(7):is(.active,:focus-visible)) .scene-architecture{background-position:16% bottom!important}
+ .scene-sekolah:has(.scene-object:nth-of-type(8):is(.active,:focus-visible)) .scene-architecture{background-position:88% bottom!important}
 
- .scene-kota:has(.scene-object:nth-of-type(1).active) .scene-architecture{background-position:18% bottom!important}
- .scene-kota:has(.scene-object:nth-of-type(2).active) .scene-architecture{background-position:40% bottom!important}
- .scene-kota:has(.scene-object:nth-of-type(3).active) .scene-architecture{background-position:62% bottom!important}
- .scene-kota:has(.scene-object:nth-of-type(4).active) .scene-architecture{background-position:38% bottom!important}
- .scene-kota:has(.scene-object:nth-of-type(5).active) .scene-architecture{background-position:72% bottom!important}
- .scene-kota:has(.scene-object:nth-of-type(6).active) .scene-architecture{background-position:80% bottom!important}
- .scene-kota:has(.scene-object:nth-of-type(7).active) .scene-architecture{background-position:84% bottom!important}
- .scene-kota:has(.scene-object:nth-of-type(8).active) .scene-architecture{background-position:54% bottom!important}
+ .scene-kota:has(.scene-object:nth-of-type(1):is(.active,:focus-visible)) .scene-architecture{background-position:18% bottom!important}
+ .scene-kota:has(.scene-object:nth-of-type(2):is(.active,:focus-visible)) .scene-architecture{background-position:40% bottom!important}
+ .scene-kota:has(.scene-object:nth-of-type(3):is(.active,:focus-visible)) .scene-architecture{background-position:62% bottom!important}
+ .scene-kota:has(.scene-object:nth-of-type(4):is(.active,:focus-visible)) .scene-architecture{background-position:38% bottom!important}
+ .scene-kota:has(.scene-object:nth-of-type(5):is(.active,:focus-visible)) .scene-architecture{background-position:72% bottom!important}
+ .scene-kota:has(.scene-object:nth-of-type(6):is(.active,:focus-visible)) .scene-architecture{background-position:80% bottom!important}
+ .scene-kota:has(.scene-object:nth-of-type(7):is(.active,:focus-visible)) .scene-architecture{background-position:84% bottom!important}
+ .scene-kota:has(.scene-object:nth-of-type(8):is(.active,:focus-visible)) .scene-architecture{background-position:54% bottom!important}
 
- .scene-digital:has(.scene-object:nth-of-type(1).active) .scene-architecture{background-position:46% bottom!important}
- .scene-digital:has(.scene-object:nth-of-type(2).active) .scene-architecture{background-position:28% bottom!important}
- .scene-digital:has(.scene-object:nth-of-type(3).active) .scene-architecture{background-position:72% bottom!important}
- .scene-digital:has(.scene-object:nth-of-type(4).active) .scene-architecture{background-position:68% bottom!important}
- .scene-digital:has(.scene-object:nth-of-type(5).active) .scene-architecture{background-position:22% bottom!important}
+ .scene-digital:has(.scene-object:nth-of-type(1):is(.active,:focus-visible)) .scene-architecture{background-position:46% bottom!important}
+ .scene-digital:has(.scene-object:nth-of-type(2):is(.active,:focus-visible)) .scene-architecture{background-position:28% bottom!important}
+ .scene-digital:has(.scene-object:nth-of-type(3):is(.active,:focus-visible)) .scene-architecture{background-position:72% bottom!important}
+ .scene-digital:has(.scene-object:nth-of-type(4):is(.active,:focus-visible)) .scene-architecture{background-position:68% bottom!important}
+ .scene-digital:has(.scene-object:nth-of-type(5):is(.active,:focus-visible)) .scene-architecture{background-position:22% bottom!important}
 }
 
 @media (prefers-reduced-motion:reduce){
