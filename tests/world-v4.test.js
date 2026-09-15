@@ -30,10 +30,14 @@ test('daily memory uses device-local calendar rather than UTC ISO date',async()=
  assert.equal(app.includes("toISOString().slice(0,10)"),false);
 });
 
-test('replaying a completed memory cannot farm score repeatedly',async()=>{
+test('replaying a completed memory cannot farm score or artifacts even on rapid submit',async()=>{
  const app=await text('src/world/WorldAppV4.jsx');
- assert.match(app,/already\?0:item\.points/);
+ assert.match(app,/completionLocks=useRef\(new Set/);
+ assert.match(app,/completionLocks\.current\.has\(item\.id\)/);
+ assert.match(app,/if\(!already\)completionLocks\.current\.add\(item\.id\)/);
+ assert.match(app,/if\(currentCompleted\.includes\(item\.id\)\)return current/);
  assert.match(app,/progress tidak dihitung dua kali/);
+ assert.match(app,/tanpa menambah skor atau artefak/);
 });
 
 test('random events never compete visually with a focused modal or object lens',async()=>{
@@ -42,6 +46,7 @@ test('random events never compete visually with a focused modal or object lens',
  assert.match(app,/event&&!overlay&&!activeObject/);
  assert.match(app,/function triggerMemoryEvent/);
  assert.match(app,/onClick=\{triggerMemoryEvent\}/);
+ assert.match(app,/DialogSurface className="ambient-event"/);
 });
 
 test('campaign selection and campaign activity launch are separate actions',async()=>{
@@ -109,4 +114,15 @@ test('journey scene and year are written back to the current URL',async()=>{
  assert.match(app,/url\.searchParams\.set\('scene',sceneId\)/);
  assert.match(app,/url\.searchParams\.set\('year',String\(year\)\)/);
  assert.match(app,/history\.replaceState/);
+});
+
+test('archive portal lazy loads both full archive and contextual dossier with archive styles',async()=>{
+ const [app,portal,contextRoute]=await Promise.all([text('src/world/WorldAppV4.jsx'),text('src/world/ArchivePortal.jsx'),text('src/world/ContextualArchiveRoute.jsx')]);
+ assert.match(app,/ArchivePortal/);
+ assert.equal(app.includes("import LegacyArchive"),false);
+ assert.equal(app.includes("import ContextualArchivePage"),false);
+ assert.match(portal,/lazy\(\(\)=>import\('\.\.\/ArchiveRoute\.jsx'\)\)/);
+ assert.match(portal,/lazy\(\(\)=>import\('\.\/ContextualArchiveRoute\.jsx'\)\)/);
+ assert.match(portal,/returnButton\.current\?\.focus\(\)/);
+ assert.match(contextRoute,/archive-styles\.js/);
 });
