@@ -38,15 +38,19 @@ try{
  const params=new URLSearchParams(window.location.search);
  const requestedScene=params.get('scene');
  const requestedYear=Number(params.get('year'));
- if(requestedScene&&scenes[requestedScene]){
+ const hasScene=Boolean(requestedScene&&scenes[requestedScene]);
+ const hasYear=years.includes(requestedYear);
+ if(hasScene||hasYear){
   const key='wml-v3-profile';
   const stored=JSON.parse(localStorage.getItem(key)||'null')||{
    type:'anak-tv',completed:[],collections:[],visitedScenes:[],visitedYears:[],score:0,
    settings:{master:.7,ambience:.55,ui:.75,mute:false,intensity:'imersif'}
   };
-  stored.scene=requestedScene;
-  stored.visitedScenes=[...new Set([...(stored.visitedScenes||[]),requestedScene])];
-  if(years.includes(requestedYear)){
+  if(hasScene){
+   stored.scene=requestedScene;
+   stored.visitedScenes=[...new Set([...(stored.visitedScenes||[]),requestedScene])];
+  }
+  if(hasYear){
    stored.year=requestedYear;
    stored.visitedYears=[...new Set([...(stored.visitedYears||[]),requestedYear])];
   }
