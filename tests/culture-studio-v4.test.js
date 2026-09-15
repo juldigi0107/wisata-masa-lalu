@@ -4,13 +4,20 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('culture studio exposes radio fashion and film as real interactive tabs',async()=>{
+test('culture studio exposes radio fashion and film as a complete accessible tab pattern',async()=>{
  const jsx=await text('src/CultureStudioV4.jsx');
  for(const label of ['Radio Lab','Fashion Lookbook','Film Shelf'])assert.match(jsx,new RegExp(label));
  assert.match(jsx,/role="tablist"/);
- assert.match(jsx,/aria-selected=\{tab==='radio'\}/);
- assert.match(jsx,/setTab\('fashion'\)/);
- assert.match(jsx,/setTab\('film'\)/);
+ assert.match(jsx,/role="tab"/);
+ assert.match(jsx,/role="tabpanel"/);
+ assert.match(jsx,/aria-selected=\{tab===id\}/);
+ assert.match(jsx,/aria-controls=\{`culture-panel-\$\{id\}`\}/);
+ assert.match(jsx,/aria-labelledby=\{`culture-tab-\$\{tab\}`\}/);
+ assert.match(jsx,/tabIndex=\{tab===id\?0:-1\}/);
+ assert.match(jsx,/ArrowRight/);
+ assert.match(jsx,/ArrowLeft/);
+ assert.match(jsx,/event\.key==='Home'/);
+ assert.match(jsx,/event\.key==='End'/);
 });
 
 test('radio lab synthesizes original cues locally and explicitly avoids archival audio claims',async()=>{
@@ -20,6 +27,7 @@ test('radio lab synthesizes original cues locally and explicitly avoids archival
  assert.match(jsx,/createBuffer/);
  assert.match(jsx,/Bukan rekaman stasiun historis/);
  assert.match(jsx,/Tidak memakai potongan siaran, jingle merek, atau rekaman berhak cipta/);
+ assert.match(jsx,/Audio tidak dapat dimulai pada browser ini/);
  assert.equal(/fetch\(|new Audio\(/.test(jsx),false,'radio soundboard must not fetch untracked external audio');
 });
 
@@ -28,6 +36,7 @@ test('fashion lookbook is explicitly original-inspired rather than presented as 
  assert.match(jsx,/style lab original-inspired/);
  assert.match(jsx,/bukan klaim bahwa kombinasi ini mewakili satu tren nasional/);
  assert.match(jsx,/ACAK LOOK/);
+ assert.match(jsx,/role="img"/);
 });
 
 test('film shelf derives titles only from active SSOT film entries',async()=>{
