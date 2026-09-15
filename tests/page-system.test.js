@@ -4,11 +4,12 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('main loads unified page, chapter, dossier, mechanic, mobile and focus layers in production entry',async()=>{
+test('main loads unified page, chapter, resilience, dossier, mechanic, mobile and focus layers in production entry',async()=>{
  const main=await text('src/main.jsx');
  for(const stylesheet of [
   './world/archive-premium.css',
   './world/archive-chapters-v2.css',
+  './world/archive-resilience-v2.css',
   './world/mechanics-v2.css',
   './world/context-dossier-v2.css',
   './world/mobile-premium.css',
@@ -47,9 +48,12 @@ test('contextual dossier separates fact, context, price and source rooms with pr
  assert.match(jsx,/context-entry-provenance/);
  assert.match(jsx,/source-room-summary/);
  assert.match(jsx,/source-empty/);
+ assert.match(jsx,/onError=/);
+ assert.match(jsx,/classList\.add\('abstract'\)/);
  assert.match(css,/\.context-local-nav/);
  assert.match(css,/\.context-entry-provenance/);
  assert.match(css,/\.source-empty/);
+ assert.match(css,/\.context-entry-visual\.has-image>i/,'fallback dossier art must remain hidden while a real image works');
 });
 
 test('every dedicated mechanic family keeps tactile page-level polish',async()=>{
@@ -82,4 +86,14 @@ test('mobile hardening accounts for virtual keyboard dynamic viewport and narrow
  assert.match(css,/@media\(max-width:360px\)/);
  assert.match(css,/orientation:landscape/);
  assert.match(css,/font-size:16px!important/);
+});
+
+test('archive resilience supplies designed fallbacks instead of blank media or silent empty search columns',async()=>{
+ const css=await text('src/world/archive-resilience-v2.css');
+ for(const selector of ['hero-photo','tv-object','sunday-art','object-stage','warung-photo','ramadan-photo','story-visual'])assert.match(css,new RegExp(`\\.${selector}`));
+ assert.match(css,/:has\(img\[hidden\]\)/);
+ assert.match(css,/VISUAL ARSIP TIDAK TERSEDIA/);
+ assert.match(css,/search-columns section:not\(:has\(button\)\):after/);
+ assert.match(css,/\.empty-state/);
+ assert.match(css,/PROVENANCE GAP/);
 });
