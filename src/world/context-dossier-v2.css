@@ -1,4 +1,5 @@
 /* Contextual Archive Dossier v2 — provenance-first reading flow */
+.context-entry-visual.has-image>i,.context-entry-visual.has-image>b,.context-entry-visual.has-image>small{display:none!important}
 .context-entry-provenance{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1)}
 .context-entry-provenance>span{min-width:104px;border:1px solid rgba(255,255,255,.11);border-radius:14px;background:rgba(255,255,255,.03);padding:10px 11px}
 .context-entry-provenance b{display:block;color:#8fe4da;font:700 .66rem "Courier New",monospace;text-transform:uppercase}
