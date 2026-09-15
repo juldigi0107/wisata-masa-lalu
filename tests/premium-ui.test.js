@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,stat} from 'node:fs/promises';
+import {scenes} from '../shared/world-model.js';
 
 const sceneFiles=['rumah-90.svg','kampung-90.svg','sekolah-90.svg','kota-90.svg','digital-90.svg'];
 
@@ -55,6 +56,18 @@ test('mobile keeps every primary HUD feature reachable and gives archive its own
  assert.match(mobile,/\.archive-mode \.app-shell\{[^}]*overflow:visible/);
 });
 
+test('portrait focus pan covers every interactive object in every scene',async()=>{
+ const focus=await readFile(new URL('../src/world/mobile-focus.css',import.meta.url),'utf8');
+ assert.match(focus,/@media \(max-width:760px\)/);
+ assert.match(focus,/:has\(\.scene-object\.active\)/);
+ assert.match(focus,/prefers-reduced-motion:reduce/);
+ for(const [sceneId,scene] of Object.entries(scenes)){
+  const selector=new RegExp(`\\.scene-${sceneId}:has\\(\\.scene-object:nth-of-type\\(\\d+\\)\\.active\\)`, 'g');
+  const matches=focus.match(selector)||[];
+  assert.equal(matches.length,scene.objects.length,`focus-pan mapping mismatch for ${sceneId}: ${matches.length}/${scene.objects.length}`);
+ }
+});
+
 test('runtime visual assets are derived from Vite BASE_URL for Pages and custom-domain portability',async()=>{
  const [main,runtime]=await Promise.all([
   readFile(new URL('../src/main.jsx',import.meta.url),'utf8'),
@@ -68,6 +81,19 @@ test('runtime visual assets are derived from Vite BASE_URL for Pages and custom-
  assert.match(runtime,/var\(--wml-portal-grid\)/);
  assert.match(runtime,/var\(--wml-brand-orbit\)/);
  assert.equal(/\/wisata-masa-lalu\//.test(runtime),false,'runtime asset layer must not couple to repository path');
+});
+
+test('render failures have a branded recovery boundary instead of a blank page',async()=>{
+ const [main,resilience]=await Promise.all([
+  readFile(new URL('../src/main.jsx',import.meta.url),'utf8'),
+  readFile(new URL('../src/world/resilience.css',import.meta.url),'utf8')
+ ]);
+ assert.match(main,/class AppErrorBoundary extends React\.Component/);
+ assert.match(main,/getDerivedStateFromError/);
+ assert.match(main,/Muat ulang aplikasi/);
+ assert.match(main,/<AppErrorBoundary><WorldApp\/><\/AppErrorBoundary>/);
+ assert.match(resilience,/\.fatal-shell/);
+ assert.equal(/localStorage\.removeItem/.test(main.split('class AppErrorBoundary')[1]||''),false,'render recovery must not delete user progress');
 });
 
 test('PWA manifest uses relative scope and shortcuts so install navigation survives a custom domain',async()=>{
