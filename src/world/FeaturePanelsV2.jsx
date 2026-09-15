@@ -1,6 +1,7 @@
 import {useEffect,useMemo,useRef,useState} from 'react';
 import catalog from '../../shared/assembled-catalog.js';
 import {memoryTriggers} from '../../shared/memory-triggers.js';
+import {interpretMemoryQuery,memoryQueryMatchesEntry,memoryQueryMatchesTrigger} from '../../shared/memory-search.js';
 import {achievements,collections,dayCampaign,yearWorldState,years} from '../../shared/world-model.js';
 
 const normalize=value=>String(value||'').toLocaleLowerCase('id');
@@ -51,14 +52,15 @@ export function CollectionPanel({owned,unlockedAchievements,achievementProgress=
 }
 
 export function SearchPanel({query,setQuery,onClose,onSelectTrigger,onOpenEntry,currentScene,year}){
- const needle=normalize(query.trim());
- const triggerResults=useMemo(()=>memoryTriggers.filter(item=>!needle?item.scene===currentScene:normalize(`${item.title} ${item.category} ${item.interaction} ${item.scene} ${item.object}`).includes(needle)).slice(0,10),[needle,currentScene]);
- const entryResults=useMemo(()=>catalog.entries.filter(item=>!needle?searchableEntry(item).includes(String(year)):searchableEntry(item).includes(needle)).slice(0,10),[needle,year]);
+ const interpreted=useMemo(()=>interpretMemoryQuery(query),[query]);const needle=interpreted.query;
+ const triggerResults=useMemo(()=>memoryTriggers.filter(item=>!needle?item.scene===currentScene:memoryQueryMatchesTrigger(item,query)).slice(0,10),[needle,query,currentScene]);
+ const entryResults=useMemo(()=>catalog.entries.filter(item=>!needle?searchableEntry(item).includes(String(year)):memoryQueryMatchesEntry(item,query)).slice(0,10),[needle,query,year]);
+ const semantic=needle&&interpreted.matchedIntents.length>0;
  return <DialogSurface className="search-panel deep-panel" label="Pencarian memori" onClose={onClose}>
   <button className="panel-close" onClick={onClose} aria-label="Tutup pencarian">×</button><p className="world-eyebrow">MEMORY SEARCH / EXPERIENCE + ARCHIVE</p><h2>Cari dari ingatan.</h2>
-  <div className="search-field"><input data-autofocus autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder="misal: kaset, wartel, jajanan plastik…" aria-label="Cari memori"/>{query&&<button onClick={()=>setQuery('')} aria-label="Bersihkan pencarian">×</button>}</div>
-  <p className="search-mode-note">{needle?`Hasil untuk “${query.trim()}”`:`Belum mengetik — menampilkan pengalaman di ${currentScene} dan jejak arsip sekitar ${year}.`}</p>
-  <div className="search-columns"><section><h3>Pengalaman <sup>{triggerResults.length}</sup></h3>{triggerResults.map(item=><button key={item.id} onClick={()=>onSelectTrigger(item)}><b>{item.title}</b><small>{item.category} · {item.scene}</small></button>)}{!triggerResults.length&&<p className="panel-empty">Tidak ada pengalaman yang cocok. Coba istilah benda atau aktivitas.</p>}</section><section><h3>Arsip <sup>{entryResults.length}</sup></h3>{entryResults.map(item=><button key={item.id} onClick={()=>onOpenEntry(item)}><b>{item.title}</b><small>{item.type} · {item.status}</small></button>)}{!entryResults.length&&<p className="panel-empty">Tidak ada entri arsip yang cocok dengan kata tersebut.</p>}</section></div>
+  <div className="search-field"><input data-autofocus autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder="misal: jajanan plastik yang dulu digigit ujungnya…" aria-label="Cari memori"/>{query&&<button onClick={()=>setQuery('')} aria-label="Bersihkan pencarian">×</button>}</div>
+  <p className={`search-mode-note ${semantic?'semantic':''}`}>{needle?(semantic?`Ingatan dikenali — saya menghubungkan “${query.trim()}” ke benda/ritual yang paling dekat.`:`Hasil literal untuk “${query.trim()}”`):`Belum mengetik — menampilkan pengalaman di ${currentScene} dan jejak arsip sekitar ${year}.`}</p>
+  <div className="search-columns"><section><h3>Pengalaman <sup>{triggerResults.length}</sup></h3>{triggerResults.map(item=><button key={item.id} onClick={()=>onSelectTrigger(item)}><b>{item.title}</b><small>{item.category} · {item.scene}</small></button>)}{!triggerResults.length&&<p className="panel-empty">Tidak ada pengalaman yang cocok. Coba jelaskan bendanya, bunyinya, atau kebiasaan yang kamu ingat.</p>}</section><section><h3>Arsip <sup>{entryResults.length}</sup></h3>{entryResults.map(item=><button key={item.id} onClick={()=>onOpenEntry(item)}><b>{item.title}</b><small>{item.type} · {item.status}</small></button>)}{!entryResults.length&&<p className="panel-empty">Belum ada entri arsip yang cukup dekat. Experience tetap dapat ditemukan tanpa mengarang hasil sejarah.</p>}</section></div>
  </DialogSurface>;
 }
 
