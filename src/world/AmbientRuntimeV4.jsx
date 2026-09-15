@@ -15,10 +15,13 @@ function readSettings(){
   return {mute:Boolean(value.mute),master:Number.isFinite(Number(value.master))?Number(value.master):.7,ambience:Number.isFinite(Number(value.ambience))?Number(value.ambience):.55};
  }catch{return {mute:false,master:.7,ambience:.55}}
 }
-function activeScene(){
+function activeEnvironment(){
  const node=document.querySelector('.world-scene');
  if(!node)return null;
- return Object.keys(sceneCue).find(id=>node.classList.contains(`scene-${id}`))||null;
+ const scene=Object.keys(sceneCue).find(id=>node.classList.contains(`scene-${id}`))||null;
+ const mode=node.classList.contains('mode-ramadan')?'ramadan':node.classList.contains('mode-agustusan')?'agustusan':'normal';
+ const phase=node.classList.contains('phase-malam')?'malam':node.classList.contains('phase-sore')?'sore':node.classList.contains('phase-pagi')?'pagi':'siang';
+ return scene?{scene,mode,phase}:null;
 }
 function nextDelay(config){return config.min+Math.random()*(config.max-config.min)}
 
@@ -46,21 +49,33 @@ export default function AmbientRuntimeV4(){
    const c=getContext(),gain=level()*gainScale;if(!c||!gain)return;
    try{const length=Math.max(1,Math.floor(c.sampleRate*duration)),buffer=c.createBuffer(1,length,c.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);const source=c.createBufferSource(),g=c.createGain();source.buffer=buffer;g.gain.value=gain;source.connect(g);g.connect(c.destination);source.start()}catch{}
   }
-  function play(kind){
+  function seasonalAccent(mode,phase){
+   if(mode==='ramadan'){
+    tone(392,.16,'sine',.18,.04);tone(523,.22,'sine',.12,.16);
+    if(phase==='malam'||phase==='sore')tone(659,.28,'sine',.08,.31);
+    return;
+   }
+   if(mode==='agustusan'){
+    tone(124,.06,'triangle',.22,.02);tone(156,.05,'triangle',.17,.1);tone(124,.05,'triangle',.14,.18);
+   }
+  }
+  function play(kind,mode,phase){
    if(document.visibilityState!=='visible'||document.querySelector('.archive-mode'))return;
-   if(kind==='home'){tone(92,.12,'sine',.34);tone(760,.025,'square',.2,.16);return}
-   if(kind==='kampung'){tone(1180,.055,'sine',.46);tone(1540,.045,'sine',.38,.08);return}
-   if(kind==='school'){tone(690,.18,'sine',.42);tone(1035,.13,'sine',.25,.02);return}
-   if(kind==='city'){noise(.12,.34);tone(165,.08,'sine',.26,.04);return}
-   if(kind==='digital'){tone(74,.12,'square',.22);tone(112,.08,'square',.16,.13)}
+   if(kind==='home'){tone(92,.12,'sine',.34);tone(760,.025,'square',.2,.16)}
+   else if(kind==='kampung'){tone(1180,.055,'sine',.46);tone(1540,.045,'sine',.38,.08)}
+   else if(kind==='school'){tone(690,.18,'sine',.42);tone(1035,.13,'sine',.25,.02)}
+   else if(kind==='city'){noise(.12,.34);tone(165,.08,'sine',.26,.04)}
+   else if(kind==='digital'){tone(74,.12,'square',.22);tone(112,.08,'square',.16,.13)}
+   if(phase==='malam'&&kind!=='digital')tone(210,.12,'sine',.08,.34);
+   seasonalAccent(mode,phase);
   }
   function schedule(){
    clearTimeout(timerRef.current);
    if(!mountedRef.current)return;
-   const scene=activeScene();
-   if(!scene){timerRef.current=setTimeout(schedule,3000);return}
-   const config=sceneCue[scene];
-   timerRef.current=setTimeout(()=>{play(config.kind);schedule()},nextDelay(config));
+   const env=activeEnvironment();
+   if(!env){timerRef.current=setTimeout(schedule,3000);return}
+   const config=sceneCue[env.scene];
+   timerRef.current=setTimeout(()=>{play(config.kind,env.mode,env.phase);schedule()},nextDelay(config));
   }
   function arm(){
    if(armedRef.current)return;
