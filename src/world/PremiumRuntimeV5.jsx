@@ -23,38 +23,43 @@ function readWorldState(){
 
 export default function PremiumRuntimeV5(){
  const [state,setState]=useState(()=>({active:false,host:null,scene:'rumah',phase:'siang',mode:'normal',year:1995}));
- const previous=useRef(null);
+ const stateKey=useRef('');
+ const lastScene=useRef(null);
+ const lastMode=useRef(null);
  useEffect(()=>{
   let transitionTimer=0;
   let seasonTimer=0;
   const sync=()=>{
    const next=readWorldState();
-   setState(current=>{
-    if(next.active){
-     const node=document.querySelector('.world-scene');
-     if(current.active&&next.scene!==current.scene&&node){
-      node.classList.remove('premium-scene-entering');
-      void node.offsetWidth;
-      node.classList.add('premium-scene-entering');
-      clearTimeout(transitionTimer);
-      transitionTimer=window.setTimeout(()=>node.classList.remove('premium-scene-entering'),900);
-     }
-     if(current.active&&next.mode!==current.mode){
-      const app=document.querySelector('.world-app');
-      if(app){
-       app.classList.remove('premium-season-shift');
-       void app.offsetWidth;
-       app.classList.add('premium-season-shift');
-       clearTimeout(seasonTimer);
-       seasonTimer=window.setTimeout(()=>app.classList.remove('premium-season-shift'),1050);
-      }
+   if(next.active){
+    const node=document.querySelector('.world-scene');
+    if(lastScene.current&&next.scene!==lastScene.current&&node){
+     node.classList.remove('premium-scene-entering');
+     void node.offsetWidth;
+     node.classList.add('premium-scene-entering');
+     clearTimeout(transitionTimer);
+     transitionTimer=window.setTimeout(()=>node.classList.remove('premium-scene-entering'),900);
+    }
+    if(lastMode.current&&next.mode!==lastMode.current){
+     const app=document.querySelector('.world-app');
+     if(app){
+      app.classList.remove('premium-season-shift');
+      void app.offsetWidth;
+      app.classList.add('premium-season-shift');
+      clearTimeout(seasonTimer);
+      seasonTimer=window.setTimeout(()=>app.classList.remove('premium-season-shift'),1050);
      }
     }
-    const key=`${next.active}|${next.scene}|${next.phase}|${next.mode}|${next.year}|${Boolean(next.host)}`;
-    if(previous.current===key&&current.host===next.host)return current;
-    previous.current=key;
-    return next;
-   });
+    lastScene.current=next.scene;
+    lastMode.current=next.mode;
+   }else{
+    lastScene.current=null;
+    lastMode.current=null;
+   }
+   const key=`${next.active}|${next.scene}|${next.phase}|${next.mode}|${next.year}|${Boolean(next.host)}`;
+   if(stateKey.current===key)return;
+   stateKey.current=key;
+   setState(next);
   };
   sync();
   const observer=new MutationObserver(sync);
