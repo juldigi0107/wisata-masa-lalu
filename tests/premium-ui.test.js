@@ -45,6 +45,14 @@ test('mobile premium layer is a dedicated composition, not a scaled dashboard',a
  assert.equal(/grid-template-columns:repeat\([4-9]/.test(mobile),false,'mobile layer must not introduce dashboard-like dense grids');
 });
 
+test('mobile keeps every primary HUD feature reachable and gives archive its own scrolling surface',async()=>{
+ const mobile=await readFile(new URL('../src/world/mobile-premium.css',import.meta.url),'utf8');
+ assert.equal(/world-hud nav button:nth-child\([^)]*\)\s*\{[^}]*display:none/i.test(mobile),false,'mobile must not hide a primary HUD action by positional selector');
+ assert.match(mobile,/\.world-hud nav[\s\S]*overflow-x:auto/,'HUD actions should scroll rather than disappear');
+ assert.match(mobile,/\.archive-mode\{[^}]*position:fixed;[^}]*overflow-y:auto/,'archive needs its own mobile scrolling surface while body is locked');
+ assert.match(mobile,/\.archive-mode \.app-shell\{[^}]*overflow:visible/);
+});
+
 test('runtime visual assets are derived from Vite BASE_URL for Pages and custom-domain portability',async()=>{
  const [main,runtime]=await Promise.all([
   readFile(new URL('../src/main.jsx',import.meta.url),'utf8'),
@@ -53,13 +61,24 @@ test('runtime visual assets are derived from Vite BASE_URL for Pages and custom-
  assert.match(main,/import\.meta\.env\.BASE_URL/);
  assert.match(main,/--wml-portal-grid/);
  assert.match(main,/--wml-brand-orbit/);
- for(const id of ['rumah','kampung','sekolah','kota','digital']){
-  assert.match(main,new RegExp(`--wml-scene-\\$\\{id\\}`));
-  assert.match(runtime,new RegExp(`--wml-scene-${id}`));
- }
+ assert.match(main,/`--wml-scene-\$\{id\}`/);
+ for(const id of ['rumah','kampung','sekolah','kota','digital'])assert.match(runtime,new RegExp(`--wml-scene-${id}`));
  assert.match(runtime,/var\(--wml-portal-grid\)/);
  assert.match(runtime,/var\(--wml-brand-orbit\)/);
  assert.equal(/\/wisata-masa-lalu\//.test(runtime),false,'runtime asset layer must not couple to repository path');
+});
+
+test('PWA manifest uses relative scope and shortcuts so install navigation survives a custom domain',async()=>{
+ const raw=await readFile(new URL('../public/manifest.webmanifest',import.meta.url),'utf8');
+ const manifest=JSON.parse(raw);
+ assert.equal(manifest.id,'./');
+ assert.equal(manifest.start_url,'./');
+ assert.equal(manifest.scope,'./');
+ assert.ok(Array.isArray(manifest.shortcuts)&&manifest.shortcuts.length>=3);
+ for(const shortcut of manifest.shortcuts){
+  assert.match(shortcut.url,/^\.\//,`shortcut must be scope-relative: ${shortcut.name}`);
+  assert.equal(shortcut.url.includes('/wisata-masa-lalu/'),false,`shortcut is repository-coupled: ${shortcut.name}`);
+ }
 });
 
 test('PWA shell includes scene art and memory-pack cache hook',async()=>{
