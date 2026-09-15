@@ -1,6 +1,6 @@
 import {memoryTriggers} from './memory-triggers.js';
 
-export const worldVersion='3.1.0';
+export const worldVersion='4.0.0';
 
 export const nostalgiaProfiles=[
  {id:'anak-warung',label:'Anak Warung',scene:'kampung',keywords:['jajanan','warung','pedagang'],accent:'amber'},
@@ -160,10 +160,10 @@ export const collections=[
 ];
 
 export const achievements=[
- {id:'anak-kaset-sejati',label:'Anak Kaset Sejati',description:'Selesaikan lima interaksi kaset.',category:'musik',target:5},
+ {id:'anak-kaset-sejati',label:'Anak Kaset Sejati',description:'Selesaikan lima interaksi musik.',category:'musik',target:5},
  {id:'penguasa-wartel',label:'Penguasa Wartel',description:'Selesaikan sepuluh interaksi komunikasi.',category:'komunikasi',target:10},
- {id:'raja-dingdong',label:'Raja Dingdong',description:'Capai tiga high score arcade.',category:'mainan',target:3},
- {id:'pemburu-layangan',label:'Pemburu Layangan',description:'Selesaikan lima chase/timing permainan.',category:'permainan',target:5},
+ {id:'raja-dingdong',label:'Raja Dingdong',description:'Selesaikan tiga interaksi mainan atau arcade.',category:'mainan',target:3},
+ {id:'pemburu-layangan',label:'Pemburu Layangan',description:'Selesaikan lima interaksi permainan kampung/sekolah.',category:'permainan',target:5},
  {id:'penjelajah-waktu',label:'Penjelajah Waktu',description:'Kunjungi seluruh tahun 1990–1999.',kind:'years',target:10},
  {id:'keliling-kota',label:'Keliling Dunia 90-an',description:'Kunjungi lima area utama.',kind:'scenes',target:5}
 ];
