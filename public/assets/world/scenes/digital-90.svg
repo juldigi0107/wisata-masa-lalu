@@ -1,1 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900"><defs><radialGradient id="bg"><stop stop-color="#20362f"/><stop offset="1" stop-color="#08100d"/></radialGradient><filter id="glow"><feGaussianBlur stdDeviation="8"/></filter></defs><rect width="1600" height="900" fill="url(#bg)"/><rect y="690" width="1600" height="210" fill="#101611"/><g fill="#2b3028" stroke="#625f50" stroke-width="8"><rect x="110" y="310" width="360" height="300"/><rect x="620" y="250" width="360" height="360"/><rect x="1130" y="330" width="340" height="280"/></g><g fill="#111a14" stroke="#746e58" stroke-width="14"><rect x="175" y="350" width="220" height="165" rx="10"/><rect x="690" y="300" width="220" height="170" rx="10"/><rect x="1195" y="370" width="205" height="150" rx="10"/></g><g fill="#6ce292" opacity=".25" filter="url(#glow)"><rect x="195" y="370" width="180" height="125"/><rect x="710" y="320" width="180" height="130"/><rect x="1215" y="390" width="165" height="110"/></g><g fill="#58ce7f" font-family="monospace" font-size="22"><text x="205" y="402">C:\&gt;_</text><text x="720" y="350">MODEM CONNECT</text><text x="1225" y="420">CHAT 1998</text></g><g fill="#4b473b"><rect x="210" y="540" width="155" height="22" rx="4"/><rect x="725" y="492" width="150" height="22" rx="4"/><rect x="1228" y="545" width="145" height="22" rx="4"/></g><g stroke="#688b7c" stroke-width="4" opacity=".4"><path d="M360 575q160 110 350 15"/><path d="M874 535q130 70 350 15"/></g><g fill="#353a31"><rect x="510" y="190" width="85" height="420"/><rect x="1010" y="210" width="80" height="400"/></g><g fill="#d7bb6a"><circle cx="553" cy="224" r="8"/><circle cx="553" cy="250" r="8"/><circle cx="1050" cy="244" r="8"/></g><path d="M0 690h1600" stroke="#375047" stroke-width="4"/><g opacity=".18" stroke="#78dca4" stroke-width="1"><path d="M0 760h1600M0 820h1600"/><path d="M130 690v210M360 690v210M590 690v210M820 690v210M1050 690v210M1280 690v210M1510 690v210"/></g><circle cx="800" cy="130" r="180" fill="#4fcf88" opacity=".04" filter="url(#glow)"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+<defs>
+ <radialGradient id="bg" cx="50%" cy="38%"><stop stop-color="#29433a"/><stop offset=".5" stop-color="#17271f"/><stop offset="1" stop-color="#07100d"/></radialGradient>
+ <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#25362d"/><stop offset="1" stop-color="#111a16"/></linearGradient>
+ <linearGradient id="desk" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#64533e"/><stop offset="1" stop-color="#372e27"/></linearGradient>
+ <linearGradient id="crt" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#5f9d7b"/><stop offset="1" stop-color="#173a2a"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="11" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="shadow"><feGaussianBlur stdDeviation="15"/></filter>
+ <pattern id="grid" width="70" height="55" patternUnits="userSpaceOnUse"><path d="M0 54h70M69 0v55" stroke="#77c99a" stroke-opacity=".07"/></pattern>
+</defs>
+
+<!-- room -->
+<rect width="1600" height="900" fill="url(#bg)"/>
+<rect y="78" width="1600" height="610" fill="url(#wall)" opacity=".6"/>
+<rect y="688" width="1600" height="212" fill="#101711"/>
+<rect y="688" width="1600" height="212" fill="url(#grid)"/>
+<path d="M0 687h1600" stroke="#3e5648" stroke-width="6"/>
+<ellipse cx="780" cy="780" rx="650" ry="78" fill="#000" opacity=".35" filter="url(#shadow)"/>
+
+<!-- acoustic wall / cables -->
+<g stroke="#79917c" stroke-opacity=".12" stroke-width="4"><path d="M0 176h1600M0 285h1600M0 394h1600M0 503h1600"/><path d="M171 78v530M534 78v530M913 78v530M1290 78v530"/></g>
+<g stroke="#4b6b58" stroke-width="4" fill="none" opacity=".46"><path d="M255 613q88 49 215 14t243 9q146 37 276-12t295 10"/><path d="M417 637q182 63 355 4t318 9q129 49 280 7"/></g>
+
+<!-- warnet desk anchor 22%,30% -->
+<g transform="translate(142 175)"><rect x="0" y="183" width="390" height="42" rx="9" fill="url(#desk)"/><rect x="35" y="220" width="22" height="230" fill="#44372c"/><rect x="329" y="220" width="22" height="230" fill="#44372c"/><rect x="55" y="0" width="260" height="178" rx="15" fill="#8b8675" stroke="#4e4a40" stroke-width="8"/><rect x="78" y="22" width="214" height="125" rx="16" fill="#101b14"/><rect x="92" y="35" width="186" height="98" rx="12" fill="url(#crt)"/><g fill="#74df95" font-family="monospace" font-size="15"><text x="106" y="61">WARNET 98</text><text x="106" y="86">BILLING 00:42</text><text x="106" y="111">C:\INTERNET&gt;_</text></g><rect x="155" y="176" width="61" height="20" fill="#6f6a5c"/><rect x="126" y="196" width="121" height="14" rx="5" fill="#7d7869"/><rect x="85" y="240" width="218" height="27" rx="7" fill="#777164"/><g stroke="#4b473e" stroke-width="4"><path d="M101 249h182M114 258h159"/></g><ellipse cx="334" cy="252" rx="27" ry="19" fill="#777164"/><rect x="9" y="28" width="30" height="111" rx="5" fill="#3a4039"/><circle cx="24" cy="52" r="5" fill="#60df8b"/><circle cx="24" cy="70" r="5" fill="#d5b55c"/><circle cx="24" cy="88" r="5" fill="#ba6656"/><text x="194" y="-25" text-anchor="middle" fill="#8fe7ad" font-size="16" font-family="monospace" letter-spacing="4">BILIK 04</text></g>
+
+<!-- PC desktop anchor 46%,42% -->
+<g transform="translate(604 255)"><rect x="0" y="198" width="355" height="38" rx="8" fill="url(#desk)"/><rect x="34" y="0" width="238" height="190" rx="16" fill="#999381" stroke="#565146" stroke-width="9"/><rect x="55" y="22" width="196" height="137" rx="18" fill="#101c15"/><rect x="69" y="35" width="168" height="111" rx="12" fill="url(#crt)"/><g fill="#76e39a" font-family="monospace" font-size="15"><text x="82" y="59">MEMORY OK</text><text x="82" y="83">A:\&gt; WIN</text><text x="82" y="107">LOADING...</text></g><rect x="113" y="190" width="75" height="24" fill="#777264"/><rect x="86" y="216" width="129" height="13" rx="5" fill="#817b6a"/><rect x="17" y="248" width="247" height="31" rx="8" fill="#817a69"/><g stroke="#4c483f" stroke-width="4"><path d="M34 257h213M44 269h193"/></g><ellipse cx="304" cy="263" rx="29" ry="20" fill="#777165"/><g transform="translate(276 57)"><rect width="74" height="137" rx="7" fill="#8c8675"/><rect x="17" y="18" width="40" height="10" rx="3" fill="#393c36"/><rect x="16" y="50" width="42" height="15" rx="4" fill="#55574e"/><circle cx="37" cy="111" r="8" fill="#5be08b"/><circle cx="37" cy="86" r="5" fill="#d4af59"/></g></g>
+
+<!-- floppy anchor 28%,60% -->
+<g transform="translate(381 506)"><rect width="132" height="132" rx="7" fill="#555d61" stroke="#292f30" stroke-width="7"/><rect x="24" y="0" width="79" height="49" fill="#9ca0a0"/><rect x="41" y="8" width="45" height="35" fill="#353a3b"/><rect x="20" y="73" width="92" height="43" rx="4" fill="#d8d1b8"/><path d="M31 87h71M31 99h58" stroke="#777266" stroke-width="4"/><text x="66" y="157" text-anchor="middle" fill="#7fdc9e" font-size="13" font-family="monospace">1.44 MB</text></g>
+
+<!-- modem anchor 68%,34% -->
+<g transform="translate(1018 250)"><rect width="180" height="87" rx="9" fill="#777368" stroke="#44453f" stroke-width="7"/><g transform="translate(20 24)"><circle cx="0" cy="0" r="5" fill="#69e08f" filter="url(#glow)"/><circle cx="29" cy="0" r="5" fill="#d3b55d"/><circle cx="58" cy="0" r="5" fill="#6f8f78"/><circle cx="87" cy="0" r="5" fill="#b85d53"/><circle cx="116" cy="0" r="5" fill="#63da8a"/></g><text x="90" y="64" text-anchor="middle" fill="#333830" font-size="14" font-family="monospace" font-weight="700">33.6 Kbps MODEM</text><path d="M167 74q80 33 101 126" fill="none" stroke="#52705d" stroke-width="6"/></g>
+
+<!-- printer anchor 72%,58% -->
+<g transform="translate(1060 448)"><rect x="0" y="62" width="240" height="126" rx="12" fill="#918c7b" stroke="#505046" stroke-width="8"/><rect x="25" y="80" width="190" height="52" rx="6" fill="#53564c"/><path d="M36 103h168" stroke="#2d312d" stroke-width="8"/><path d="M49 0h142l19 89H31Z" fill="#d9d2b8"/><path d="M61 16h118M61 32h118M61 48h118M61 64h93" stroke="#6f7066" stroke-width="4"/><path d="M45 0v85M196 0v85" stroke="#8f8b78" stroke-width="4" stroke-dasharray="6 8"/><g fill="#505047"><circle cx="50" cy="158" r="8"/><circle cx="80" cy="158" r="8"/><circle cx="110" cy="158" r="8"/></g><circle cx="194" cy="158" r="6" fill="#5be08b" filter="url(#glow)"/></g>
+
+<!-- secondary machines / chat glow -->
+<g transform="translate(1276 300)" opacity=".86"><rect x="0" y="130" width="245" height="35" rx="8" fill="url(#desk)"/><rect x="31" y="0" width="182" height="127" rx="12" fill="#8e8878"/><rect x="49" y="18" width="146" height="89" rx="12" fill="#101a14"/><rect x="61" y="29" width="122" height="67" rx="8" fill="#28543a"/><text x="72" y="51" fill="#79df99" font-size="12" font-family="monospace">CHAT ROOM</text><text x="72" y="71" fill="#79df99" font-size="10" font-family="monospace">anak98: halo :)</text><rect x="78" y="125" width="91" height="14" fill="#6e695b"/></g>
+
+<!-- shelves / manuals / disks -->
+<g transform="translate(128 568)" opacity=".78"><rect width="208" height="120" fill="#3e342c"/><path d="M0 40h208M0 80h208" stroke="#8c7656" stroke-width="7"/><g fill="#768d76"><rect x="14" y="8" width="25" height="26"/><rect x="45" y="8" width="19" height="26"/><rect x="71" y="8" width="31" height="26"/></g><g fill="#8c687c"><rect x="14" y="48" width="32" height="26"/><rect x="53" y="48" width="25" height="26"/><rect x="84" y="48" width="34" height="26"/></g><g fill="#b79a61"><rect x="14" y="88" width="28" height="25"/><rect x="49" y="88" width="28" height="25"/><rect x="84" y="88" width="28" height="25"/></g></g>
+
+<!-- fluorescent ceiling and temporal green ambience -->
+<g opacity=".75"><rect x="246" y="98" width="300" height="14" rx="7" fill="#b6d9bd" filter="url(#glow)"/><rect x="997" y="104" width="300" height="14" rx="7" fill="#b6d9bd" filter="url(#glow)"/></g>
+<circle cx="795" cy="210" r="235" fill="#51d48b" opacity=".035" filter="url(#glow)"/>
+<g fill="#637368"><rect x="555" y="150" width="72" height="460"/><rect x="965" y="167" width="69" height="443"/></g>
+<g fill="#d6b65f"><circle cx="590" cy="182" r="6"/><circle cx="590" cy="205" r="6"/><circle cx="999" cy="201" r="6"/></g>
+<rect width="1600" height="900" fill="none" stroke="#8ae5a9" stroke-opacity=".08" stroke-width="8"/>
+</svg>
