@@ -63,15 +63,17 @@ test('runtime visual assets are derived from Vite BASE_URL for Pages and custom-
 });
 
 test('render failures have a branded recovery boundary instead of a blank page',async()=>{
- const [main,resilience]=await Promise.all([
+ const [main,shell,resilience]=await Promise.all([
   readFile(new URL('../src/main.jsx',import.meta.url),'utf8'),
+  readFile(new URL('../src/world/WorldExperienceShell.jsx',import.meta.url),'utf8'),
   readFile(new URL('../src/world/resilience.css',import.meta.url),'utf8')
  ]);
  assert.match(main,/class AppErrorBoundary extends React\.Component/);
  assert.match(main,/getDerivedStateFromError/);
  assert.match(main,/Muat ulang aplikasi/);
  const boundary=main.match(/<AppErrorBoundary>([\s\S]*?)<\/AppErrorBoundary>/)?.[1]||'';
- for(const runtime of ['WorldApp','AmbientRuntimeV4','PremiumRuntimeV5'])assert.match(boundary,new RegExp(`<${runtime}\\s*\\/>`),`${runtime} must stay inside the recovery boundary`);
+ for(const runtime of ['WorldExperienceShell','AmbientRuntimeV4','PremiumRuntimeV5'])assert.match(boundary,new RegExp(`<${runtime}\\s*\\/>`),`${runtime} must stay inside the recovery boundary`);
+ assert.match(shell,/<WorldAppV4\/>/,'WorldAppV4 must stay inside the experience shell that is protected by the recovery boundary');
  assert.match(resilience,/\.fatal-shell/);
  assert.equal(/localStorage\.removeItem/.test(main.split('class AppErrorBoundary')[1]||''),false,'render recovery must not delete user progress');
 });
