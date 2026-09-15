@@ -11,8 +11,9 @@
 /* World search: no silent empty columns. */
 .search-columns section:not(:has(button)):after{content:'Belum ada hasil pada bagian ini. Coba kata yang lebih umum.';display:block;margin-top:12px;border:1px dashed rgba(255,255,255,.1);border-radius:14px;padding:18px 14px;color:rgba(238,225,203,.5);font-size:.6rem;line-height:1.5}
 
-/* Legacy archive empty state remains an editorial object. */
+/* Legacy archive empty states remain intentional editorial objects. */
 .archive-mode .empty-state{min-height:150px;display:grid;align-content:center;gap:7px;background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.12))!important}.archive-mode .empty-state:before{content:'NO MATCH / ARCHIVE';color:#4d8079;font:700 .43rem 'Courier New',monospace;letter-spacing:.15em}
+.archive-mode .word-list:not(:has(article)):after{content:'Istilah itu belum ada di kamus kurasi. Coba ejaan yang lebih pendek atau istilah lain.';display:block;grid-column:1/-1;min-height:120px;padding:24px;border:1px dashed rgba(35,30,25,.18);border-radius:14px;background:rgba(255,255,255,.2);color:rgba(40,34,29,.65);font:600 .7rem/1.6 Georgia,serif}
 
 /* Generic contextual snippet when no matching dossier exists. */
 .context-archive.muted{border-style:dashed!important;background:rgba(255,255,255,.022)!important}.context-archive.muted:before{content:'PROVENANCE GAP';display:block;margin-bottom:8px;color:rgba(228,193,116,.62);font:700 .4rem 'Courier New',monospace;letter-spacing:.14em}
@@ -20,4 +21,5 @@
 @media(max-width:700px){
  .archive-mode :where(.hero-photo,.tv-object,.sunday-art,.game-gallery figure,.object-stage,.warung-photo,.ramadan-photo,.story-visual):has(img[hidden]){min-height:220px!important}
  .archive-mode :where(.hero-photo,.tv-object,.sunday-art,.game-gallery figure,.object-stage,.warung-photo,.ramadan-photo,.story-visual):has(img[hidden]):before{font-size:.42rem;white-space:normal;width:72%;border-radius:16px}
+ .archive-mode .word-list:not(:has(article)):after{min-height:100px;padding:18px;font-size:.66rem}
 }
