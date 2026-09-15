@@ -1,0 +1,92 @@
+/* Archive Premium V5 — long-form editorial rhythm, tactile provenance, no dashboard chrome. */
+.archive-mode{--a-paper:#efe4cf;--a-paper-2:#e8dac0;--a-ink:#191713;--a-dark:#111713;--a-cyan:#79cfc5;--a-amber:#e3bc72;--a-line:rgba(31,27,22,.14)}
+.archive-mode .archive-return{background:rgba(11,16,14,.94)!important;border-bottom:1px solid rgba(255,255,255,.07)!important;box-shadow:0 14px 46px rgba(0,0,0,.18)!important;backdrop-filter:blur(18px) saturate(1.15)}
+.archive-mode .archive-return button{border-radius:999px!important;border:1px solid rgba(255,255,255,.12)!important;background:rgba(255,255,255,.035)!important;transition:background .18s ease,transform .18s ease,border-color .18s ease!important}
+.archive-mode .archive-return button:hover,.archive-mode .archive-return button:focus-visible{background:rgba(121,207,197,.1)!important;border-color:rgba(121,207,197,.34)!important;transform:translateX(-2px)}
+.archive-mode .archive-return span{letter-spacing:.08em;color:rgba(239,226,202,.54)!important}
+
+/* Hero behaves like a cover spread. */
+.archive-mode .hero{position:relative!important;background:linear-gradient(115deg,#151b18,#20221c)!important}
+.archive-mode .hero:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(circle at 82% 22%,rgba(121,207,197,.07),transparent 26%),linear-gradient(180deg,transparent 55%,rgba(0,0,0,.14));box-shadow:inset 0 0 120px rgba(0,0,0,.18)}
+.archive-mode .hero-photo{overflow:hidden!important}
+.archive-mode .hero-photo img{transform:scale(1.018);transition:transform 1.4s cubic-bezier(.2,.7,.2,1),filter 1.2s ease!important}
+.archive-mode .hero:hover .hero-photo img{transform:scale(1.035)}
+.archive-mode .hero-copy{z-index:4!important}
+.archive-mode .hero-copy:before{content:"ARCHIVE / 1990—1999";display:block;margin-bottom:16px;color:rgba(130,220,209,.62);font:700 .46rem/1 "Courier New",monospace;letter-spacing:.22em}
+.archive-mode .hero-copy h1{text-wrap:balance;text-shadow:0 10px 44px rgba(0,0,0,.24)}
+.archive-mode .hero-lead{text-wrap:pretty}
+.archive-mode .hero-actions a{transition:transform .18s ease,background .18s ease,border-color .18s ease!important}
+.archive-mode .hero-actions a:hover,.archive-mode .hero-actions a:focus-visible{transform:translateY(-2px)}
+.archive-mode .hero-meta{position:relative}.archive-mode .hero-meta:before{content:"PROVENANCE SNAPSHOT";position:absolute;top:-23px;left:0;font:700 .4rem "Courier New",monospace;letter-spacing:.16em;color:rgba(245,231,207,.28)}
+
+/* Chapter rhythm */
+.archive-mode .index-section,.archive-mode .sunday,.archive-mode .games,.archive-mode .warung,.archive-mode .music,.archive-mode .quiz,.archive-mode .collection,.archive-mode .credits{position:relative}
+.archive-mode .index-section:before,.archive-mode .sunday:before,.archive-mode .games:before,.archive-mode .warung:before,.archive-mode .music:before,.archive-mode .quiz:before,.archive-mode .collection:before,.archive-mode .credits:before{content:"";position:absolute;left:50%;top:0;width:min(1500px,calc(100% - 32px));height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--a-line) 12%,var(--a-line) 88%,transparent)}
+.archive-mode .section-head h2,.archive-mode .calculator h2,.archive-mode .dictionary h2,.archive-mode .quiz-ticket h2{text-wrap:balance}
+.archive-mode .section-head>p,.archive-mode .hero-lead,.archive-mode .object-copy>p,.archive-mode .calculator>p,.archive-mode .dictionary>p{text-wrap:pretty}
+.archive-mode .eyebrow{letter-spacing:.17em!important}
+
+/* Index: more like a tactile contents folio. */
+.archive-mode .module-grid{scrollbar-width:thin;scrollbar-color:rgba(36,61,56,.26) transparent}
+.archive-mode .module-card{position:relative!important;overflow:hidden!important;transition:background .22s ease,color .22s ease!important}
+.archive-mode .module-card:before{content:"";position:absolute;inset:0;opacity:0;background:linear-gradient(135deg,rgba(121,207,197,.08),transparent 44%);transition:opacity .24s ease}
+.archive-mode .module-card:hover:before,.archive-mode .module-card:focus-visible:before{opacity:1}
+.archive-mode .module-card:hover,.archive-mode .module-card:focus-visible{outline:none!important;background:rgba(104,181,170,.065)!important}
+.archive-mode .module-card h3,.archive-mode .module-card p,.archive-mode .module-card span{position:relative;z-index:1}
+.archive-mode .module-arrow{transition:transform .18s ease}.archive-mode .module-card:hover .module-arrow{transform:translate(3px,3px)}
+
+/* Media chapters get restrained gallery treatment. */
+.archive-mode .game-gallery figure,.archive-mode .warung-photo,.archive-mode .ramadan-photo,.archive-mode .object-stage,.archive-mode .music-player{box-shadow:0 28px 70px rgba(0,0,0,.12)!important}
+.archive-mode .game-gallery figure,.archive-mode .warung-photo,.archive-mode .ramadan-photo,.archive-mode .object-stage{position:relative}
+.archive-mode .game-gallery figure:after,.archive-mode .warung-photo:after,.archive-mode .ramadan-photo:after,.archive-mode .object-stage:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),inset 0 -60px 90px rgba(0,0,0,.08)}
+.archive-mode .game-gallery img,.archive-mode .warung-photo img,.archive-mode .ramadan-photo>img:first-child,.archive-mode .object-stage img{transition:transform .55s cubic-bezier(.2,.75,.2,1),filter .55s ease!important}
+.archive-mode .game-gallery figure:hover img,.archive-mode .warung-photo:hover img,.archive-mode .ramadan-photo:hover>img:first-child,.archive-mode .object-stage:hover img{transform:scale(1.018)}
+
+/* Controls should feel like editorial tools, not app filter chips. */
+.archive-mode .type-filter,.archive-mode .status-filter{gap:5px!important;scrollbar-width:none}
+.archive-mode .type-filter button,.archive-mode .status-filter button,.archive-mode .region-bar button,.archive-mode .guide-tabs button{transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease!important}
+.archive-mode .type-filter button:hover,.archive-mode .status-filter button:hover,.archive-mode .region-bar button:hover,.archive-mode .guide-tabs button:hover{transform:translateY(-1px)}
+.archive-mode .type-filter button[aria-pressed=true],.archive-mode .status-filter button[aria-pressed=true],.archive-mode .region-bar button[aria-pressed=true],.archive-mode .guide-tabs button[aria-pressed=true]{box-shadow:inset 0 0 0 1px rgba(39,94,85,.18)!important}
+.archive-mode .archive-filter-tools{border-top:1px solid var(--a-line);border-bottom:1px solid var(--a-line);padding-block:10px!important;margin-top:14px!important}
+.archive-mode .archive-filter-tools button{border-radius:999px!important}
+.archive-mode .collection-count{font-family:"Courier New",monospace!important;letter-spacing:.04em;color:rgba(37,31,25,.58)!important}
+
+/* Clip grid becomes a modern archive wall with predictable reading order. */
+.archive-mode .clip-grid{gap:12px!important}
+.archive-mode .clip-card{position:relative!important;overflow:hidden!important;min-height:250px!important;border:1px solid rgba(33,29,24,.13)!important;border-radius:20px!important;background:rgba(255,255,255,.28)!important;box-shadow:0 16px 44px rgba(46,37,26,.055)!important;transform:none!important;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s ease,border-color .22s ease,background .22s ease!important}
+.archive-mode .clip-card:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(103,183,172,.08),transparent 40%);opacity:0;transition:opacity .22s ease}
+.archive-mode .clip-card:hover,.archive-mode .clip-card:focus-visible{transform:translateY(-4px)!important;box-shadow:0 24px 60px rgba(46,37,26,.11)!important;border-color:rgba(63,118,108,.26)!important;background:rgba(255,255,255,.42)!important;outline:none!important}
+.archive-mode .clip-card:hover:after,.archive-mode .clip-card:focus-visible:after{opacity:1}
+.archive-mode .clip-card h3{font:600 1.25rem/1.05 Georgia,serif!important;letter-spacing:-.025em!important}.archive-mode .clip-card p{line-height:1.55!important;color:rgba(28,25,21,.61)!important}
+.archive-mode .clip-status{letter-spacing:.1em!important}
+
+/* Focus Story: magazine feature spread, not a detail card. */
+.archive-mode .story-pager{margin-top:46px!important;border-top:1px solid var(--a-line);border-bottom:1px solid var(--a-line);padding-block:11px!important}
+.archive-mode .story-pager button{border-radius:999px!important;transition:transform .18s ease,background .18s ease!important}.archive-mode .story-pager button:hover:not(:disabled){transform:translateX(-2px)}.archive-mode .story-pager button:last-child:hover:not(:disabled){transform:translateX(2px)}
+.archive-mode .feature-story{position:relative!important;margin-top:30px!important;border-radius:30px!important;border:1px solid rgba(30,26,21,.12)!important;background:linear-gradient(145deg,rgba(255,255,255,.48),rgba(255,255,255,.16))!important;box-shadow:0 36px 100px rgba(52,40,25,.1)!important;overflow:hidden!important}
+.archive-mode .feature-story:before{content:"FOCUS STORY";position:absolute;right:28px;top:24px;color:rgba(28,25,20,.11);font:700 clamp(2.2rem,5vw,6rem)/1 Georgia,serif;letter-spacing:-.04em;pointer-events:none}
+.archive-mode .story-main{position:relative;z-index:1}.archive-mode .story-main>h2{font:600 clamp(3rem,6vw,6.8rem)/.82 Georgia,serif!important;letter-spacing:-.065em!important;max-width:10ch!important;text-wrap:balance}
+.archive-mode .story-visual{border-radius:22px!important;overflow:hidden!important;box-shadow:0 28px 66px rgba(0,0,0,.12)!important}
+.archive-mode .story-visual img{transition:transform .55s ease!important}.archive-mode .story-visual:hover img{transform:scale(1.012)}
+.archive-mode .story-source-summary{border-top:1px solid var(--a-line);border-bottom:1px solid var(--a-line);padding-block:9px!important}
+.archive-mode .story-sources a{transition:background .16s ease,transform .16s ease!important}.archive-mode .story-sources a:hover{background:rgba(96,174,163,.07)!important;transform:translateX(2px)}
+.archive-mode .story-notes{position:relative;z-index:1}.archive-mode .story-notes section{border-radius:18px!important;background:rgba(25,23,19,.035)!important;border:1px solid rgba(32,28,23,.08)!important}
+
+/* Quiz result feels collectible. */
+.archive-mode .quiz{background:radial-gradient(circle at 18% 12%,rgba(104,181,170,.08),transparent 30%),var(--a-paper)!important}
+.archive-mode .quiz-ticket{position:relative!important;overflow:hidden!important;box-shadow:0 32px 90px rgba(54,39,22,.1)!important}
+.archive-mode .quiz-ticket:after{content:"90AN";position:absolute;right:-12px;bottom:-34px;color:rgba(44,38,29,.045);font:700 clamp(6rem,18vw,15rem)/1 Georgia,serif;letter-spacing:-.08em;pointer-events:none}
+.archive-mode .quiz-result-actions button,.archive-mode .quiz-restart{border-radius:999px!important;transition:transform .18s ease,box-shadow .18s ease!important}.archive-mode .quiz-result-actions button:hover,.archive-mode .quiz-restart:hover{transform:translateY(-2px)}
+
+/* Credits read like a colophon. */
+.archive-mode .credits{padding-top:100px!important;padding-bottom:110px!important}.archive-mode .credits h2{font:600 clamp(2.8rem,5vw,5.8rem)/.88 Georgia,serif!important;letter-spacing:-.05em!important}.archive-mode .credit-list{border-top:1px solid var(--a-line)!important}.archive-mode .credit-list a{border-bottom:1px solid var(--a-line)!important;transition:background .16s ease,padding-left .16s ease!important}.archive-mode .credit-list a:hover{background:rgba(102,180,169,.055)!important;padding-left:8px!important}
+
+@media(max-width:900px){
+ .archive-mode .feature-story:before{font-size:3.4rem;right:18px}.archive-mode .clip-grid{gap:9px!important}.archive-mode .premium-era-mark{display:none}
+}
+@media(max-width:720px){
+ .archive-mode .hero-photo img{transform:none!important}.archive-mode .hero:hover .hero-photo img{transform:none}.archive-mode .clip-card{min-height:220px!important}.archive-mode .feature-story{border-radius:22px!important}.archive-mode .feature-story:before{display:none}.archive-mode .story-main>h2{font-size:clamp(2.7rem,14vw,4.8rem)!important}.archive-mode .archive-return span{max-width:48vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+@media(prefers-reduced-motion:reduce){
+ .archive-mode .hero-photo img,.archive-mode .game-gallery img,.archive-mode .warung-photo img,.archive-mode .ramadan-photo>img:first-child,.archive-mode .object-stage img,.archive-mode .clip-card,.archive-mode .hero-actions a,.archive-mode .module-arrow{transition:none!important}.archive-mode .hero:hover .hero-photo img,.archive-mode .game-gallery figure:hover img,.archive-mode .warung-photo:hover img,.archive-mode .ramadan-photo:hover>img:first-child,.archive-mode .object-stage:hover img,.archive-mode .clip-card:hover{transform:none!important}
+}
