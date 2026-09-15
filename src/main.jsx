@@ -1,6 +1,7 @@
 import React from "react";
 import {createRoot} from "react-dom/client";
 import WorldApp from "./world/WorldAppV4.jsx";
+import AmbientRuntimeV4 from "./world/AmbientRuntimeV4.jsx";
 import baseCatalog from "../shared/catalog.js";
 import assembledCatalog from "../shared/assembled-catalog.js";
 import {scenes,years} from "../shared/world-model.js";
@@ -80,7 +81,7 @@ class AppErrorBoundary extends React.Component{
 }
 
 createRoot(document.getElementById("root")).render(
- <React.StrictMode><AppErrorBoundary><WorldApp/></AppErrorBoundary></React.StrictMode>
+ <React.StrictMode><AppErrorBoundary><WorldApp/><AmbientRuntimeV4/></AppErrorBoundary></React.StrictMode>
 );
 
 if('serviceWorker' in navigator){
