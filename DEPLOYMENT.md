@@ -4,43 +4,69 @@
 
 - Frontend publik: `https://juldigi0107.github.io/wisata-masa-lalu/`
 - Backend target: `https://wisata-masa-lalu.juldigi.workers.dev`
-- SSOT: `shared/assembled-catalog.js`
-- Versi SSOT saat ini: **v2.7.0**
-- Katalog teruji: **46 entri** lintas TV, kartun/anime, permainan, benda/game, musik/personal audio, Ramadhan, budaya warung, makanan/minuman, budaya baca, sekolah/alat tulis, teknologi komunikasi, dan film.
-- Editorial intelligence: `shared/editorial-audit.js`.
-- Production frontend menggunakan **safe fallback**: Worker hanya di-bind bila CORS, API mode, versi, jumlah entri, duplicate check, dan exact set ID cocok dengan SSOT lokal.
+- Frontend: React + Vite + GitHub Pages.
+- Backend source: Cloudflare Worker di `worker/index.js`.
+- SSOT: `shared/assembled-catalog.js`.
+- Versi SSOT repository: **v2.8.0 / 52 entri**.
+- World Engine: **3.1.0 / 5 environment / 100 memory triggers**.
+- Editorial audit: `shared/editorial-audit.js`.
 
-> Catatan status nyata: source Worker v2.7 dan seluruh test sudah valid, tetapi deployment GitHub Actions membutuhkan `CLOUDFLARE_API_TOKEN` dan `CLOUDFLARE_ACCOUNT_ID`. Jika kedua secret belum tersedia, workflow Worker melakukan test + probe saja dan **tidak** mengklaim telah mendeploy backend.
+### Status live Worker terakhir
+
+Pada audit build **15 September 2026**, endpoint live masih melaporkan **v1.0.0 / mode `static-editorial-batch-1` / 4 entri**. Source repository sendiri sudah memakai `assembled-catalog.js` v2.8.0.
+
+Karena itu workflow Pages **tidak mengaktifkan `VITE_API_BASE_URL`** untuk Worker tersebut dan membangun frontend memakai bundled SSOT. Ini disengaja: Worker lama tidak boleh menurunkan isi frontend produksi.
+
+Jangan menganggap source GitHub yang lebih baru berarti Worker live otomatis sudah ikut berubah. Sinkronisasi baru dianggap selesai setelah exact verification lulus.
 
 ## Frontend GitHub Pages
 
-Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+Repository → Settings → Pages → Build and deployment → Source: **GitHub Actions**.
 
-Setiap push ke `main` menjalankan `.github/workflows/pages.yml`:
+Push ke `main` menjalankan `.github/workflows/pages.yml`:
 
-1. memasang dependency,
-2. menjalankan seluruh test,
-3. memeriksa Worker live,
-4. membandingkan `health.version`, `mode`, jumlah entri, CORS, duplicate ID, dan exact ID set terhadap SSOT,
-5. hanya jika identik: menulis `VITE_API_BASE_URL` untuk build,
-6. jika tidak identik: tetap build dengan bundled catalog,
-7. merestore cache aset visual,
-8. mengunduh/recover aset berlisensi,
-9. membangun Vite production bundle,
-10. mengunggah dan memublikasikan artifact Pages.
+1. checkout + Node 22,
+2. `npm install`,
+3. `npm test`,
+4. editorial intelligence report,
+5. probe `/api/health` dan `/api/catalog` Worker,
+6. validasi CORS, API mode, versi, entry count, duplicate IDs, dan exact ID set,
+7. bind `VITE_API_BASE_URL` **hanya** bila Worker identik dengan SSOT,
+8. restore cache visual,
+9. fetch/recover 25 aset editorial berlisensi,
+10. `npm run build`,
+11. `node scripts/check-build-budget.mjs`,
+12. upload Pages artifact hanya jika seluruh gate sebelumnya lulus,
+13. deploy GitHub Pages.
 
-Dengan mekanisme ini, Worker lama tidak dapat menurunkan katalog frontend produksi walaupun endpoint Worker masih online.
+### Performance budget
+
+Production artifact ditolak bila melewati salah satu batas berikut:
+
+- setiap JS chunk > **500 KiB**;
+- CSS total > **180 KiB**;
+- scene SVG > **100 KiB** per file;
+- core JS + CSS > **850 KiB**.
+
+Lima scene original saat ini berukuran sekitar 7–11 KB per file, jauh di bawah budget scene.
 
 ## Backend Cloudflare Worker
 
 Konfigurasi Wrangler: `wrangler.jsonc`  
 Entry point: `worker/index.js`
 
-Worker memakai `shared/assembled-catalog.js` dan `shared/editorial-audit.js`, sehingga API historis dan audit editorial memakai SSOT yang sama dengan frontend.
+Worker source mengimpor:
+
+- `shared/assembled-catalog.js`,
+- `shared/editorial-audit.js`.
+
+Health contract source menggunakan mode `curated-static-v2` dan harus melaporkan versi/jumlah entri yang sama dengan assembled SSOT.
 
 ### GitHub Actions deployment
 
-Repository membutuhkan dua **Actions secrets**:
+Workflow: `.github/workflows/worker.yml`.
+
+Deployment otomatis membutuhkan repository **Actions secrets**:
 
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
@@ -49,140 +75,125 @@ Lokasi:
 
 `GitHub repository → Settings → Secrets and variables → Actions → New repository secret`
 
-Jangan pernah menaruh token di source code, `.env` yang di-commit, issue publik, screenshot, atau chat.
+Jangan menaruh token di source code, commit, issue publik, screenshot, atau chat.
 
-Workflow `.github/workflows/worker.yml`:
+Jika kedua secret tersedia, workflow:
 
-1. `npm install`,
-2. `npm test`,
-3. deploy `npm run deploy:worker` hanya bila kedua secret ada,
-4. sesudah deploy menjalankan `scripts/verify-worker.mjs`,
-5. deployment dianggap sinkron hanya bila health/catalog/audit/CORS cocok dengan SSOT.
+1. install dependency,
+2. menjalankan test kontrak,
+3. membuat editorial report,
+4. menjalankan `npm run deploy:worker`,
+5. menjalankan `scripts/verify-worker.mjs`,
+6. baru menganggap Worker sinkron bila health/catalog/audit/CORS dan exact IDs lulus.
 
-Jika secret tidak ada, deploy dan strict live-verification dilewati; workflow menjalankan satu probe non-blocking untuk merekam apakah Cloudflare Git integration lain sudah memperbarui Worker.
+Jika secret tidak tersedia, deploy dilewati. Probe live bersifat non-blocking dan hanya merekam apakah integrasi Cloudflare lain sudah menyinkronkan Worker.
 
-### Alternatif: Cloudflare Git integration
+## API v2.8 source contract
 
-Cloudflare dapat dihubungkan langsung ke repository `main`. Perintah deployment:
-
-```text
-npx wrangler deploy
-```
-
-Pastikan integrasi mengikuti branch `main` terbaru. Setelah deployment, jalankan/verifikasi endpoint live; jangan menganggap source GitHub otomatis berarti Worker telah berubah.
-
-## Endpoint API v2.7
-
-### Katalog dan discovery
+Endpoint utama:
 
 - `GET /api/health`
 - `GET /api/catalog`
-- `GET /api/entries?q=doraemon&type=kartun`
-- `GET /api/entries?type=mainan&limit=24&offset=0`
-- `GET /api/entries?station=RCTI&type=tv`
-- `GET /api/entries?status=verified`
-- `GET /api/entries?region=betawi`
-
-### Editorial intelligence
-
-- `GET /api/audit`
-- `GET /api/audit?readiness=needs-research&limit=24`
-- `GET /api/audit?issue=no-strong-source&type=tv`
-- `GET /api/entries?readiness=solid`
-- `GET /api/entries?issue=no-entry-visual`
-- `GET /api/entries?minScore=70&maxScore=85`
+- `GET /api/entries`
 - `GET /api/facets`
-- `GET /api/stats`
-
-### Sumber dan jadwal
-
+- `GET /api/audit`
 - `GET /api/sources`
-- `GET /api/schedules?day=Minggu`
-- `GET /api/archive-schedules?date=1995-06-04&station=RCTI`
+- `GET /api/stats`
+- `GET /api/schedules`
+- `GET /api/archive-schedules`
 
-`/api/entries` mendukung `q`, `type`, `station`, `status`, `region`, `readiness`, `issue`, `minScore`, `maxScore`, `limit`, dan `offset`. `limit` dibatasi maksimal 100.
+`/api/entries` mendukung `q`, `type`, `station`, `status`, `region`, `readiness`, `issue`, `minScore`, `maxScore`, `limit`, dan `offset`. `limit` maksimal 100.
 
-`/api/facets` mengembalikan agregasi historis (`byType`, `byStatus`, `byStation`, `byRegion`) dan editorial (`byReadiness`, `byIssue`, `bySourceKind`, `byYear`).
+`completenessScore` adalah **documentation-readiness metric, bukan historical truth score**.
 
-`/api/audit` mengembalikan mean/median completeness, release-ready, needs-attention, verified-with-issues, facets editorial, dan research priority queue.
+## PWA / offline
 
-**Completeness score bukan truth score.** Skor hanya mengukur seberapa lengkap sebuah entri terdokumentasi secara editorial. Mutu fakta tetap bergantung pada sumber.
+- Manifest: `public/manifest.webmanifest`.
+- Service worker: `public/sw.js`.
+- Current shell cache generation: `wml-time-machine-v3-4`.
+- Core offline shell memasukkan brand art dan kelima scene.
+- Memory Pack dapat menyimpan aset pilihan Rumah, Sekolah, atau Digital.
+- `id`, `scope`, `start_url`, dan shortcuts manifest memakai URL relatif agar dapat dipindahkan dari GitHub Pages ke custom domain.
 
-## Provenance dan editorial policy
+Ketika core scene artwork berubah, version cache harus dinaikkan agar install yang sudah ada tidak bertahan pada visual lama.
 
-- Fakta historis menggunakan `status: verified` atau `status: curated`.
-- `verified` harus mempunyai sumber yang dapat dilacak.
-- Fact Box menyimpan `sourceIds`; ID tersebut harus resolve ke sumber pada entri yang sama.
-- Kutipan nostalgia rekaan selalu diberi metadata `editorial-fiction`.
-- `simulation` dipakai untuk pengalaman interaktif yang tidak diklaim sebagai transkripsi arsip.
-- Jadwal simulasi dipisahkan dari `archiveSchedules`.
-- Sampel komunitas tidak dipresentasikan sebagai scan koran primer.
-- Harga historis yang belum memiliki bukti tetap kosong/disclaimer dan tidak diubah menjadi angka perkiraan yang terlihat faktual.
-- Fakta produk global dipisahkan dari klaim popularitas/distribusi Indonesia bila data lokal belum tersedia.
-- Poster, still film, cover majalah, dan visual lain yang hak pakainya tidak cukup jelas tidak disalin ke aset publik.
+## Visual production pipeline
 
-## Editorial Audit v2.7
+### Original immersive assets
 
-`shared/editorial-audit.js` menghitung diagnostic non-historis untuk tiap entri:
+`public/assets/world/` berisi visual original proyek:
 
-- kelengkapan metadata inti,
-- keberadaan/validitas URL sumber,
-- `checkedAt` sumber,
-- source-kind mix,
-- resolusi Fact Box → sumber,
-- metadata kutipan editorial,
-- konteks/evidence price tag,
-- keberadaan visual entri,
-- detail/tags/layout,
-- alignment entri `verified` dengan provenance,
-- explicit year signals 1990–1999.
+- `brand-orbit.svg`
+- `portal-grid.svg`
+- `scenes/rumah-90.svg`
+- `scenes/kampung-90.svg`
+- `scenes/sekolah-90.svg`
+- `scenes/kota-90.svg`
+- `scenes/digital-90.svg`
 
-Readiness bucket:
+Semua scene memakai canvas 1600×900, tanpa embedded base64. Mereka adalah ilustrasi stylized dan tidak dipresentasikan sebagai arsip fotografis.
 
-- `release-ready`
-- `solid`
-- `needs-research`
-- `incomplete`
+### Licensed editorial assets
 
-Research queue memprioritaskan entri `verified` yang masih memiliki gap, kemudian completeness score terendah.
+`scripts/fetch-assets.mjs` membangun aset ke `public/assets/media/`. GitHub Actions cache digunakan agar sumber eksternal tidak menjadi single point of failure pada setiap build.
 
-## Aset visual
+Ledger atribusi: `public/assets/ATTRIBUTION*.md`.
 
-Aset eksternal diambil melalui `scripts/fetch-assets.mjs`, dengan retry/backoff dan recovery untuk sumber opsional. Cache GitHub Actions mencegah Wikimedia Commons menjadi single point of failure pada setiap build.
+## Mobile production contract
 
-Ledger sumber/kreator/lisensi berada di `public/assets/ATTRIBUTION*.md`.
+Mobile mempunyai layout tersendiri, bukan desktop yang dikecilkan:
 
-Pipeline menargetkan **25 aset visual lokal** dan build mengharuskan minimum aset inti tersedia. Object-study tambahan boleh gagal sementara bila source throttling terjadi; cache/recovery akan digunakan.
+- safe-area notch/home-indicator;
+- compact horizontal HUD yang tetap mempertahankan semua action utama;
+- horizontal spatial exit rail;
+- touch target besar;
+- bottom-sheet object interaction;
+- bottom-sheet settings/search/time/collection;
+- archive mendapatkan scroll surface sendiri ketika body world dikunci;
+- profile strip tidak memenuhi layar utama;
+- portrait **Focus Pan** menggeser scene 16:9 ke anchor benda aktif tanpa men-stretch artwork;
+- reduced motion mematikan motion Focus Pan.
 
-## Quality gates minimum sebelum rilis
+CI menghitung jumlah Focus Pan selector per scene dan membandingkannya dengan jumlah object World Engine untuk mencegah mapping visual tertinggal.
 
-1. `npm test` lulus — saat ini **18 test**.
-2. Semua ID entri unik.
-3. Semua `sourceIds` Fact Box resolve.
-4. Entri `verified` mempunyai provenance.
-5. Semua enam stasiun TV memiliki entry coverage.
-6. Search, pagination, facets, quality filters, CORS, error path lulus.
-7. Audit engine mencakup seluruh SSOT dan tidak memakai vocabulary “truth score”.
-8. Timeline linked milestone resolve ke entry SSOT.
-9. Visual ledger unik dan mencakup object cabinet.
-10. Asset fetch/recovery memenuhi minimum build.
-11. `npm run build` lulus.
-12. Pages hanya bind ke Worker jika exact SSOT match.
-13. Pages publish berhasil.
-14. Jika Worker dideploy: `/api/health`, `/api/catalog`, exact IDs, `/api/audit`, dan CORS harus lulus `verify-worker.mjs`.
+## Resilience
 
-## Cakupan saat ini dan arah 500+
+`src/main.jsx` membungkus World Engine dengan production error boundary. Render failure menampilkan recovery surface dan reload action, bukan blank page. Recovery **tidak menghapus local progress**.
 
-v2.7 tetap menggunakan **46 entri kurasi** tetapi fondasi telah disiapkan untuk 500+ melalui:
+Service worker menyediakan navigation fallback ke shell yang sudah dicache saat offline.
 
-- pagination,
-- facets,
-- progressive rendering,
-- `content-visibility` untuk kartu off-screen,
-- research priority queue,
-- explicit editorial gaps,
-- source-kind coverage,
-- year indexing,
-- quality-aware API filtering.
+## Quality gates sebelum Pages publish
 
-Ekspansi berikutnya sebaiknya dilakukan per batch enrichment, dengan target memperbaiki gap yang terlihat di Ruang Redaksi terlebih dahulu sebelum mengejar kuantitas katalog.
+Gate saat ini mencakup:
+
+1. API, CORS, search, pagination, facets dan audit contract;
+2. provenance dan pemisahan `verified / curated / simulation`;
+3. Fact Box source resolution;
+4. editorial readiness dan explicit year indexing;
+5. semantic duplicate checks;
+6. Nostalgia Meter 20 pertanyaan;
+7. visual ledger;
+8. tepat 100 unique memory triggers bernomor 1–100;
+9. seluruh scene object, exit, campaign step dan random event resolve;
+10. achievement mempunyai unlock route yang didukung;
+11. mechanic registry mencakup mechanic trigger;
+12. tidak ada placeholder/prototype language pada World Engine;
+13. lima scene SVG valid, 16:9, ringan, dan tanpa embedded base64;
+14. anti-dashboard spatial layout contract;
+15. reduced-motion/high-contrast/touch behavior;
+16. mobile feature reachability dan archive scrolling;
+17. Focus Pan coverage terhadap seluruh interactive object;
+18. custom-domain asset portability;
+19. PWA scope + shortcut portability;
+20. Memory Pack contract;
+21. branded render recovery;
+22. Vite production build;
+23. performance budget;
+24. exact Worker/SSOT safety guard;
+25. Pages artifact upload dan deploy.
+
+## Arah ekspansi katalog
+
+SSOT saat ini **52 entri**, bukan 500+. Fondasi sudah mendukung ekspansi bertahap melalui pagination, facets, progressive rendering, audit queue, provenance gaps, source-kind coverage, dan year indexing.
+
+Penambahan entri sebaiknya berbasis evidence batch-by-batch. Jangan mengisi jadwal, harga, tokoh, atau fakta historis hanya untuk mengejar jumlah entri.
