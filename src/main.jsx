@@ -62,7 +62,7 @@ try{
  if(stored){
   const completed=[...new Set(Array.isArray(stored.completed)?stored.completed:[])].filter(id=>Boolean(getTrigger(id)));
   stored.completed=completed;
-  stored.score=completed.reduce((sum,id)=>sum+(getTrigger(id)?.points||0),0;
+  stored.score=completed.reduce((sum,id)=>sum+(getTrigger(id)?.points||0),0);
   stored.schema=4;
   if(hasScene){
    stored.scene=requestedScene;
