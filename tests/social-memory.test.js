@@ -43,14 +43,17 @@ test('frontend memory experience is functional offline and supports a private ph
  assert.match(panel,/remoteIds/);
 });
 
-test('memory card studio generates local 1:1 9:16 and 16:9 high-resolution share assets',async()=>{
+test('memory card studio generates local 1:1 9:16 and 16:9 high-resolution PNG share assets',async()=>{
  const [panel,studio,css]=await Promise.all([text('src/world/SocialMemoryPanel.jsx'),text('src/world/MemoryCardStudio.jsx'),text('src/world/memory-card.css')]);
  assert.match(panel,/MemoryCardStudio/);
  assert.match(panel,/Kartu Nostalgia/);
  for(const dimensions of ['1080,height:1080','1080,height:1920','1600,height:900'])assert.ok(studio.includes(dimensions));
- assert.match(studio,/new Blob\(\[svg\]/);
+ assert.match(studio,/canvas\.toBlob\(resolve,'image\/png'/);
+ assert.match(studio,/\.png`/);
+ assert.match(studio,/assets\/world\/raster\/\$\{sceneId\}-sore\.webp/);
  assert.match(studio,/navigator\.share/);
  assert.match(studio,/navigator\.clipboard\.writeText/);
+ assert.equal(studio.includes('image/svg+xml'),false,'memory card output must be raster PNG');
  assert.equal(studio.includes('fetch('),false,'memory card generation must remain local');
  assert.match(css,/memory-card-studio/);
 });
