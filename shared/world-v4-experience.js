@@ -36,13 +36,24 @@ export function getSeasonalEvent(mode,seed=Math.random()){
  return {id:`season-${mode}-${trigger.id}`,label:`${config.label} · ${trigger.title}`,scene:trigger.scene,trigger:trigger.id,seasonal:true};
 }
 
+function countAchievement(item,completedSet,triggers,visitedScenes,visitedYears){
+ if(item.kind==='scenes')return new Set(visitedScenes).size;
+ if(item.kind==='years')return new Set(visitedYears.map(Number)).size;
+ if(Array.isArray(item.triggerIds)&&item.triggerIds.length)return item.triggerIds.filter(id=>completedSet.has(id)).length;
+ return triggers.filter(trigger=>{
+  if(!completedSet.has(trigger.id))return false;
+  if(item.category&&trigger.category!==item.category)return false;
+  if(Array.isArray(item.mechanics)&&item.mechanics.length&&!item.mechanics.includes(trigger.mechanic))return false;
+  return Boolean(item.category||item.mechanics?.length);
+ }).length;
+}
+
 export function buildAchievementProgress(achievementList,{completed=[],visitedScenes=[],visitedYears=[]}={}){
- const categoryCounts=completed.reduce((acc,id)=>{const trigger=getTrigger(id);if(trigger)acc[trigger.category]=(acc[trigger.category]||0)+1;return acc},{});
+ const completedSet=new Set(completed);
+ const completedTriggers=completed.map(getTrigger).filter(Boolean);
  return achievementList.map(item=>{
-  let current=0;
-  if(item.kind==='scenes')current=new Set(visitedScenes).size;
-  else if(item.kind==='years')current=new Set(visitedYears.map(Number)).size;
-  else if(item.category)current=categoryCounts[item.category]||0;
-  return {...item,current:Math.min(current,item.target),unlocked:current>=item.target};
+  const raw=countAchievement(item,completedSet,completedTriggers,visitedScenes,visitedYears);
+  const current=Math.min(raw,item.target);
+  return {...item,current,remaining:Math.max(0,item.target-current),unlocked:current>=item.target,percent:item.target?Math.round(current/item.target*100):100};
  });
 }
