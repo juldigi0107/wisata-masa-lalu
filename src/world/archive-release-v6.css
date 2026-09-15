@@ -1,0 +1,53 @@
+/* Archive Release V6 — editorial museum, not retro dashboard. */
+
+/* Raster identity assets. Original SVGs remain authoring sources only. */
+.brand img,.app-shell>footer img{display:none!important}
+.brand:before{content:"";width:42px;height:42px;flex:0 0 42px;background-image:var(--wml-brand-seal);background-size:contain;background-repeat:no-repeat;background-position:center;filter:drop-shadow(0 8px 18px rgba(0,0,0,.18))}
+.app-shell>footer:before{content:"";width:48px;height:48px;background-image:var(--wml-brand-seal);background-size:contain;background-repeat:no-repeat;background-position:center;display:block;margin-bottom:12px;opacity:.86}
+.music-player>img:first-child{display:none!important}
+.music-player:before{content:"";display:block;width:min(100%,620px);aspect-ratio:820/520;background-image:var(--wml-cassette-player);background-size:contain;background-repeat:no-repeat;background-position:center;filter:drop-shadow(0 26px 50px rgba(0,0,0,.26)) saturate(.78)}
+.ramadan-photo .lantern{display:none!important}
+.ramadan-photo:after{content:"";position:absolute;right:clamp(16px,4vw,58px);bottom:clamp(16px,4vw,44px);width:clamp(90px,15vw,180px);aspect-ratio:640/760;background-image:var(--wml-ramadan-lantern);background-size:contain;background-repeat:no-repeat;background-position:center;filter:drop-shadow(0 18px 35px rgba(0,0,0,.35));opacity:.9}
+
+/* Remove decorative pictogram language from module navigation. */
+.module-icon{display:none!important}
+.module-card{position:relative;min-height:250px!important;padding:26px 24px 24px!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;border-radius:0!important;border-width:1px!important;background:linear-gradient(180deg,rgba(255,255,255,.68),rgba(242,232,213,.97))!important;box-shadow:none!important;overflow:hidden}
+.module-card:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 48%,rgba(18,28,26,.035) 48% 49%,transparent 49%);pointer-events:none}
+.module-card .module-no{position:absolute;top:20px;left:22px;font:700 .48rem "Courier New",monospace!important;letter-spacing:.19em!important;color:rgba(28,31,27,.45)!important}
+.module-card h3{font:540 clamp(1.55rem,2vw,2.35rem)/.94 Georgia,serif!important;letter-spacing:-.045em!important;max-width:9ch!important;margin:0 0 9px!important}
+.module-card p{font-size:.7rem!important;line-height:1.55!important;max-width:26ch!important;color:rgba(34,32,28,.62)!important}
+.module-card .module-arrow{position:absolute!important;right:20px!important;top:18px!important;font-size:1rem!important;opacity:.38!important}
+.module-card:hover,.module-card:focus-visible{transform:none!important;background:linear-gradient(180deg,#f8ecd7,#ead8b7)!important;box-shadow:inset 0 0 0 1px rgba(27,54,50,.16)!important}
+.module-grid{gap:1px!important;background:rgba(29,33,28,.12)!important;border:1px solid rgba(29,33,28,.12)!important}
+
+/* Header becomes a reading-room instrument, not a site navbar. */
+.site-header{background:rgba(246,236,217,.87)!important;border-bottom:1px solid rgba(35,31,25,.14)!important;backdrop-filter:blur(22px) saturate(1.08)!important;box-shadow:0 15px 50px rgba(32,25,18,.055)!important}
+.header-inner{min-height:72px!important}.brand{gap:11px!important}.brand span b{font-weight:700!important;letter-spacing:.035em!important}.brand span small{letter-spacing:.18em!important;color:rgba(33,31,26,.48)!important}
+.site-header nav{gap:3px!important;padding:3px!important;border:1px solid rgba(35,31,25,.09)!important;background:rgba(255,255,255,.3)!important;border-radius:999px!important}
+.site-header nav a{padding:8px 11px!important;border-radius:999px!important;text-decoration:none!important;font:700 .52rem "Courier New",monospace!important;letter-spacing:.07em!important;color:rgba(31,31,27,.64)!important}.site-header nav a:hover,.site-header nav a:focus-visible{background:#1b2522!important;color:#f5ead6!important}
+.sound-toggle{border-radius:999px!important;background:transparent!important;border-color:rgba(35,31,25,.14)!important}
+
+/* Hero: full editorial spread, quieter metrics. */
+.hero{min-height:clamp(720px,92vh,980px)!important;border-bottom:1px solid rgba(24,31,27,.12)!important;background:#efe1c8!important}
+.hero-photo{border-radius:0!important;box-shadow:none!important}.hero-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 45%,rgba(6,13,12,.08)),linear-gradient(0deg,rgba(9,14,13,.22),transparent 38%);pointer-events:none}.hero-photo img{filter:saturate(.72) contrast(1.06) sepia(.035)!important}
+.hero-copy h1{font-weight:500!important;letter-spacing:-.066em!important;line-height:.82!important;max-width:9ch!important}.hero-lead{max-width:48ch!important;line-height:1.78!important;color:rgba(35,31,26,.7)!important}.hero-meta{border-top:1px solid rgba(35,31,26,.12)!important;padding-top:16px!important;gap:16px!important}.hero-meta span{font-size:.53rem!important;color:rgba(35,31,26,.46)!important}.hero-meta span b{font:600 1rem Georgia,serif!important;color:#26271f!important}
+.hero-stub{border-radius:0!important;background:#16211f!important;color:#efe0c2!important;box-shadow:none!important}.hero-stub>strong{font-weight:500!important;letter-spacing:-.08em!important}.barcode{opacity:.45!important}
+
+/* TV and object chapters feel like physical exhibits. */
+.tv-section{background:#101716!important}.tv-layout{gap:clamp(22px,4vw,54px)!important}.tv-set{filter:drop-shadow(0 38px 55px rgba(0,0,0,.4))}.remote{border-radius:22px!important;background:rgba(255,255,255,.035)!important;border-color:rgba(255,255,255,.09)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important}.remote button{border-radius:12px!important}.tv-object{border:0!important;border-radius:0!important;background:transparent!important}.tv-object img{filter:saturate(.72) contrast(1.05)!important}
+.object-stage{border-radius:0!important;background:#111715!important;box-shadow:0 30px 90px rgba(0,0,0,.18)!important}.object-stage img{filter:saturate(.72) contrast(1.04)!important}.object-nav{gap:1px!important;background:rgba(24,29,25,.08)!important}.object-nav button{border-radius:0!important;border-color:transparent!important;background:rgba(255,255,255,.48)!important}.object-nav button[aria-pressed=true]{background:#17211f!important;color:#f1e4cb!important}
+
+/* Reading rhythm. */
+.section-head h2,.sunday-copy h2,.calculator h2,.ramadan-copy h2,.dictionary h2,.feature-story h2{font-weight:510!important;letter-spacing:-.052em!important}.section-head>p,.sunday-copy>p,.calculator>p,.ramadan-copy>p,.dictionary>p{line-height:1.72!important}.eyebrow{letter-spacing:.18em!important;font-size:.48rem!important}
+.source-link{border-radius:999px!important}.guide-tabs,.region-bar,.type-filter,.status-filter{scrollbar-width:none}.guide-tabs::-webkit-scrollbar,.region-bar::-webkit-scrollbar,.type-filter::-webkit-scrollbar,.status-filter::-webkit-scrollbar{display:none}
+
+/* Quiz boarding pass is a composed artifact, not a card. */
+.quiz-ticket{border-radius:0!important;background:linear-gradient(135deg,#efe2ca,#e7d5b5)!important;box-shadow:0 26px 80px rgba(45,34,22,.12)!important;border:1px solid rgba(45,34,22,.13)!important}.quiz-ticket button{border-radius:999px!important}.score-ring{border-width:1px!important;background:rgba(255,255,255,.26)!important;box-shadow:inset 0 0 0 10px rgba(255,255,255,.12)!important}
+
+/* Collection: archive table rather than ecommerce grid. */
+.clip-grid{gap:1px!important;background:rgba(33,31,26,.11)!important;border:1px solid rgba(33,31,26,.11)!important}.clip-card{border-radius:0!important;border:0!important;background:#f4ead7!important;box-shadow:none!important}.clip-card:hover,.clip-card:focus-visible{transform:none!important;background:#e9d6b6!important}.clip-card h3{font-weight:560!important;letter-spacing:-.035em!important}.clip-status{border-radius:999px!important}
+.feature-story{border-radius:0!important;border-top:1px solid rgba(31,29,25,.14)!important;border-bottom:1px solid rgba(31,29,25,.14)!important;box-shadow:none!important}.story-visual{border-radius:0!important}.story-visual img{filter:saturate(.75) contrast(1.04)!important}.story-notes section{border-radius:0!important}
+
+/* Mobile remains magazine-like rather than card-stacked. */
+@media(max-width:760px){.site-header nav{max-width:54vw;overflow-x:auto;scrollbar-width:none}.site-header nav::-webkit-scrollbar{display:none}.module-grid{grid-template-columns:1fr!important}.module-card{min-height:180px!important}.hero{min-height:auto!important}.hero-stub{border-radius:0!important}.music-player:before{width:100%}.ramadan-photo:after{width:92px}.clip-grid{grid-template-columns:1fr!important}.clip-card{min-height:180px!important}}
+@media(prefers-reduced-motion:reduce){.module-card,.clip-card,.site-header nav a{transition:none!important}}
