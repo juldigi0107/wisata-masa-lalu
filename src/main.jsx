@@ -21,6 +21,7 @@ import "./world/device-controls.css";
 import "./world/resilience.css";
 import "./world/mobile-premium.css";
 import "./world/mobile-focus.css";
+import "./world/mobile-hardening-v2.css";
 import "./world/entry-flow-v2.css";
 import "./world/page-system.css";
 
