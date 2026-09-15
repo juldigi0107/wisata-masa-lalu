@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v4-3';
+const VERSION='wml-time-machine-v6-1';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
@@ -6,14 +6,14 @@ const swBase=new URL('./',self.location.href);
 const base=swBase.pathname;
 const shellUrls=[
  `${base}manifest.webmanifest`,
- `${base}assets/world/brand-orbit.svg`,
- `${base}assets/world/portal-grid.svg`,
- `${base}assets/world/scenes/rumah-90.svg`,
- `${base}assets/world/scenes/kampung-90.svg`,
- `${base}assets/world/scenes/sekolah-90.svg`,
- `${base}assets/world/scenes/kota-90.svg`,
- `${base}assets/world/scenes/digital-90.svg`,
- `${base}assets/brand-seal.svg`
+ `${base}assets/world/raster/brand-orbit.webp`,
+ `${base}assets/world/raster/portal-grid.webp`,
+ `${base}assets/world/raster/rumah-90.webp`,
+ `${base}assets/world/raster/kampung-90.webp`,
+ `${base}assets/world/raster/sekolah-90.webp`,
+ `${base}assets/world/raster/kota-90.webp`,
+ `${base}assets/world/raster/digital-90.webp`,
+ `${base}assets/brand-seal.webp`
 ];
 
 function shellAssetUrls(html){
