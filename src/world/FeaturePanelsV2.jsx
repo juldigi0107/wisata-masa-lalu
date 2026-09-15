@@ -10,7 +10,8 @@ export function DialogSurface({className,label,onClose,children}){
  const ref=useRef(null);const previous=useRef(null);
  useEffect(()=>{
   previous.current=document.activeElement;
-  const root=ref.current;const timer=requestAnimationFrame(()=>root?.querySelector('input,button,select,textarea,a[href]')?.focus());
+  const root=ref.current;
+  const timer=requestAnimationFrame(()=>root?.querySelector('[data-autofocus],input[autofocus],textarea[autofocus],select[autofocus],input,textarea,select,button,a[href]')?.focus());
   function keydown(event){
    if(event.key==='Escape'){event.stopPropagation();onClose();return}
    if(event.key!=='Tab'||!root)return;
@@ -55,7 +56,7 @@ export function SearchPanel({query,setQuery,onClose,onSelectTrigger,onOpenEntry,
  const entryResults=useMemo(()=>catalog.entries.filter(item=>!needle?searchableEntry(item).includes(String(year)):searchableEntry(item).includes(needle)).slice(0,10),[needle,year]);
  return <DialogSurface className="search-panel deep-panel" label="Pencarian memori" onClose={onClose}>
   <button className="panel-close" onClick={onClose} aria-label="Tutup pencarian">×</button><p className="world-eyebrow">MEMORY SEARCH / EXPERIENCE + ARCHIVE</p><h2>Cari dari ingatan.</h2>
-  <div className="search-field"><input autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder="misal: kaset, wartel, jajanan plastik…" aria-label="Cari memori"/>{query&&<button onClick={()=>setQuery('')} aria-label="Bersihkan pencarian">×</button>}</div>
+  <div className="search-field"><input data-autofocus autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder="misal: kaset, wartel, jajanan plastik…" aria-label="Cari memori"/>{query&&<button onClick={()=>setQuery('')} aria-label="Bersihkan pencarian">×</button>}</div>
   <p className="search-mode-note">{needle?`Hasil untuk “${query.trim()}”`:`Belum mengetik — menampilkan pengalaman di ${currentScene} dan jejak arsip sekitar ${year}.`}</p>
   <div className="search-columns"><section><h3>Pengalaman <sup>{triggerResults.length}</sup></h3>{triggerResults.map(item=><button key={item.id} onClick={()=>onSelectTrigger(item)}><b>{item.title}</b><small>{item.category} · {item.scene}</small></button>)}{!triggerResults.length&&<p className="panel-empty">Tidak ada pengalaman yang cocok. Coba istilah benda atau aktivitas.</p>}</section><section><h3>Arsip <sup>{entryResults.length}</sup></h3>{entryResults.map(item=><button key={item.id} onClick={()=>onOpenEntry(item)}><b>{item.title}</b><small>{item.type} · {item.status}</small></button>)}{!entryResults.length&&<p className="panel-empty">Tidak ada entri arsip yang cocok dengan kata tersebut.</p>}</section></div>
  </DialogSurface>;
