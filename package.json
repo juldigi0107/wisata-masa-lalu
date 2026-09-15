@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm run generate:world-art && vite",
-    "generate:world-art": "node scripts/generate-world-raster.mjs",
+    "generate:world-art": "node scripts/generate-world-raster.mjs && node scripts/generate-event-raster.mjs",
     "build": "npm run generate:world-art && vite build && node scripts/scrub-runtime-svg.mjs && node scripts/check-premium-raster-pack.mjs",
     "preview": "vite preview",
     "test": "node --test tests/*.test.js",
