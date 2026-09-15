@@ -11,6 +11,7 @@ export default function ContextualArchivePage({entry}){
  const sourceKinds=[...new Set(sources.map(source=>source.kind).filter(Boolean))];
  const checkedDates=sources.map(source=>source.checkedAt).filter(Boolean).sort();
  const latestChecked=checkedDates.at(-1)||null;
+ const initials=entry.title.slice(0,2).toUpperCase();
  return <article className="context-entry-page">
   <header className="context-entry-hero" id="dossier-top">
    <div className="context-entry-copy">
@@ -26,7 +27,10 @@ export default function ContextualArchivePage({entry}){
      <span><b>{latestChecked||'—'}</b><small>cek terakhir</small></span>
     </div>
    </div>
-   <div className={`context-entry-visual ${visual?'has-image':'abstract'}`}>{visual?<img src={visualSrc(visual)} alt={visual.alt||entry.title}/>:<><i/><b>{entry.title.slice(0,2).toUpperCase()}</b><small>VISUAL ARSIP BELUM TERSEDIA<br/>FAKTA TETAP DAPAT DITELUSURI</small></>}</div>
+   <div className={`context-entry-visual ${visual?'has-image':'abstract'}`}>
+    <i/><b>{initials}</b><small>VISUAL ARSIP BELUM TERSEDIA<br/>FAKTA TETAP DAPAT DITELUSURI</small>
+    {visual&&<img src={visualSrc(visual)} alt={visual.alt||entry.title} loading="eager" decoding="async" onError={event=>{event.currentTarget.hidden=true;const holder=event.currentTarget.parentElement;holder?.classList.remove('has-image');holder?.classList.add('abstract')}}/>}
+   </div>
   </header>
 
   <nav className="context-local-nav" aria-label="Navigasi dossier">
