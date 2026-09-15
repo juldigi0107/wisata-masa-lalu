@@ -10,6 +10,7 @@ test('visual DNA v6 is loaded through the premium async style chunk',async()=>{
   text('src/main.jsx')
  ]);
  assert.match(loader,/visual-dna-v6\.css/);
+ assert.match(loader,/visual-dna-optical-v6\.css/);
  assert.equal(main.includes('import "./world/visual-dna-v6.css"'),false,'visual DNA should not inflate critical CSS');
  assert.match(main,/assets\/world\/raster\/\$\{id\}-90\.webp/);
  assert.equal(/assets\/world\/scenes\/[^"']+\.svg/.test(main),false,'production runtime must stay raster-first');
@@ -37,11 +38,18 @@ test('world chrome remains spatial instead of dashboard-like under the new DNA',
 });
 
 test('visual DNA keeps mobile scene dominance and optical hotspots accessible',async()=>{
- const css=await text('src/world/visual-dna-v6.css');
+ const [css,optical]=await Promise.all([
+  text('src/world/visual-dna-v6.css'),
+  text('src/world/visual-dna-optical-v6.css')
+ ]);
  assert.match(css,/@media\(max-width:620px\)/);
  assert.match(css,/\.scene-object:hover/);
  assert.match(css,/\.scene-object:focus-visible/);
  assert.match(css,/\.scene-object\.active/);
  assert.match(css,/\.scene-caption/);
  assert.match(css,/\.profile-strip\{display:none!important\}/);
+ assert.match(optical,/\.scene-object b\{font-size:0!important/);
+ assert.match(optical,/\.scene-object b:before/);
+ assert.match(optical,/\.scene-object b:after/);
+ assert.match(optical,/prefers-reduced-motion/);
 });
