@@ -32,6 +32,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm install
+      - name: Security audit — high/critical
+        run: npm audit --audit-level=high
       - name: Validate API and editorial contracts
         run: npm test
       - name: Editorial intelligence report
