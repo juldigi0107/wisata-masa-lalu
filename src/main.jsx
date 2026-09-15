@@ -2,6 +2,7 @@ import React from "react";
 import {createRoot} from "react-dom/client";
 import WorldApp from "./world/WorldAppV4.jsx";
 import AmbientRuntimeV4 from "./world/AmbientRuntimeV4.jsx";
+import PremiumRuntimeV5 from "./world/PremiumRuntimeV5.jsx";
 import baseCatalog from "../shared/catalog.js";
 import assembledCatalog from "../shared/assembled-catalog.js";
 import {scenes,years} from "../shared/world-model.js";
@@ -27,6 +28,7 @@ import "./world/page-system.css";
 import "./world/feature-deep-dive-v4.css";
 import "./world/seasonal-function-v4.css";
 import "./world/archive-recovery-v4.css";
+import "./world/premium-experience-v5.css";
 
 Object.assign(baseCatalog, assembledCatalog);
 
@@ -82,7 +84,7 @@ class AppErrorBoundary extends React.Component{
 }
 
 createRoot(document.getElementById("root")).render(
- <React.StrictMode><AppErrorBoundary><WorldApp/><AmbientRuntimeV4/></AppErrorBoundary></React.StrictMode>
+ <React.StrictMode><AppErrorBoundary><WorldApp/><AmbientRuntimeV4/><PremiumRuntimeV5/></AppErrorBoundary></React.StrictMode>
 );
 
 if('serviceWorker' in navigator){
