@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v3-5';
+const VERSION='wml-time-machine-v4-0';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const swBase=new URL('./',self.location.href);
@@ -67,6 +67,13 @@ self.addEventListener('fetch',event=>{
 self.addEventListener('message',event=>{
  const data=event.data||{};
  if(data.type==='SKIP_WAITING'){self.skipWaiting();return}
+ if(data.type==='CLEAR_MEMORY_PACKS'){
+  event.waitUntil((async()=>{
+   await caches.delete(MEDIA);
+   event.source?.postMessage?.({type:'MEMORY_PACKS_CLEARED'});
+  })());
+  return;
+ }
  if(data.type==='CACHE_MEMORY_PACK'&&Array.isArray(data.urls)){
   event.waitUntil((async()=>{
    const urls=data.urls
