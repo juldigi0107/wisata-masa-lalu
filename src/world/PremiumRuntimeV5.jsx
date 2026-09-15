@@ -3,7 +3,7 @@ import {createPortal} from 'react-dom';
 
 const SCENES=['rumah','kampung','sekolah','kota','digital'];
 const PHASES=['pagi','siang','sore','malam'];
-const MODES=['normal','ramadan','agustusan'];
+const MODES=['normal','ramadan','lebaran','agustusan','minggu','malam-minggu'];
 
 function readWorldState(){
  const sceneNode=document.querySelector('.world-scene');
