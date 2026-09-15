@@ -70,7 +70,8 @@ test('render failures have a branded recovery boundary instead of a blank page',
  assert.match(main,/class AppErrorBoundary extends React\.Component/);
  assert.match(main,/getDerivedStateFromError/);
  assert.match(main,/Muat ulang aplikasi/);
- assert.match(main,/<AppErrorBoundary><WorldApp\/><AmbientRuntimeV4\/><\/AppErrorBoundary>/);
+ const boundary=main.match(/<AppErrorBoundary>([\s\S]*?)<\/AppErrorBoundary>/)?.[1]||'';
+ for(const runtime of ['WorldApp','AmbientRuntimeV4','PremiumRuntimeV5'])assert.match(boundary,new RegExp(`<${runtime}\\s*\\/>`),`${runtime} must stay inside the recovery boundary`);
  assert.match(resilience,/\.fatal-shell/);
  assert.equal(/localStorage\.removeItem/.test(main.split('class AppErrorBoundary')[1]||''),false,'render recovery must not delete user progress');
 });
