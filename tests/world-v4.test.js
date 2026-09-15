@@ -8,6 +8,7 @@ test('production entry uses modular WorldAppV4 and its feature-state layer',asyn
  const main=await text('src/main.jsx');
  assert.match(main,/WorldAppV4\.jsx/);
  assert.match(main,/feature-deep-dive-v4\.css/);
+ assert.match(main,/seasonal-function-v4\.css/);
 });
 
 test('v4 profile migration sanitizes scene year arrays settings and corrupted progress',async()=>{
@@ -18,7 +19,7 @@ test('v4 profile migration sanitizes scene year arrays settings and corrupted pr
  assert.match(app,/VALID_PROFILES/);
  assert.match(app,/completed:uniq\(raw\.completed\)\.filter/);
  assert.match(app,/collections:uniq\(raw\.collections\)\.filter/);
- assert.match(app,/settings:\{\.\.\.DEFAULT_SETTINGS/);
+ assert.match(app,/settings:sanitizeWorldSettings\(raw\.settings\)/);
 });
 
 test('daily memory uses device-local calendar rather than UTC ISO date',async()=>{
@@ -39,7 +40,8 @@ test('random events never compete visually with a focused modal or object lens',
  const app=await text('src/world/WorldAppV4.jsx');
  assert.match(app,/if\(!profile\|\|overlay\|\|activeObject\|\|event\)return/);
  assert.match(app,/event&&!overlay&&!activeObject/);
- assert.match(app,/setEvent\(next\)\}\}><span>MEMORY ENGINE/);
+ assert.match(app,/function triggerMemoryEvent/);
+ assert.match(app,/onClick=\{triggerMemoryEvent\}/);
 });
 
 test('campaign selection and campaign activity launch are separate actions',async()=>{
@@ -64,12 +66,14 @@ test('search has intentional discovery and empty states instead of query-empty r
  assert.match(panel,/Tidak ada entri arsip yang cocok/);
 });
 
-test('collection panel exposes both artifact completion and achievements',async()=>{
+test('collection panel exposes artifact completion achievement progress and unlock state',async()=>{
  const panel=await text('src/world/FeaturePanelsV2.jsx');
  assert.match(panel,/cabinet-progress/);
  assert.match(panel,/Achievement/);
  assert.match(panel,/achievement-grid/);
  assert.match(panel,/unlockedAchievements/);
+ assert.match(panel,/achievementProgress/);
+ assert.match(panel,/PROGRESS/);
 });
 
 test('all v4 modal surfaces trap Tab focus restore origin focus and close with Escape',async()=>{
@@ -78,6 +82,7 @@ test('all v4 modal surfaces trap Tab focus restore origin focus and close with E
  assert.match(panel,/event\.key!=='Tab'/);
  assert.match(panel,/previous\.current=document\.activeElement/);
  assert.match(panel,/previous\.current\?\.focus/);
+ assert.match(panel,/\[data-autofocus\]/);
 });
 
 test('generic billing and arcade timers use real one-second ticks and completion is guarded once',async()=>{
@@ -87,11 +92,21 @@ test('generic billing and arcade timers use real one-second ticks and completion
  assert.match(mechanics,/setTimeout\(\(\)=>setTime\(t=>t-1\),1000\)/);
 });
 
-test('offline memory packs can be cleared independently from the core offline shell',async()=>{
+test('offline memory packs are isolated from runtime media and core shell caches',async()=>{
  const sw=await text('public/sw.js');
+ assert.match(sw,/const PACKS=/);
  assert.match(sw,/CLEAR_MEMORY_PACKS/);
- assert.match(sw,/caches\.delete\(MEDIA\)/);
+ assert.match(sw,/caches\.delete\(PACKS\)/);
+ assert.match(sw,/caches\.open\(PACKS\)/);
  assert.match(sw,/MEMORY_PACKS_CLEARED/);
  const clearBlock=sw.slice(sw.indexOf("data.type==='CLEAR_MEMORY_PACKS'"),sw.indexOf("data.type==='CACHE_MEMORY_PACK'"));
  assert.equal(clearBlock.includes('caches.delete(SHELL)'),false);
+ assert.equal(clearBlock.includes('caches.delete(MEDIA)'),false);
+});
+
+test('journey scene and year are written back to the current URL',async()=>{
+ const app=await text('src/world/WorldAppV4.jsx');
+ assert.match(app,/url\.searchParams\.set\('scene',sceneId\)/);
+ assert.match(app,/url\.searchParams\.set\('year',String\(year\)\)/);
+ assert.match(app,/history\.replaceState/);
 });
