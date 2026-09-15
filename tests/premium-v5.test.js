@@ -8,6 +8,7 @@ test('premium v5 runtime is mounted on the production path without replacing the
  const main=await text('src/main.jsx');
  assert.match(main,/PremiumRuntimeV5/);
  assert.match(main,/premium-experience-v5\.css/);
+ assert.match(main,/premium-intensity-v5\.css/);
  assert.match(main,/entry-premium-v5\.css/);
  assert.match(main,/WorldAppV4/);
  assert.match(main,/AmbientRuntimeV4/);
@@ -25,10 +26,12 @@ test('cinematic atmosphere portals inside the world stacking context and disappe
  assert.match(runtime,/if\(!state\.active\|\|!state\.host\)return null/);
 });
 
-test('premium scene treatment covers time of day, seasonal modes and reduced motion',async()=>{
- const css=await text('src/world/premium-experience-v5.css');
+test('premium scene treatment covers time of day, seasonal modes reduced motion and nostalgia intensity',async()=>{
+ const [css,intensity]=await Promise.all([text('src/world/premium-experience-v5.css'),text('src/world/premium-intensity-v5.css')]);
  for(const selector of ['premium-pagi','premium-siang','premium-sore','premium-malam','premium-ramadan','premium-agustusan','premium-scene-entering'])assert.match(css,new RegExp(selector));
+ for(const selector of ['intensity-ringan','intensity-imersif','intensity-total','year-accent'])assert.match(intensity,new RegExp(selector));
  assert.match(css,/prefers-reduced-motion:reduce/);
+ assert.match(intensity,/prefers-reduced-motion:reduce/);
  assert.match(css,/experience-dock button\[aria-pressed=true\]/);
 });
 
