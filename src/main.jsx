@@ -25,7 +25,6 @@ import "./world/mobile-focus.css";
 import "./world/mobile-hardening-v2.css";
 import "./world/entry-flow-v2.css";
 import "./world/page-system.css";
-import "./world/feature-deep-dive-v4.css";
 import "./world/seasonal-function-v4.css";
 import "./world/archive-recovery-v4.css";
 import "./world/entry-premium-v5.css";
@@ -88,6 +87,7 @@ createRoot(document.getElementById("root")).render(
 );
 
 void import("./world/premium-runtime-styles.js").catch(error=>console.warn('Premium atmosphere style chunk unavailable',error));
+void import("./world/interaction-runtime-styles.js").catch(error=>console.warn('Deep interaction style chunk unavailable',error));
 
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>navigator.serviceWorker.register(`${appBase}sw.js`).catch(()=>{}));
