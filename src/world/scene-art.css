@@ -1,11 +1,12 @@
 /* Original environment art layer. The SVGs are authored for this project and intentionally
-   remain stylized rather than pretending to be archival photography. */
+   remain stylized rather than pretending to be archival photography. Runtime URLs are injected
+   through CSS variables derived from Vite BASE_URL. */
 .scene-rumah .scene-architecture,.scene-kampung .scene-architecture,.scene-sekolah .scene-architecture,.scene-kota .scene-architecture,.scene-digital .scene-architecture{inset:0;background-position:center bottom;background-repeat:no-repeat;background-size:cover!important;opacity:.96;filter:saturate(.82) contrast(1.04)}
-.scene-rumah .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/rumah-90.svg')!important}
-.scene-kampung .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/kampung-90.svg')!important}
-.scene-sekolah .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/sekolah-90.svg')!important}
-.scene-kota .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/kota-90.svg')!important}
-.scene-digital .scene-architecture{background-image:url('/wisata-masa-lalu/assets/world/scenes/digital-90.svg')!important;filter:saturate(.9) contrast(1.08)}
+.scene-rumah .scene-architecture{background-image:var(--wml-scene-rumah)!important}
+.scene-kampung .scene-architecture{background-image:var(--wml-scene-kampung)!important}
+.scene-sekolah .scene-architecture{background-image:var(--wml-scene-sekolah)!important}
+.scene-kota .scene-architecture{background-image:var(--wml-scene-kota)!important}
+.scene-digital .scene-architecture{background-image:var(--wml-scene-digital)!important;filter:saturate(.9) contrast(1.08)}
 .scene-rumah .scene-architecture:before,.scene-rumah .scene-architecture:after,.scene-kampung .scene-architecture:before,.scene-kampung .scene-architecture:after,.scene-sekolah .scene-architecture:before,.scene-sekolah .scene-architecture:after,.scene-kota .scene-architecture:before,.scene-kota .scene-architecture:after,.scene-digital .scene-architecture:before,.scene-digital .scene-architecture:after{display:none!important}
 .scene-rumah .scene-sky,.scene-kampung .scene-sky,.scene-sekolah .scene-sky,.scene-kota .scene-sky,.scene-digital .scene-sky{opacity:.45}
 .scene-rumah .scene-ground,.scene-kampung .scene-ground,.scene-sekolah .scene-ground,.scene-kota .scene-ground,.scene-digital .scene-ground{opacity:.28}
