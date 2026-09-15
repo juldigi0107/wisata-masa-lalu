@@ -1,5 +1,6 @@
 import catalog from "../shared/assembled-catalog.js";
 import {auditCatalog,auditEntry} from "../shared/editorial-audit.js";
+import {handleSocialRequest} from "./social.js";
 
 const clampInt = (raw, fallback, min, max) => {
  const value = Number.parseInt(raw ?? "", 10);
@@ -24,8 +25,12 @@ export default {
   const reply = (body,status=200,extra={}) => new Response(JSON.stringify(body),{status,headers:{...headers,...extra}});
   if (request.method === "OPTIONS") {
    if (origin !== allowed) return reply({error:"Origin tidak diizinkan"},403,{"Cache-Control":"no-store"});
-   return new Response(null,{status:204,headers:{...headers,"Access-Control-Allow-Methods":"GET, OPTIONS","Access-Control-Max-Age":"86400"}});
+   return new Response(null,{status:204,headers:{...headers,"Access-Control-Allow-Methods":"GET, POST, PATCH, OPTIONS","Access-Control-Allow-Headers":"Content-Type, Authorization","Access-Control-Max-Age":"86400"}});
   }
+
+  const socialResponse=await handleSocialRequest({request,env,url,reply});
+  if(socialResponse)return socialResponse;
+
   if (request.method !== "GET") return reply({error:"Method tidak didukung"},405,{Allow:"GET, OPTIONS","Cache-Control":"no-store"});
 
   if (url.pathname === "/api/health") {
@@ -33,6 +38,7 @@ export default {
    return reply({
     ok:true,version:catalog.version,mode:"curated-static-v2",entries:catalog.entries.length,
     verified:catalog.entries.filter(e=>e.status==="verified").length,archiveSchedules:catalog.archiveSchedules?.length||0,
+    socialMemory:Boolean(env.DB),socialModeration:Boolean(env.DB&&env.ADMIN_TOKEN),
     editorialMeanScore:audit.meanScore,editorialMedianScore:audit.medianScore,
     editorialReleaseReady:audit.releaseReady,editorialSolid:audit.solidButIncomplete,
     editorialNeedsAttention:audit.needsAttention,
