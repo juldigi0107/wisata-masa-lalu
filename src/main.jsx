@@ -29,6 +29,7 @@ import "./world/feature-deep-dive-v4.css";
 import "./world/seasonal-function-v4.css";
 import "./world/archive-recovery-v4.css";
 import "./world/premium-experience-v5.css";
+import "./world/entry-premium-v5.css";
 
 Object.assign(baseCatalog, assembledCatalog);
 
