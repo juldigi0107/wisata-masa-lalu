@@ -1,0 +1,13 @@
+/* Runtime-resolved visual assets.
+   URLs come from import.meta.env.BASE_URL in main.jsx so GitHub Pages, previews,
+   and future custom domains share the same source without repository-name coupling. */
+.world-scene:before{background-image:var(--wml-portal-grid)!important}
+.brand-ticket:before{background-image:var(--wml-brand-orbit)!important}
+.onboarding:after{background-image:var(--wml-portal-grid)!important}
+.onboarding-paper:before{background-image:var(--wml-brand-orbit)!important}
+.time-intro:before{background-image:var(--wml-brand-orbit)!important}
+.scene-rumah .scene-architecture{background-image:var(--wml-scene-rumah)!important}
+.scene-kampung .scene-architecture{background-image:var(--wml-scene-kampung)!important}
+.scene-sekolah .scene-architecture{background-image:var(--wml-scene-sekolah)!important}
+.scene-kota .scene-architecture{background-image:var(--wml-scene-kota)!important}
+.scene-digital .scene-architecture{background-image:var(--wml-scene-digital)!important}
