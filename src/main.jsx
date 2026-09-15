@@ -45,11 +45,14 @@ try{
  const hasScene=Boolean(requestedScene&&scenes[requestedScene]);
  const hasYear=years.includes(requestedYear);
  const existing=JSON.parse(localStorage.getItem(key)||'null');
- if(existing||hasScene||hasYear){
-  const stored=existing||{
+ let stored=existing;
+ if(hasScene||hasYear){
+  stored=stored||{
    type:'anak-tv',completed:[],collections:[],visitedScenes:[],visitedYears:[],score:0,
    settings:{master:.7,ambience:.55,ui:.75,mute:false,intensity:'imersif'}
   };
+ }
+ if(stored){
   const completed=[...new Set(Array.isArray(stored.completed)?stored.completed:[])].filter(id=>Boolean(getTrigger(id)));
   stored.completed=completed;
   stored.score=completed.reduce((sum,id)=>sum+(getTrigger(id)?.points||0),0);
