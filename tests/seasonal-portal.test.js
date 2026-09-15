@@ -5,13 +5,14 @@ import {readFile} from 'node:fs/promises';
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
 test('world exposes one low-cognitive seasonal portal instead of separate mode buttons',async()=>{
- const [app,panel]=await Promise.all([text('src/world/WorldAppV4.jsx'),text('src/world/SeasonPanel.jsx')]);
+ const [app,panel,model]=await Promise.all([text('src/world/WorldAppV4.jsx'),text('src/world/SeasonPanel.jsx'),text('shared/world-v4-experience.js')]);
  assert.match(app,/openPanel\('season'\)/);
  assert.match(app,/overlay==='season'/);
  assert.match(app,/SeasonPanel active=\{specialMode\}/);
  assert.equal(/onClick=\{\(\)=>toggleSpecialMode\('ramadan'\)\}/.test(app),false);
  assert.equal(/onClick=\{\(\)=>toggleSpecialMode\('agustusan'\)\}/.test(app),false);
- for(const label of ['Ramadan 90-an','Lebaran di Kampung','Kampung Merdeka','Minggu Pagi','Malam Minggu'])assert.match(panel,new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+ assert.match(panel,/Object\.values\(seasonalModes\)/);
+ for(const label of ['Ramadan 90-an','Lebaran di Kampung','Kampung Merdeka','Minggu Pagi','Malam Minggu'])assert.ok(model.includes(label),`missing seasonal label ${label}`);
 });
 
 test('seasonal choice drives the same specialMode used by scene memory ribbon and random engine',async()=>{
