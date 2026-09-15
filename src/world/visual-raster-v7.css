@@ -1,0 +1,44 @@
+/* Visual Raster V7 — production uses generated WebP scene states and photographic surfaces.
+   Authoring vectors never appear in the public artifact. */
+
+/* --- Scene states: time is environmental, not a CSS tint ---------------- */
+.scene-rumah.phase-pagi .scene-architecture{background-image:linear-gradient(90deg,rgba(6,10,9,.1),transparent 44%),var(--wml-scene-rumah-pagi)!important}
+.scene-rumah.phase-siang .scene-architecture{background-image:linear-gradient(90deg,rgba(6,10,9,.08),transparent 46%),var(--wml-scene-rumah-siang)!important}
+.scene-rumah.phase-sore .scene-architecture{background-image:linear-gradient(90deg,rgba(6,10,9,.12),transparent 44%),var(--wml-scene-rumah-sore)!important}
+.scene-rumah.phase-malam .scene-architecture{background-image:linear-gradient(90deg,rgba(4,7,8,.2),transparent 44%),var(--wml-scene-rumah-malam)!important}
+.scene-kampung.phase-pagi .scene-architecture{background-image:var(--wml-scene-kampung-pagi)!important}.scene-kampung.phase-siang .scene-architecture{background-image:var(--wml-scene-kampung-siang)!important}.scene-kampung.phase-sore .scene-architecture{background-image:var(--wml-scene-kampung-sore)!important}.scene-kampung.phase-malam .scene-architecture{background-image:var(--wml-scene-kampung-malam)!important}
+.scene-sekolah.phase-pagi .scene-architecture{background-image:var(--wml-scene-sekolah-pagi)!important}.scene-sekolah.phase-siang .scene-architecture{background-image:var(--wml-scene-sekolah-siang)!important}.scene-sekolah.phase-sore .scene-architecture{background-image:var(--wml-scene-sekolah-sore)!important}.scene-sekolah.phase-malam .scene-architecture{background-image:var(--wml-scene-sekolah-malam)!important}
+.scene-kota.phase-pagi .scene-architecture{background-image:var(--wml-scene-kota-pagi)!important}.scene-kota.phase-siang .scene-architecture{background-image:var(--wml-scene-kota-siang)!important}.scene-kota.phase-sore .scene-architecture{background-image:var(--wml-scene-kota-sore)!important}.scene-kota.phase-malam .scene-architecture{background-image:var(--wml-scene-kota-malam)!important}
+.scene-digital.phase-pagi .scene-architecture{background-image:var(--wml-scene-digital-pagi)!important}.scene-digital.phase-siang .scene-architecture{background-image:var(--wml-scene-digital-siang)!important}.scene-digital.phase-sore .scene-architecture{background-image:var(--wml-scene-digital-sore)!important}.scene-digital.phase-malam .scene-architecture{background-image:var(--wml-scene-digital-malam)!important}
+
+/* Contextual world states use their own rendered artwork. */
+.scene-kampung.mode-ramadan .scene-architecture{background-image:var(--wml-scene-kampung-ramadan)!important}.scene-rumah.mode-ramadan .scene-architecture{background-image:var(--wml-scene-rumah-ramadan)!important}.scene-kota.mode-ramadan .scene-architecture{background-image:var(--wml-scene-kota-ramadan)!important}
+.scene-kampung.mode-agustusan .scene-architecture{background-image:var(--wml-scene-kampung-agustusan)!important}.scene-sekolah.mode-agustusan .scene-architecture{background-image:var(--wml-scene-sekolah-agustusan)!important}
+.scene-rumah.mode-minggu .scene-architecture{background-image:var(--wml-scene-rumah-minggu)!important}.scene-kampung.mode-minggu .scene-architecture{background-image:var(--wml-scene-kampung-minggu)!important}
+.scene-rumah.mode-malam-minggu .scene-architecture{background-image:var(--wml-scene-rumah-malam-minggu)!important}.scene-kota.mode-malam-minggu .scene-architecture{background-image:var(--wml-scene-kota-malam-minggu)!important}
+.scene-kampung.mode-hujan .scene-architecture{background-image:var(--wml-scene-kampung-hujan)!important}
+
+/* Raster states already contain light/color treatment. Filters now only perform subtle calibration. */
+.phase-pagi .scene-architecture,.phase-siang .scene-architecture,.phase-sore .scene-architecture,.phase-malam .scene-architecture,.mode-ramadan .scene-architecture,.mode-agustusan .scene-architecture,.mode-minggu .scene-architecture,.mode-malam-minggu .scene-architecture{filter:contrast(1.025) saturate(.94)!important}
+
+/* --- Material system ----------------------------------------------------- */
+.interaction-drawer,.deep-panel,.search-panel,.time-machine-panel,.collection-panel,.campaign-panel,.settings-panel,.season-panel{background-image:linear-gradient(145deg,rgba(8,14,13,.94),rgba(11,18,16,.84)),var(--wml-texture-photo)!important;background-size:auto,420px 268px!important}
+.trigger-brief,.mechanic-box,.context-archive,.year-state,.cabinet-progress,.memory-pack-settings,.journey-reset{background-image:linear-gradient(145deg,rgba(255,255,255,.027),rgba(255,255,255,.01)),var(--wml-texture-plastic)!important;background-size:auto,360px 230px!important}
+.archive-mode .feature-story,.archive-mode .blueprint,.archive-mode .quiz-ticket,.archive-mode .archive-schedule{background-image:linear-gradient(rgba(247,238,218,.96),rgba(238,226,201,.95)),var(--wml-texture-paper)!important;background-size:auto,420px 270px!important}
+.archive-mode .screen{background-image:linear-gradient(rgba(7,17,15,.45),rgba(4,8,7,.6)),var(--wml-texture-crt)!important;background-size:auto,260px 166px!important}
+
+/* --- Archive / museum photographic backplates --------------------------- */
+.archive-mode .hero,.archive-mode .tv-section,.archive-mode .games,.archive-mode .object-section,.archive-mode .decade-section,.archive-mode .warung,.archive-mode .ramadan,.archive-mode .music,.archive-mode .quiz,.archive-mode .collection,.archive-mode .credits{position:relative;isolation:isolate;overflow:hidden}
+.archive-mode .hero:before,.archive-mode .tv-section:before,.archive-mode .games:before,.archive-mode .object-section:before,.archive-mode .decade-section:before,.archive-mode .warung:before,.archive-mode .ramadan:before,.archive-mode .music:before,.archive-mode .quiz:before,.archive-mode .collection:before,.archive-mode .credits:before{content:"";position:absolute;inset:0;z-index:-2;background-position:center;background-size:cover;background-repeat:no-repeat;opacity:.17;filter:saturate(.7) contrast(1.08)}
+.archive-mode .hero:after,.archive-mode .tv-section:after,.archive-mode .games:after,.archive-mode .object-section:after,.archive-mode .decade-section:after,.archive-mode .warung:after,.archive-mode .ramadan:after,.archive-mode .music:after,.archive-mode .quiz:after,.archive-mode .collection:after,.archive-mode .credits:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,rgba(246,238,220,.98) 0 32%,rgba(246,238,220,.88) 55%,rgba(246,238,220,.7)),radial-gradient(circle at 84% 22%,transparent 0 20%,rgba(0,0,0,.08) 72%);pointer-events:none}
+.archive-mode .hero:before{background-image:var(--wml-surface-archive)}.archive-mode .tv-section:before{background-image:var(--wml-surface-tv)}.archive-mode .games:before{background-image:var(--wml-surface-games)}.archive-mode .object-section:before{background-image:var(--wml-surface-objects)}.archive-mode .decade-section:before{background-image:var(--wml-surface-timeline)}.archive-mode .warung:before{background-image:var(--wml-surface-warung)}.archive-mode .ramadan:before{background-image:var(--wml-surface-ramadan)}.archive-mode .music:before{background-image:var(--wml-surface-music)}.archive-mode .quiz:before{background-image:var(--wml-surface-quiz)}.archive-mode .collection:before,.archive-mode .credits:before{background-image:var(--wml-surface-collection)}
+.archive-mode .tv-section:after,.archive-mode .ramadan:after{background:linear-gradient(100deg,rgba(8,14,13,.94) 0 34%,rgba(8,14,13,.86) 58%,rgba(8,14,13,.6)),radial-gradient(circle at 84% 22%,transparent 0 20%,rgba(0,0,0,.18) 72%)}
+
+/* Richer first impression uses generated material, not flat gradients. */
+.time-intro,.onboarding,.archive-loading,.fatal-shell{background-image:radial-gradient(circle at 50% 35%,rgba(117,224,212,.11),transparent 28%),linear-gradient(145deg,rgba(4,9,8,.94),rgba(11,18,16,.96)),var(--wml-texture-photo)!important;background-size:auto,auto,640px 410px!important}
+
+@media(max-width:760px){
+ .archive-mode .hero:before,.archive-mode .tv-section:before,.archive-mode .games:before,.archive-mode .object-section:before,.archive-mode .decade-section:before,.archive-mode .warung:before,.archive-mode .ramadan:before,.archive-mode .music:before,.archive-mode .quiz:before,.archive-mode .collection:before,.archive-mode .credits:before{opacity:.11;background-position:70% center}
+ .archive-mode .hero:after,.archive-mode .games:after,.archive-mode .object-section:after,.archive-mode .decade-section:after,.archive-mode .warung:after,.archive-mode .music:after,.archive-mode .quiz:after,.archive-mode .collection:after,.archive-mode .credits:after{background:linear-gradient(180deg,rgba(246,238,220,.96),rgba(246,238,220,.9))}
+}
+@media(prefers-reduced-motion:reduce){.scene-architecture{transition:none!important}}
