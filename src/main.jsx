@@ -14,8 +14,18 @@ import "./world/archive-premium.css";
 import "./world/special-mechanics.css";
 import "./world/context-archive.css";
 import "./world/device-controls.css";
+import "./world/mobile-premium.css";
 
 Object.assign(baseCatalog, assembledCatalog);
+
+const appBase=import.meta.env.BASE_URL||"/";
+const runtimeAsset=path=>`url("${appBase}${path}")`;
+const rootStyle=document.documentElement.style;
+rootStyle.setProperty("--wml-portal-grid",runtimeAsset("assets/world/portal-grid.svg"));
+rootStyle.setProperty("--wml-brand-orbit",runtimeAsset("assets/world/brand-orbit.svg"));
+for(const id of Object.keys(scenes)){
+ rootStyle.setProperty(`--wml-scene-${id}`,runtimeAsset(`assets/world/scenes/${id}-90.svg`));
+}
 
 try{
  const params=new URLSearchParams(window.location.search);
@@ -42,5 +52,5 @@ createRoot(document.getElementById("root")).render(
 );
 
 if('serviceWorker' in navigator){
- window.addEventListener('load',()=>navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(()=>{}));
+ window.addEventListener('load',()=>navigator.serviceWorker.register(`${appBase}sw.js`).catch(()=>{}));
 }
