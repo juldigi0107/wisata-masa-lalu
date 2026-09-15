@@ -4,6 +4,7 @@ import WorldApp from "./world/WorldAppV4.jsx";
 import baseCatalog from "../shared/catalog.js";
 import assembledCatalog from "../shared/assembled-catalog.js";
 import {scenes,years} from "../shared/world-model.js";
+import {getTrigger} from "../shared/memory-triggers.js";
 import "./styles.css";
 import "./details.css";
 import "./world/premium.css";
@@ -36,17 +37,22 @@ for(const id of Object.keys(scenes)){
 }
 
 try{
+ const key='wml-v3-profile';
  const params=new URLSearchParams(window.location.search);
  const requestedScene=params.get('scene');
  const requestedYear=Number(params.get('year'));
  const hasScene=Boolean(requestedScene&&scenes[requestedScene]);
  const hasYear=years.includes(requestedYear);
- if(hasScene||hasYear){
-  const key='wml-v3-profile';
-  const stored=JSON.parse(localStorage.getItem(key)||'null')||{
+ const existing=JSON.parse(localStorage.getItem(key)||'null');
+ if(existing||hasScene||hasYear){
+  const stored=existing||{
    type:'anak-tv',completed:[],collections:[],visitedScenes:[],visitedYears:[],score:0,
    settings:{master:.7,ambience:.55,ui:.75,mute:false,intensity:'imersif'}
   };
+  const completed=[...new Set(Array.isArray(stored.completed)?stored.completed:[])].filter(id=>Boolean(getTrigger(id)));
+  stored.completed=completed;
+  stored.score=completed.reduce((sum,id)=>sum+(getTrigger(id)?.points||0),0);
+  stored.schema=4;
   if(hasScene){
    stored.scene=requestedScene;
    stored.visitedScenes=[...new Set([...(stored.visitedScenes||[]),requestedScene])];
