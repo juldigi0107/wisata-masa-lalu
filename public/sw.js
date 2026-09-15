@@ -1,11 +1,10 @@
-const VERSION='wml-time-machine-v4-1';
+const VERSION='wml-time-machine-v4-2';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
 const swBase=new URL('./',self.location.href);
 const base=swBase.pathname;
 const shellUrls=[
- base,
  `${base}manifest.webmanifest`,
  `${base}assets/world/brand-orbit.svg`,
  `${base}assets/world/portal-grid.svg`,
@@ -17,8 +16,25 @@ const shellUrls=[
  `${base}assets/brand-seal.svg`
 ];
 
+function shellAssetUrls(html){
+ const refs=[...html.matchAll(/(?:src|href)=["']([^"']+\.(?:js|css))["']/gi)].map(match=>match[1]);
+ return [...new Set(refs.map(ref=>new URL(ref,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href))];
+}
+
+async function installShell(){
+ const cache=await caches.open(SHELL);
+ const response=await fetch(base,{cache:'reload'});
+ if(!response.ok)throw Error(`shell HTML ${response.status}`);
+ const html=await response.clone().text();
+ await cache.put(base,response);
+ const discovered=shellAssetUrls(html);
+ const results=await Promise.allSettled([...shellUrls,...discovered].map(url=>cache.add(url)));
+ const failed=results.filter(result=>result.status==='rejected').length;
+ if(failed)console.warn(`Offline shell installed with ${failed} optional asset cache failures.`);
+}
+
 self.addEventListener('install',event=>{
- event.waitUntil(caches.open(SHELL).then(cache=>cache.addAll(shellUrls)).then(()=>self.skipWaiting()));
+ event.waitUntil(installShell().then(()=>self.skipWaiting()));
 });
 
 self.addEventListener('activate',event=>{
@@ -43,7 +59,7 @@ self.addEventListener('fetch',event=>{
    try{
     const fresh=await fetch(request);
     const cache=await caches.open(SHELL);
-    cache.put(base,fresh.clone());
+    if(url.pathname===base)cache.put(base,fresh.clone());
     return fresh;
    }catch{
     return (await caches.match(base))||Response.error();
