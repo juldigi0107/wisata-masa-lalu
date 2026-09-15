@@ -21,6 +21,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm install
+      - name: Security audit — high/critical
+        run: npm audit --audit-level=high
       - run: npm test
       - name: Editorial intelligence report
         run: npm run audit:editorial
