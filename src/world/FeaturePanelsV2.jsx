@@ -40,13 +40,13 @@ export function TimeMachinePanel({year,onYear,onClose,onOpenEntry}){
  </DialogSurface>;
 }
 
-export function CollectionPanel({owned,unlockedAchievements,onClose}){
- const [tab,setTab]=useState('koleksi');const percent=Math.round(owned.length/collections.length*100);
+export function CollectionPanel({owned,unlockedAchievements,achievementProgress=[],onClose}){
+ const [tab,setTab]=useState('koleksi');const percent=Math.round(owned.length/collections.length*100);const progressById=new Map(achievementProgress.map(item=>[item.id,item]));
  return <DialogSurface className="collection-panel deep-panel" label="Koleksi nostalgia" onClose={onClose}>
   <button className="panel-close" onClick={onClose} aria-label="Tutup koleksi">×</button><p className="world-eyebrow">DIGITAL CABINET / PROGRESS</p><h2>Koleksi kecilmu.</h2>
   <div className="cabinet-progress"><div><strong>{owned.length}</strong><span>/ {collections.length} artefak</span></div><div className="cabinet-meter"><i style={{width:`${percent}%`}}/></div><b>{percent}% ditemukan</b></div>
   <div className="panel-tabs" role="tablist"><button role="tab" aria-selected={tab==='koleksi'} onClick={()=>setTab('koleksi')}>Artefak</button><button role="tab" aria-selected={tab==='achievement'} onClick={()=>setTab('achievement')}>Achievement <sup>{unlockedAchievements.length}</sup></button></div>
-  {tab==='koleksi'?<div className="collection-grid">{collections.map((item,index)=>{const found=owned.includes(item.id);return <article key={item.id} className={found?'owned':''}><span>{item.icon}</span><b>{item.label}</b><small>{found?'TERKUMPUL':`BELUM DITEMUKAN · SLOT ${String(index+1).padStart(2,'0')}`}</small></article>})}</div>:<div className="achievement-grid">{achievements.map(item=>{const unlocked=unlockedAchievements.some(value=>value.id===item.id);return <article key={item.id} className={unlocked?'unlocked':''}><span>{unlocked?'✦':'○'}</span><div><b>{item.label}</b><p>{item.description}</p><small>{unlocked?'TERBUKA':'MASIH TERKUNCI'}</small></div></article>})}</div>}
+  {tab==='koleksi'?<div className="collection-grid">{collections.map((item,index)=>{const found=owned.includes(item.id);return <article key={item.id} className={found?'owned':''}><span>{item.icon}</span><b>{item.label}</b><small>{found?'TERKUMPUL':`BELUM DITEMUKAN · SLOT ${String(index+1).padStart(2,'0')}`}</small></article>})}</div>:<div className="achievement-grid">{achievements.map(item=>{const progress=progressById.get(item.id);const unlocked=progress?.unlocked??unlockedAchievements.some(value=>value.id===item.id);const current=progress?.current??(unlocked?item.target:0);return <article key={item.id} className={unlocked?'unlocked':''}><span>{unlocked?'✦':'○'}</span><div><b>{item.label}</b><p>{item.description}</p><small>{unlocked?'TERBUKA':`${current} / ${item.target} PROGRESS`}</small></div></article>})}</div>}
  </DialogSurface>;
 }
 
