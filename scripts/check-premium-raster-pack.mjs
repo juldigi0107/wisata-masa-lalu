@@ -6,7 +6,7 @@ for(const scene of ['rumah','kampung','sekolah','kota','digital']){
  required.push(`assets/world/raster/${scene}-90.webp`);
  for(const phase of ['pagi','siang','sore','malam'])required.push(`assets/world/raster/${scene}-${phase}.webp`);
 }
-for(const name of ['rumah-ramadan','rumah-minggu','rumah-malam-minggu','kampung-hujan','kampung-ramadan','kampung-agustusan','kampung-minggu','sekolah-agustusan','kota-ramadan','kota-malam-minggu'])required.push(`assets/world/raster/${name}.webp`);
+for(const name of ['rumah-ramadan','rumah-lebaran','rumah-minggu','rumah-malam-minggu','kampung-hujan','kampung-ramadan','kampung-lebaran','kampung-agustusan','kampung-minggu','sekolah-agustusan','kota-ramadan','kota-lebaran','kota-malam-minggu'])required.push(`assets/world/raster/${name}.webp`);
 for(const id of ['archive','tv','games','objects','timeline','warung','ramadan','music','quiz','collection','school'])required.push(`assets/generated/${id}.webp`);
 for(const id of ['paper','wood','plastic','photo','crt'])required.push(`assets/generated/texture-${id}.webp`);
 
