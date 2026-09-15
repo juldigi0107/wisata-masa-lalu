@@ -1,0 +1,23 @@
+/* Archive resilience v2 — failed media becomes an intentional editorial fallback, never a blank hole. */
+.archive-mode :where(.hero-photo,.tv-object,.sunday-art,.game-gallery figure,.object-stage,.warung-photo,.ramadan-photo,.music-player,.story-visual){position:relative;isolation:isolate}
+.archive-mode :where(.hero-photo,.tv-object,.sunday-art,.game-gallery figure,.object-stage,.warung-photo,.ramadan-photo,.story-visual):has(img[hidden]){min-height:260px!important;background:radial-gradient(circle at 42% 36%,rgba(87,145,135,.12),transparent 30%),linear-gradient(145deg,#d9ccb7,#b7aa96)!important}
+.archive-mode :where(.hero-photo,.tv-object,.sunday-art,.game-gallery figure,.object-stage,.warung-photo,.ramadan-photo,.story-visual):has(img[hidden]):before{content:'VISUAL ARSIP TIDAK TERSEDIA';position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%);width:max-content;max-width:78%;border:1px solid rgba(28,24,20,.2);border-radius:999px;background:rgba(241,229,207,.72);padding:8px 11px;color:#393129;font:700 .48rem 'Courier New',monospace;letter-spacing:.1em;text-align:center;backdrop-filter:blur(10px)}
+.archive-mode .hero-photo:has(img[hidden]){background:radial-gradient(circle at 35% 35%,rgba(130,222,211,.12),transparent 30%),linear-gradient(145deg,#18201d,#0b100e)!important}.archive-mode .hero-photo:has(img[hidden]):before{color:#d7f5ef;border-color:rgba(130,222,211,.18);background:rgba(9,14,12,.66)}
+.archive-mode .tv-object:has(img[hidden]),.archive-mode .object-stage:has(img[hidden]){background:radial-gradient(circle at 50% 43%,#d9d0c1,#8e867a 72%,#686157)!important}
+.archive-mode .ramadan-photo:has(img[hidden]){background:radial-gradient(circle at 65% 30%,rgba(229,193,116,.13),transparent 18%),linear-gradient(155deg,#12261f,#08110e)!important}.archive-mode .ramadan-photo:has(img[hidden]):before{color:#e9dfc8;border-color:rgba(255,255,255,.13);background:rgba(6,15,12,.62)}
+.archive-mode .music-player .cassette-photo[hidden]{display:none!important}
+.archive-mode .music-player:has(.cassette-photo[hidden]):after{content:'CASSETTE OBJECT STUDY · VISUAL CADANGAN';position:absolute;right:16px;bottom:14px;border-radius:999px;background:rgba(238,227,207,.08);border:1px solid rgba(255,255,255,.09);padding:7px 9px;color:rgba(238,225,203,.48);font:700 .4rem 'Courier New',monospace;letter-spacing:.08em}
+
+/* World search: no silent empty columns. */
+.search-columns section:not(:has(button)):after{content:'Belum ada hasil pada bagian ini. Coba kata yang lebih umum.';display:block;margin-top:12px;border:1px dashed rgba(255,255,255,.1);border-radius:14px;padding:18px 14px;color:rgba(238,225,203,.5);font-size:.6rem;line-height:1.5}
+
+/* Legacy archive empty state remains an editorial object. */
+.archive-mode .empty-state{min-height:150px;display:grid;align-content:center;gap:7px;background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.12))!important}.archive-mode .empty-state:before{content:'NO MATCH / ARCHIVE';color:#4d8079;font:700 .43rem 'Courier New',monospace;letter-spacing:.15em}
+
+/* Generic contextual snippet when no matching dossier exists. */
+.context-archive.muted{border-style:dashed!important;background:rgba(255,255,255,.022)!important}.context-archive.muted:before{content:'PROVENANCE GAP';display:block;margin-bottom:8px;color:rgba(228,193,116,.62);font:700 .4rem 'Courier New',monospace;letter-spacing:.14em}
+
+@media(max-width:700px){
+ .archive-mode :where(.hero-photo,.tv-object,.sunday-art,.game-gallery figure,.object-stage,.warung-photo,.ramadan-photo,.story-visual):has(img[hidden]){min-height:220px!important}
+ .archive-mode :where(.hero-photo,.tv-object,.sunday-art,.game-gallery figure,.object-stage,.warung-photo,.ramadan-photo,.story-visual):has(img[hidden]):before{font-size:.42rem;white-space:normal;width:72%;border-radius:16px}
+}
