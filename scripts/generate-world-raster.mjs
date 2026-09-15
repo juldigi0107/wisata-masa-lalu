@@ -5,8 +5,10 @@ import {join} from 'node:path';
 const sourceRoot='public/assets/world';
 const sceneRoot=join(sourceRoot,'scenes');
 const outRoot=join(sourceRoot,'raster');
+const iconRoot=join('public/assets','icons');
 const scenes=['rumah','kampung','sekolah','kota','digital'];
 await mkdir(outRoot,{recursive:true});
+await mkdir(iconRoot,{recursive:true});
 
 const grain=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" seed="27"/><feColorMatrix type="saturate" values="0"/></filter>
@@ -60,3 +62,26 @@ for(const [sourceName,outName,width,height] of editorial){
   .toFile(output);
  console.log(`editorial-raster: ${output}`);
 }
+
+const sealSource=join('public/assets','brand-seal.svg');
+async function appIcon(size,fileName,{maskable=false}={}){
+ if(!(await exists(sealSource)))throw new Error(`Missing app icon source: ${sealSource}`);
+ const logoSize=Math.round(size*(maskable?.62:.74));
+ const logo=await sharp(sealSource,{density:260})
+  .resize(logoSize,logoSize,{fit:'contain'})
+  .png()
+  .toBuffer();
+ const base=sharp({create:{width:size,height:size,channels:4,background:{r:8,g:16,b:14,alpha:1}}});
+ const halo=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><defs><radialGradient id="g"><stop offset="0" stop-color="#79dfd3" stop-opacity=".15"/><stop offset=".52" stop-color="#dcbc76" stop-opacity=".055"/><stop offset="1" stop-color="#08100e" stop-opacity="0"/></radialGradient></defs><rect width="100%" height="100%" fill="url(#g)"/></svg>`);
+ await base
+  .composite([{input:halo},{input:logo,gravity:'centre'}])
+  .png({compressionLevel:9,palette:false})
+  .toFile(join(iconRoot,fileName));
+ console.log(`app-icon ${size}${maskable?' maskable':''}: ${join(iconRoot,fileName)}`);
+}
+
+await appIcon(64,'wml-64.png');
+await appIcon(180,'wml-180.png');
+await appIcon(192,'wml-192.png');
+await appIcon(512,'wml-512.png');
+await appIcon(512,'wml-maskable-512.png',{maskable:true});
