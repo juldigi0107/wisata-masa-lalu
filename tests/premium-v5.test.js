@@ -4,11 +4,14 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('premium v5 runtime is mounted on the production path without replacing the world engine',async()=>{
- const main=await text('src/main.jsx');
+test('premium v5 runtime is mounted without inflating the critical stylesheet',async()=>{
+ const [main,styleLoader]=await Promise.all([text('src/main.jsx'),text('src/world/premium-runtime-styles.js')]);
  assert.match(main,/PremiumRuntimeV5/);
- assert.match(main,/premium-experience-v5\.css/);
- assert.match(main,/premium-intensity-v5\.css/);
+ assert.match(main,/import\("\.\/world\/premium-runtime-styles\.js"\)/);
+ assert.match(styleLoader,/premium-experience-v5\.css/);
+ assert.match(styleLoader,/premium-intensity-v5\.css/);
+ assert.equal(main.includes('premium-experience-v5.css'),false);
+ assert.equal(main.includes('premium-intensity-v5.css'),false);
  assert.match(main,/entry-premium-v5\.css/);
  assert.match(main,/WorldAppV4/);
  assert.match(main,/AmbientRuntimeV4/);
