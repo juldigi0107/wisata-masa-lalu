@@ -57,11 +57,14 @@ test('decade, profiles, collections, and achievements have complete production c
  assert.equal(new Set(collections.map(item=>item.id)).size,collections.length);
  assert.ok(achievements.length>=4);
  const validCategories=new Set(memoryTriggers.map(item=>item.category));
+ const validTriggerIds=new Set(memoryTriggers.map(item=>item.id));
  for(const achievement of achievements){
-  assert.ok(achievement.id&&achievement.label&&achievement.target>0,`invalid achievement: ${achievement.id}`);
+  assert.ok(achievement.id&&achievement.label&&achievement.description&&achievement.target>0,`invalid achievement: ${achievement.id}`);
   if(achievement.kind)assert.ok(['scenes','years'].includes(achievement.kind),`unsupported achievement kind: ${achievement.id}/${achievement.kind}`);
   if(achievement.category)assert.ok(validCategories.has(achievement.category),`unsupported achievement category: ${achievement.id}/${achievement.category}`);
-  assert.ok(achievement.kind||achievement.category,`achievement has no unlock route: ${achievement.id}`);
+  if(achievement.triggerIds){assert.ok(Array.isArray(achievement.triggerIds)&&achievement.triggerIds.length>=achievement.target,`achievement exact trigger pool too small: ${achievement.id}`);for(const id of achievement.triggerIds)assert.ok(validTriggerIds.has(id),`achievement points to missing trigger: ${achievement.id}/${id}`)}
+  if(achievement.mechanics){assert.ok(Array.isArray(achievement.mechanics)&&achievement.mechanics.length,`empty achievement mechanics: ${achievement.id}`);for(const mechanic of achievement.mechanics)assert.ok(supportedMechanics.has(mechanic),`achievement uses unsupported mechanic: ${achievement.id}/${mechanic}`)}
+  assert.ok(achievement.kind||achievement.category||achievement.triggerIds?.length,`achievement has no unlock route: ${achievement.id}`);
  }
 });
 
