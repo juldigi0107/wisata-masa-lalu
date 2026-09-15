@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v6-2';
+const VERSION='wml-time-machine-v6-3';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
