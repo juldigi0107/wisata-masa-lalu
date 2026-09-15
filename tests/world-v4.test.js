@@ -61,10 +61,18 @@ test('journey scene and year are written back to the current URL',async()=>{
  const app=await text('src/world/WorldAppV4.jsx');assert.match(app,/url\.searchParams\.set\('scene',sceneId\)/);assert.match(app,/url\.searchParams\.set\('year',String\(year\)\)/);assert.match(app,/history\.replaceState/);
 });
 
-test('archive portal dynamically loads both full archive and contextual dossier with recovery',async()=>{
- const portal=await text('src/world/ArchivePortal.jsx');assert.match(portal,/lazy\(\(\)=>import\('\.\.\/ArchiveAppFull\.jsx'\)\)/);assert.match(portal,/lazy\(\(\)=>import\('\.\/ContextArchiveDossierV2\.jsx'\)\)/);assert.match(portal,/ARCHIVE_LOAD_ERROR/);
+test('archive portal dynamically loads full archive and contextual routes with recovery',async()=>{
+ const portal=await text('src/world/ArchivePortal.jsx');
+ assert.match(portal,/full:\(\)=>import\('\.\.\/ArchiveRoute\.jsx'\)/);
+ assert.match(portal,/context:\(\)=>import\('\.\/ContextualArchiveRoute\.jsx'\)/);
+ assert.match(portal,/routeLoaders\[routeKey\]\(\)/);
+ assert.match(portal,/ArchiveFailure/);
+ assert.match(portal,/COBA MUAT LAGI/);
 });
 
 test('seasonal model includes Ramadan Lebaran Agustusan Sunday and Malam Minggu with real trigger references',async()=>{
- const model=await text('shared/world-v4-experience.js');for(const id of ['ramadan','lebaran','agustusan','minggu','malam-minggu'])assert.match(model,new RegExp(`${id}:`));assert.match(model,/triggerIds/);
+ const model=await text('shared/world-v4-experience.js');
+ for(const id of ['ramadan','lebaran','agustusan','minggu'])assert.match(model,new RegExp(`\\b${id}:`));
+ assert.match(model,/'malam-minggu':\{id:'malam-minggu'/);
+ assert.match(model,/triggers:/);
 });
