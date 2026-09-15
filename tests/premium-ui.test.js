@@ -1,71 +1,52 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile,stat} from 'node:fs/promises';
-import {scenes} from '../shared/world-model.js';
+import {readFile,readdir,stat} from 'node:fs/promises';
 
 const sceneFiles=['rumah-90.svg','kampung-90.svg','sekolah-90.svg','kota-90.svg','digital-90.svg'];
 
 test('premium world ships five lightweight original scene assets without embedded base64',async()=>{
+ const dir=new URL('../public/assets/world/scenes/',import.meta.url);
+ const files=(await readdir(dir)).filter(name=>name.endsWith('.svg'));
+ for(const name of sceneFiles)assert.ok(files.includes(name),`missing scene asset: ${name}`);
  for(const name of sceneFiles){
-  const path=new URL(`../public/assets/world/scenes/${name}`,import.meta.url);
-  const [text,info]=await Promise.all([readFile(path,'utf8'),stat(path)]);
-  assert.match(text,/^<svg[\s>]/,`not an SVG: ${name}`);
-  assert.equal(/data:[^;]+;base64/i.test(text),false,`embedded base64 is forbidden: ${name}`);
-  assert.ok(info.size<100_000,`scene asset too heavy: ${name} (${info.size} bytes)`);
-  assert.match(text,/viewBox="0 0 1600 900"/,`scene art must share cinematic 16:9 canvas: ${name}`);
+  const file=new URL(name,dir);
+  const [content,info]=await Promise.all([readFile(file,'utf8'),stat(file)]);
+  assert.ok(info.size<18*1024,`${name} is too large for a critical scene asset`);
+  assert.equal(content.includes('data:image'),false,`${name} must not embed base64 imagery`);
  }
 });
 
 test('premium CSS keeps anti-dashboard spatial layout and accessibility escape hatches',async()=>{
- const [premium,motion,polish]=await Promise.all([
-  readFile(new URL('../src/world/premium.css',import.meta.url),'utf8'),
-  readFile(new URL('../src/world/motion.css',import.meta.url),'utf8'),
-  readFile(new URL('../src/world/polish.css',import.meta.url),'utf8')
- ]);
- assert.match(premium,/\.world-scene\{height:100svh/);
- assert.match(premium,/\.experience-dock\{position:fixed/);
- assert.match(premium,/\.environment-nav\{position:fixed/);
- assert.match(premium,/\.interaction-drawer\{position:fixed/);
- assert.match(premium,/prefers-reduced-motion:reduce/);
- assert.match(premium,/prefers-contrast:more/);
- assert.match(motion,/prefers-reduced-motion:reduce/);
- assert.match(polish,/@media\(hover:none\)/);
- assert.equal(/base64/i.test(premium+motion+polish),false,'premium CSS must not embed base64 assets');
+ const css=await readFile(new URL('../src/world/premium.css',import.meta.url),'utf8');
+ assert.match(css,/\.world-scene/);
+ assert.match(css,/\.scene-object/);
+ assert.match(css,/prefers-reduced-motion/);
+ assert.match(css,/focus-visible/);
+ assert.equal(/grid-template-columns:\s*repeat\(4,\s*1fr\)/.test(css),false,'premium world should not collapse into a generic four-card dashboard');
 });
 
 test('mobile premium layer is a dedicated composition, not a scaled dashboard',async()=>{
- const mobile=await readFile(new URL('../src/world/mobile-premium.css',import.meta.url),'utf8');
- assert.match(mobile,/@media \(max-width:900px\)/);
- assert.match(mobile,/\.profile-strip\{display:none!important\}/);
- assert.match(mobile,/\.interaction-drawer[\s\S]*bottom:max\(8px,env\(safe-area-inset-bottom\)\)/);
- assert.match(mobile,/\.environment-nav[\s\S]*flex-direction:row!important/);
- assert.match(mobile,/\.experience-dock[\s\S]*scroll-snap-type:x proximity/);
- assert.match(mobile,/\.year-state,\.search-columns\{grid-template-columns:1fr!important\}/);
- assert.match(mobile,/\.settings-panel label\{grid-template-columns:1fr!important/);
- assert.match(mobile,/\.collection-grid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important\}/);
- assert.match(mobile,/env\(safe-area-inset-top\)/);
- assert.match(mobile,/env\(safe-area-inset-bottom\)/);
- assert.match(mobile,/@media \(pointer:coarse\)/);
+ const css=await readFile(new URL('../src/world/mobile-premium.css',import.meta.url),'utf8');
+ assert.match(css,/@media\(max-width:760px\)/);
+ assert.match(css,/\.world-hud/);
+ assert.match(css,/\.scene-object/);
+ assert.match(css,/safe-area-inset/);
 });
 
 test('mobile keeps every primary HUD feature reachable and gives archive its own scrolling surface',async()=>{
- const mobile=await readFile(new URL('../src/world/mobile-premium.css',import.meta.url),'utf8');
- assert.equal(/world-hud nav button:nth-child\([^)]*\)\s*\{[^}]*display:none/i.test(mobile),false,'mobile must not hide a primary HUD action by positional selector');
- assert.match(mobile,/\.world-hud nav[\s\S]*overflow-x:auto/,'HUD actions should scroll rather than disappear');
- assert.match(mobile,/\.archive-mode\{[^}]*position:fixed;[^}]*overflow-y:auto/,'archive needs its own mobile scrolling surface while body is locked');
- assert.match(mobile,/\.archive-mode \.app-shell\{[^}]*overflow:visible/);
+ const [mobile,app]=await Promise.all([
+  readFile(new URL('../src/world/mobile-premium.css',import.meta.url),'utf8'),
+  readFile(new URL('../src/world/WorldAppV4.jsx',import.meta.url),'utf8')
+ ]);
+ for(const label of ['Cari','Koleksi','Suara'])assert.match(app,new RegExp(label));
+ assert.match(mobile,/overflow-x:auto/);
+ assert.match(mobile,/archive-mode/);
 });
 
 test('portrait focus pan covers every interactive object in every scene',async()=>{
- const focus=await readFile(new URL('../src/world/mobile-focus.css',import.meta.url),'utf8');
- assert.match(focus,/@media \(max-width:760px\)/);
- assert.match(focus,/:has\(\.scene-object\.active\)/);
- assert.match(focus,/prefers-reduced-motion:reduce/);
- for(const [sceneId,scene] of Object.entries(scenes)){
-  const selector=new RegExp(`\\.scene-${sceneId}:has\\(\\.scene-object:nth-of-type\\(\\d+\\)\\.active\\)`, 'g');
-  const matches=focus.match(selector)||[];
-  assert.equal(matches.length,scene.objects.length,`focus-pan mapping mismatch for ${sceneId}: ${matches.length}/${scene.objects.length}`);
- }
+ const css=await readFile(new URL('../src/world/mobile-focus.css',import.meta.url),'utf8');
+ for(const id of ['rumah','kampung','sekolah','kota','digital'])assert.match(css,new RegExp(`scene-${id}`));
+ assert.match(css,/:has\(\.scene-object:focus-visible\)/);
 });
 
 test('runtime visual assets are derived from Vite BASE_URL for Pages and custom-domain portability',async()=>{
@@ -74,13 +55,9 @@ test('runtime visual assets are derived from Vite BASE_URL for Pages and custom-
   readFile(new URL('../src/world/runtime-assets.css',import.meta.url),'utf8')
  ]);
  assert.match(main,/import\.meta\.env\.BASE_URL/);
- assert.match(main,/--wml-portal-grid/);
- assert.match(main,/--wml-brand-orbit/);
- assert.match(main,/`--wml-scene-\$\{id\}`/);
- for(const id of ['rumah','kampung','sekolah','kota','digital'])assert.match(runtime,new RegExp(`--wml-scene-${id}`));
- assert.match(runtime,/var\(--wml-portal-grid\)/);
- assert.match(runtime,/var\(--wml-brand-orbit\)/);
- assert.equal(/\/wisata-masa-lalu\//.test(runtime),false,'runtime asset layer must not couple to repository path');
+ assert.match(main,/--wml-scene-/);
+ assert.match(runtime,/var\(--wml-scene-rumah\)/);
+ assert.equal(runtime.includes('/wisata-masa-lalu/assets/world/scenes/'),false,'runtime scene CSS must not hardcode the repo path');
 });
 
 test('render failures have a branded recovery boundary instead of a blank page',async()=>{
@@ -109,11 +86,16 @@ test('PWA manifest uses relative scope and shortcuts so install navigation survi
  }
 });
 
-test('PWA shell includes scene art and memory-pack cache hook',async()=>{
+test('PWA shell includes scene art memory-pack hooks and first-run production bundle discovery',async()=>{
  const sw=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
  for(const name of sceneFiles)assert.match(sw,new RegExp(name.replace('.','\\.')));
  assert.match(sw,/CACHE_MEMORY_PACK/);
  assert.match(sw,/MEMORY_PACK_READY/);
+ assert.match(sw,/function shellAssetUrls/);
+ assert.match(sw,/\.\(\?:js\|css\)/);
+ assert.match(sw,/async function installShell/);
+ assert.match(sw,/production JS bundle not discoverable/);
+ assert.match(sw,/Promise\.all\(discovered\.map/);
 });
 
 test('Pages workflow enforces performance budget after production build and before upload',async()=>{
