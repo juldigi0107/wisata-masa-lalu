@@ -1,6 +1,7 @@
-const VERSION='wml-time-machine-v4-0';
+const VERSION='wml-time-machine-v4-1';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
+const PACKS=`${VERSION}-packs`;
 const swBase=new URL('./',self.location.href);
 const base=swBase.pathname;
 const shellUrls=[
@@ -69,7 +70,7 @@ self.addEventListener('message',event=>{
  if(data.type==='SKIP_WAITING'){self.skipWaiting();return}
  if(data.type==='CLEAR_MEMORY_PACKS'){
   event.waitUntil((async()=>{
-   await caches.delete(MEDIA);
+   await caches.delete(PACKS);
    event.source?.postMessage?.({type:'MEMORY_PACKS_CLEARED'});
   })());
   return;
@@ -81,7 +82,7 @@ self.addEventListener('message',event=>{
     .map(value=>new URL(value,swBase))
     .filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base))
     .map(url=>url.href);
-   const cache=await caches.open(MEDIA);
+   const cache=await caches.open(PACKS);
    const results=await Promise.allSettled(urls.map(url=>cache.add(url)));
    const ready=results.filter(result=>result.status==='fulfilled').length;
    event.source?.postMessage?.({type:'MEMORY_PACK_READY',count:ready,requested:urls.length});
