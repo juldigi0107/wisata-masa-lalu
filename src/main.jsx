@@ -29,6 +29,7 @@ import "./world/seasonal-function-v4.css";
 import "./world/archive-recovery-v4.css";
 import "./world/entry-premium-v5.css";
 import "./world/social-memory.css";
+import "./world/memory-card.css";
 
 Object.assign(baseCatalog, assembledCatalog);
 
