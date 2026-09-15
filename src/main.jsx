@@ -14,6 +14,7 @@ import "./world/polish.css";
 import "./world/archive-premium.css";
 import "./world/special-mechanics.css";
 import "./world/context-archive.css";
+import "./world/context-dossier-v2.css";
 import "./world/device-controls.css";
 import "./world/resilience.css";
 import "./world/mobile-premium.css";
