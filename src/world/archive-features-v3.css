@@ -1,0 +1,24 @@
+/* Archive feature completion — loaded only with archive style chunk */
+.quiz-result-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:22px 0 14px}
+.quiz-result-actions button{min-height:48px!important;border:1px solid rgba(31,27,22,.2)!important;border-radius:999px!important;background:#171b17!important;color:#f2e5cd!important;padding:10px 14px!important;font:800 .57rem "Courier New",monospace!important;text-transform:uppercase;letter-spacing:.04em}
+.quiz-result-actions button:nth-child(2){background:transparent!important;color:#171713!important}
+.quiz-result-actions small{grid-column:1/-1;min-height:26px;color:rgba(31,27,22,.55);font:700 .5rem/1.5 "Courier New",monospace}
+.quiz-restart{margin-top:4px!important;background:transparent!important;color:inherit!important;border:0!important;border-bottom:1px solid currentColor!important;border-radius:0!important;padding-inline:0!important}
+
+.archive-filter-tools{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:8px 0 17px;padding:10px 12px;border:1px solid rgba(31,27,22,.13);border-radius:14px;background:rgba(255,255,255,.24)}
+.archive-filter-tools span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 .54rem "Courier New",monospace;color:rgba(31,27,22,.62)}
+.archive-filter-tools button{flex:0 0 auto;min-height:34px!important;border:0!important;border-radius:999px!important;background:#171713!important;color:#f2e5cd!important;padding:7px 10px!important;font:800 .49rem "Courier New",monospace!important;text-transform:uppercase}
+
+.story-pager{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin:46px 0 12px;padding:10px 0;border-top:1px solid rgba(31,27,22,.18);border-bottom:1px solid rgba(31,27,22,.18)}
+.story-pager>span{font:700 .54rem "Courier New",monospace;color:rgba(31,27,22,.58)}
+.story-pager>span b{color:#477f77}
+.story-pager>div{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.story-pager button{min-height:44px!important;border:1px solid rgba(31,27,22,.14)!important;border-radius:12px!important;background:rgba(255,255,255,.2)!important;color:#211d18!important;padding:8px 11px!important;font:700 .56rem/1.25 "Courier New",monospace!important;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.story-pager button:last-child{text-align:right}
+.story-pager button:disabled{opacity:.28}
+.story-pager button:not(:disabled):hover,.story-pager button:not(:disabled):focus-visible{background:#18211d!important;color:#d9fff8!important}
+
+@media(max-width:700px){
+ .quiz-result-actions{grid-template-columns:1fr}.quiz-result-actions small{grid-column:1}.archive-filter-tools{display:grid;grid-template-columns:1fr}.archive-filter-tools span{white-space:normal}.archive-filter-tools button{justify-self:start}.story-pager{grid-template-columns:1fr;gap:8px;margin-top:34px}.story-pager>div{grid-template-columns:1fr 1fr}.story-pager button{white-space:normal;min-height:52px!important}
+}
+@media(max-width:430px){.story-pager>div{grid-template-columns:1fr}.story-pager button:last-child{text-align:left}.quiz-result-actions button{width:100%}}
