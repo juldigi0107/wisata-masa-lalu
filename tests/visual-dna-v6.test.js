@@ -38,16 +38,18 @@ test('world chrome remains spatial instead of dashboard-like under the new DNA',
 });
 
 test('visual DNA keeps mobile scene dominance and optical hotspots accessible',async()=>{
- const [css,optical]=await Promise.all([
+ const [css,optical,mobile]=await Promise.all([
   text('src/world/visual-dna-v6.css'),
-  text('src/world/visual-dna-optical-v6.css')
+  text('src/world/visual-dna-optical-v6.css'),
+  text('src/world/mobile-premium.css')
  ]);
  assert.match(css,/@media\(max-width:620px\)/);
  assert.match(css,/\.scene-object:hover/);
  assert.match(css,/\.scene-object:focus-visible/);
  assert.match(css,/\.scene-object\.active/);
  assert.match(css,/\.scene-caption/);
- assert.match(css,/\.profile-strip\{display:none!important\}/);
+ assert.match(mobile,/\.profile-strip\{display:none!important\}/);
+ assert.match(mobile,/\.world-scene\{height:100svh!important;min-height:100svh!important\}/);
  assert.match(optical,/\.scene-object b\{font-size:0!important/);
  assert.match(optical,/\.scene-object b:before/);
  assert.match(optical,/\.scene-object b:after/);
