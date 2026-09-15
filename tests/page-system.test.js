@@ -4,8 +4,8 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('main keeps world styles on critical path and loads archive pages through an async style chunk',async()=>{
- const [main,archiveStyles]=await Promise.all([text('src/main.jsx'),text('src/world/archive-styles.js')]);
+test('main keeps only world styles on critical path and archive route owns its style chunk',async()=>{
+ const [main,route,archiveStyles]=await Promise.all([text('src/main.jsx'),text('src/ArchiveRoute.jsx'),text('src/world/archive-styles.js')]);
  for(const stylesheet of [
   './world/mechanics-v2.css',
   './world/mobile-premium.css',
@@ -14,7 +14,8 @@ test('main keeps world styles on critical path and loads archive pages through a
   './world/entry-flow-v2.css',
   './world/page-system.css'
  ]) assert.match(main,new RegExp(stylesheet.replaceAll('.','\\.').replaceAll('/','\\/')));
- assert.match(main,/import\("\.\/world\/archive-styles\.js"\)/);
+ assert.equal(main.includes('archive-styles.js'),false,'archive CSS must not be requested on initial world render');
+ assert.match(route,/archive-styles\.js/);
  for(const stylesheet of ['./archive-premium.css','./archive-chapters-v2.css','./archive-resilience-v2.css','./context-archive.css','./context-dossier-v2.css']){
   assert.match(archiveStyles,new RegExp(stylesheet.replaceAll('.','\\.').replaceAll('/','\\/')));
  }
