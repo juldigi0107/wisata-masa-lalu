@@ -15,6 +15,7 @@ import "./world/archive-premium.css";
 import "./world/special-mechanics.css";
 import "./world/context-archive.css";
 import "./world/device-controls.css";
+import "./world/resilience.css";
 import "./world/mobile-premium.css";
 
 Object.assign(baseCatalog, assembledCatalog);
@@ -48,8 +49,18 @@ try{
  }
 }catch{}
 
+class AppErrorBoundary extends React.Component{
+ constructor(props){super(props);this.state={failed:false}}
+ static getDerivedStateFromError(){return{failed:true}}
+ componentDidCatch(error,info){console.error('Wisata Masa Lalu render recovery',error,info)}
+ render(){
+  if(!this.state.failed)return this.props.children;
+  return <main className="fatal-shell" role="alert"><section><small>RECOVERY / TIME MACHINE</small><h1>Mesin waktu tersendat.</h1><p>Perjalanan lokalmu tidak dihapus. Muat ulang aplikasi untuk membangun ulang scene dan melanjutkan dari progress yang tersimpan di perangkat ini.</p><button onClick={()=>window.location.reload()}>MUAT ULANG DUNIA ↻</button></section></main>;
+ }
+}
+
 createRoot(document.getElementById("root")).render(
- <React.StrictMode><WorldApp/></React.StrictMode>
+ <React.StrictMode><AppErrorBoundary><WorldApp/></AppErrorBoundary></React.StrictMode>
 );
 
 if('serviceWorker' in navigator){
