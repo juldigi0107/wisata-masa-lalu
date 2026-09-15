@@ -160,10 +160,10 @@ export const collections=[
 ];
 
 export const achievements=[
- {id:'anak-kaset-sejati',label:'Anak Kaset Sejati',description:'Selesaikan lima interaksi musik.',category:'musik',target:5},
- {id:'penguasa-wartel',label:'Penguasa Wartel',description:'Selesaikan sepuluh interaksi komunikasi.',category:'komunikasi',target:10},
- {id:'raja-dingdong',label:'Raja Dingdong',description:'Selesaikan tiga interaksi mainan atau arcade.',category:'mainan',target:3},
- {id:'pemburu-layangan',label:'Pemburu Layangan',description:'Selesaikan lima interaksi permainan kampung/sekolah.',category:'permainan',target:5},
+ {id:'anak-kaset-sejati',label:'Anak Kaset Sejati',description:'Selesaikan lima ritual kaset: play, balik sisi, merapikan pita, memutar dengan pensil, dan membuat mixtape.',triggerIds:['tape-recorder','side-a-b','kaset-kusut','pensil-kaset','mixtape-maker'],target:5},
+ {id:'penguasa-wartel',label:'Penguasa Wartel',description:'Selesaikan pengalaman menelepon dan memantau billing di bilik Wartel.',triggerIds:['wartel','billing-wartel'],target:2},
+ {id:'raja-dingdong',label:'Raja Dingdong',description:'Kuasai mesin, token, dan papan high score arcade.',triggerIds:['mesin-arcade','token-arcade','high-score'],target:3},
+ {id:'pemburu-layangan',label:'Pemburu Layangan',description:'Selesaikan lima permainan lapangan yang mengandalkan timing, chase, atau bidikan.',category:'permainan',mechanics:['timing','chase','aim'],target:5},
  {id:'penjelajah-waktu',label:'Penjelajah Waktu',description:'Kunjungi seluruh tahun 1990–1999.',kind:'years',target:10},
  {id:'keliling-kota',label:'Keliling Dunia 90-an',description:'Kunjungi lima area utama.',kind:'scenes',target:5}
 ];
