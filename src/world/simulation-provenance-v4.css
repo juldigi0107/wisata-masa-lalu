@@ -1,0 +1,21 @@
+/* V4 simulation provenance
+   Runtime mechanics may use fictional numbers, schedules or random rewards for play.
+   These micro-labels prevent those values from being read as archival evidence. */
+.schedule-mechanic:before,.billing-screen:before,.money-line:before,.ledger-paper:before,.random-mechanic:before,.arcade-mechanic:before,.camera-mechanic:before{
+ display:block;margin:0 0 8px;color:rgba(137,223,211,.78);font:700 .42rem/1.4 "Courier New",monospace;letter-spacing:.09em;text-transform:uppercase
+}
+.schedule-mechanic:before{content:"SIMULASI EDITORIAL · bukan jadwal siaran arsip"}
+.billing-screen:before{content:"SIMULASI MEKANIK · tarif bukan data harga historis";grid-column:1/-1}
+.money-line:before{content:"SIMULASI MEKANIK · nominal bukan harga arsip";flex-basis:100%;width:100%}
+.ledger-paper:before{content:"SIMULASI MEKANIK · nominal bon diisi pengguna"}
+.random-mechanic:before{content:"SIMULASI MEKANIK · hadiah dipilih secara acak"}
+.arcade-mechanic:before{content:"SIMULASI MEKANIK · skor bukan record historis"}
+.camera-mechanic:before{content:"SIMULASI MEKANIK · hasil exposure dibuat acak"}
+.money-line{display:flex!important;flex-wrap:wrap!important;align-items:baseline!important}.ledger-paper{position:relative}.schedule-mechanic>.mechanic-kicker{margin-top:2px}
+
+/* The archive/context blocks are deliberately not tagged as simulation; their own provenance vocabulary applies. */
+.context-archive:before,.story-sources:before,.archive-schedule:before{content:none!important}
+
+@media(max-width:560px){
+ .schedule-mechanic:before,.billing-screen:before,.money-line:before,.ledger-paper:before,.random-mechanic:before,.arcade-mechanic:before,.camera-mechanic:before{font-size:.4rem;letter-spacing:.06em}
+}
