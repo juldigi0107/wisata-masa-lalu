@@ -1,0 +1,73 @@
+/* Release Candidate V6 — premium world direction.
+   Runtime scene art is raster WebP; object glyphs are visually replaced by optical locators. */
+
+/* --- Scene image finishing ------------------------------------------------ */
+.scene-architecture{background-image:var(--wml-scene-rumah);background-repeat:no-repeat;background-position:center bottom;background-size:cover!important;opacity:1!important;filter:contrast(1.035) saturate(.88) brightness(.985)!important;transform:scale(1.008);transform-origin:center 56%;transition:background-position .7s cubic-bezier(.16,.8,.2,1),filter .8s ease,transform .8s ease!important}
+.scene-kampung .scene-architecture{background-image:var(--wml-scene-kampung)}
+.scene-sekolah .scene-architecture{background-image:var(--wml-scene-sekolah)}
+.scene-kota .scene-architecture{background-image:var(--wml-scene-kota)}
+.scene-digital .scene-architecture{background-image:var(--wml-scene-digital);filter:contrast(1.08) saturate(.82) brightness(.9)!important}
+.world-scene:before{background-image:var(--wml-portal-grid)!important;opacity:.045!important;mix-blend-mode:soft-light!important}
+.world-scene:after{background:radial-gradient(circle at 50% 46%,transparent 48%,rgba(3,7,7,.18) 78%,rgba(2,5,5,.42) 100%),linear-gradient(180deg,rgba(0,0,0,.06),transparent 22%,transparent 69%,rgba(0,0,0,.27))!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),inset 0 0 120px rgba(0,0,0,.16)!important}
+.scene-grain{opacity:.035!important;background-size:8px 8px,11px 11px!important;mix-blend-mode:soft-light!important}
+.phase-malam .scene-architecture{filter:brightness(.64) contrast(1.08) saturate(.72)!important}
+.phase-sore .scene-architecture{filter:brightness(.92) contrast(1.04) saturate(.92) sepia(.04)!important}
+.phase-pagi .scene-architecture{filter:brightness(1.035) contrast(1.01) saturate(.83)!important}
+
+/* --- Optical object locator: no cheap pictogram glyphs ------------------ */
+.scene-object{min-width:52px!important;min-height:52px!important;outline:none!important}
+.scene-object b{font-size:0!important;width:34px!important;height:34px!important;border-radius:50%!important;background:rgba(7,13,12,.18)!important;border:1px solid rgba(245,229,196,.55)!important;box-shadow:0 7px 26px rgba(0,0,0,.35),0 0 0 1px rgba(9,14,13,.22),inset 0 0 12px rgba(255,255,255,.025)!important;backdrop-filter:blur(2px);position:relative}
+.scene-object b:before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;background:#f1d28d;box-shadow:0 0 0 3px rgba(241,210,141,.08),0 0 18px rgba(241,210,141,.35);transform:translate(-50%,-50%)}
+.scene-object b:after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(120,223,210,.2);clip-path:polygon(0 0,42% 0,42% 8%,8% 8%,8% 42%,0 42%,0 0,100% 0,100% 42%,92% 42%,92% 8%,58% 8%,58% 0,100% 0,100% 100%,58% 100%,58% 92%,92% 92%,92% 58%,100% 58%,100% 100%,0 100%,0 58%,8% 58%,8% 92%,42% 92%,42% 100%)}
+.scene-object em{font:750 .43rem/1.2 "Courier New",monospace!important;letter-spacing:.12em!important;text-transform:uppercase!important;margin-top:7px!important;padding:4px 7px!important;border-radius:999px!important;background:rgba(5,10,9,.54)!important;border:1px solid rgba(255,255,255,.055)!important;color:rgba(250,239,217,.78)!important;opacity:.68!important;backdrop-filter:blur(7px)!important}
+.scene-object small{width:190px!important;padding:11px 12px!important;border-radius:13px!important;border-color:rgba(120,223,210,.18)!important;background:rgba(5,10,9,.9)!important;box-shadow:0 18px 55px rgba(0,0,0,.43)!important;color:rgba(247,237,217,.86)!important;font-size:.56rem!important;line-height:1.55!important}
+.scene-object:hover b,.scene-object:focus-visible b,.scene-object.active b{transform:scale(1.12)!important;background:rgba(7,18,16,.72)!important;border-color:rgba(245,226,185,.9)!important;box-shadow:0 0 0 7px rgba(120,223,210,.045),0 14px 42px rgba(0,0,0,.46),0 0 28px rgba(120,223,210,.18)!important}
+.scene-object:hover b:before,.scene-object:focus-visible b:before,.scene-object.active b:before{background:#9bf2e7;box-shadow:0 0 0 3px rgba(155,242,231,.1),0 0 22px rgba(155,242,231,.44)}
+.scene-object:hover em,.scene-object:focus-visible em,.scene-object.active em{opacity:1!important;color:#fff3d9!important;border-color:rgba(120,223,210,.18)!important}
+.object-pulse{width:48px!important;height:48px!important;border-color:rgba(120,223,210,.22)!important;opacity:.64!important;animation-duration:3.2s!important}
+
+/* --- Cinematic title / world HUD ---------------------------------------- */
+.world-hud{height:62px!important;inset:18px 20px auto!important;max-width:calc(100vw - 40px)!important;border-color:rgba(237,225,198,.12)!important;background:rgba(6,11,10,.48)!important;box-shadow:0 18px 70px rgba(0,0,0,.27),inset 0 1px 0 rgba(255,255,255,.028)!important;backdrop-filter:blur(26px) saturate(1.12)!important}
+.brand-ticket{padding-left:48px!important;min-width:188px!important}
+.brand-ticket:before{background-image:var(--wml-brand-orbit)!important;width:35px!important;height:35px!important;opacity:.9}
+.hud-status{font-size:.49rem!important;color:rgba(245,232,207,.65)!important}
+.world-hud nav{border-color:rgba(255,255,255,.055)!important;background:rgba(255,255,255,.018)!important}
+.world-hud nav button{color:rgba(241,231,211,.7)!important;padding:8px 10px!important}
+.world-hud nav button:hover,.world-hud nav button:focus-visible{background:rgba(120,223,210,.075)!important;color:#effffb!important}
+.scene-caption{top:116px!important;left:clamp(24px,5vw,82px)!important;max-width:min(600px,48vw)!important}
+.scene-caption small{padding:0!important;border:0!important;background:none!important;backdrop-filter:none!important;color:rgba(151,230,220,.75)!important;letter-spacing:.19em!important}
+.scene-caption h2{font:520 clamp(3.8rem,7.7vw,8.1rem)/.75 Georgia,serif!important;letter-spacing:-.078em!important;margin:18px 0 20px!important;text-shadow:0 18px 70px rgba(0,0,0,.46)!important}
+.scene-caption p{max-width:42ch!important;font-size:clamp(.69rem,.95vw,.86rem)!important;line-height:1.72!important;color:rgba(250,239,216,.7)!important;text-shadow:0 3px 18px rgba(0,0,0,.72)!important}
+
+/* --- Spatial controls: less chrome, stronger hierarchy ----------------- */
+.environment-nav{right:20px!important;width:150px!important;padding:6px!important;border-color:rgba(255,255,255,.08)!important;background:rgba(6,11,10,.42)!important;box-shadow:0 22px 70px rgba(0,0,0,.31)!important;backdrop-filter:blur(22px) saturate(1.05)!important}
+.environment-nav:before{font-size:.4rem!important;color:rgba(242,229,203,.34)!important}
+.environment-nav button{padding:9px 10px!important;opacity:.72}
+.environment-nav button:hover,.environment-nav button:focus-visible{opacity:1;background:rgba(120,223,210,.07)!important;transform:translateX(-2px)!important}
+.memory-ribbon{left:22px!important;bottom:88px!important;width:min(372px,calc(100vw - 44px))!important;padding:13px 13px 13px 15px!important;border-color:rgba(255,255,255,.08)!important;background:rgba(6,11,10,.44)!important;box-shadow:0 20px 70px rgba(0,0,0,.28)!important;backdrop-filter:blur(24px) saturate(1.08)!important}
+.memory-ribbon small{color:rgba(137,226,215,.72)!important}.memory-ribbon b{font-size:1rem!important;color:#f3e5ca!important}.memory-ribbon p{color:rgba(245,233,211,.52)!important}.memory-ribbon button{background:rgba(236,197,119,.92)!important;box-shadow:none!important}
+.experience-dock{bottom:18px!important;border-color:rgba(255,255,255,.075)!important;background:rgba(6,11,10,.5)!important;box-shadow:0 24px 80px rgba(0,0,0,.35)!important;backdrop-filter:blur(28px) saturate(1.08)!important}
+.experience-dock button{min-height:50px!important;padding:8px 10px!important;color:rgba(240,229,209,.7)!important}
+.experience-dock button:hover,.experience-dock button:focus-visible{color:#fff3dc!important;background:rgba(255,255,255,.045)!important}
+.profile-strip{right:20px!important;bottom:20px!important;width:224px!important;border-color:rgba(255,255,255,.08)!important;background:rgba(6,11,10,.46)!important;box-shadow:0 20px 70px rgba(0,0,0,.31)!important;backdrop-filter:blur(24px)!important}
+
+/* --- Focused surfaces --------------------------------------------------- */
+.interaction-drawer,.time-machine-panel,.collection-panel,.search-panel,.campaign-panel,.settings-panel,.season-panel{border-color:rgba(255,255,255,.105)!important;background:linear-gradient(165deg,rgba(9,15,14,.965),rgba(7,11,10,.92))!important;box-shadow:0 40px 150px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.035)!important;backdrop-filter:blur(34px) saturate(1.04)!important}
+.interaction-drawer h3,.deep-panel h2{font-weight:520!important;letter-spacing:-.045em!important}
+.trigger-tabs button,.year-reco-list button,.collection-grid article,.achievement-grid article,.memory-pack-settings button{border-color:rgba(255,255,255,.065)!important;background:rgba(255,255,255,.018)!important}
+.trigger-tabs button:hover,.trigger-tabs button:focus-visible,.year-reco-list button:hover,.year-reco-list button:focus-visible{border-color:rgba(120,223,210,.24)!important;background:rgba(120,223,210,.055)!important}
+
+/* --- Landing ------------------------------------------------------------ */
+.time-intro{background:radial-gradient(circle at 50% 38%,rgba(55,111,105,.18),transparent 28%),radial-gradient(circle at 75% 70%,rgba(201,155,82,.08),transparent 22%),#050908!important}
+.time-intro .intro-year{font-weight:480!important;color:#f3e6ca!important;text-shadow:0 28px 110px rgba(0,0,0,.58)!important}
+.onboarding{background:radial-gradient(circle at 12% 15%,rgba(85,171,160,.08),transparent 23%),radial-gradient(circle at 90% 82%,rgba(213,165,86,.055),transparent 25%),#060a09!important}
+.onboarding-paper{border-color:rgba(255,255,255,.075)!important;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(255,255,255,.006))!important;box-shadow:0 50px 160px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.025)!important}
+.profile-choices button{border-color:rgba(255,255,255,.06)!important;background:rgba(255,255,255,.014)!important}
+.profile-choices button:hover,.profile-choices button:focus-visible{border-color:rgba(120,223,210,.22)!important;background:rgba(120,223,210,.05)!important}
+
+/* --- Mobile: keep the environment dominant ----------------------------- */
+@media(max-width:760px){
+ .world-hud{inset:max(8px,env(safe-area-inset-top)) 8px auto!important;max-width:calc(100vw - 16px)!important;height:56px!important;border-radius:17px!important}.brand-ticket{min-width:0!important;padding-left:41px!important}.brand-ticket:before{width:30px!important;height:30px!important}.scene-caption{top:88px!important;left:17px!important;max-width:74vw!important}.scene-caption h2{font-size:clamp(3.15rem,16vw,5.2rem)!important}.scene-caption p{font-size:.65rem!important;line-height:1.55!important}.scene-object b{width:30px!important;height:30px!important}.scene-object em{font-size:.39rem!important;padding:3px 6px!important}.object-pulse{width:43px!important;height:43px!important}.environment-nav{background:rgba(6,11,10,.54)!important}.memory-ribbon{left:10px!important;bottom:82px!important;width:calc(100vw - 20px)!important}.experience-dock{background:rgba(6,11,10,.62)!important}.profile-strip{display:none!important}
+}
+@media(max-width:430px){.scene-caption{max-width:82vw!important}.scene-caption h2{font-size:clamp(2.8rem,17vw,4.5rem)!important}.scene-caption p{max-width:36ch!important}.scene-object em{opacity:.84!important}.memory-ribbon p{display:none!important}.world-hud nav button{padding:7px 8px!important}}
+@media(prefers-reduced-motion:reduce){.scene-architecture,.scene-object b,.scene-object em,.world-hud,.environment-nav,.memory-ribbon,.experience-dock{transition:none!important}.object-pulse{animation:none!important}}
