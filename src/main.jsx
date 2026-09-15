@@ -29,20 +29,35 @@ import "./world/page-system.css";
 import "./world/seasonal-function-v4.css";
 import "./world/archive-recovery-v4.css";
 import "./world/entry-premium-v5.css";
+import "./world/visual-dna-v6.css";
 
 Object.assign(baseCatalog, assembledCatalog);
 
 const appBase=import.meta.env.BASE_URL||"/";
 const runtimeAsset=path=>`url("${appBase}${path}")`;
 const rootStyle=document.documentElement.style;
-rootStyle.setProperty("--wml-portal-grid",runtimeAsset("assets/world/raster/portal-grid.webp"));
-rootStyle.setProperty("--wml-brand-orbit",runtimeAsset("assets/world/raster/brand-orbit.webp"));
-rootStyle.setProperty("--wml-brand-seal",runtimeAsset("assets/brand-seal.webp"));
-rootStyle.setProperty("--wml-cassette-player",runtimeAsset("assets/cassette-player.webp"));
-rootStyle.setProperty("--wml-handheld-game",runtimeAsset("assets/handheld-game.webp"));
-rootStyle.setProperty("--wml-ramadan-lantern",runtimeAsset("assets/ramadan-lantern.webp"));
+
+/* Visual DNA v6 is raster-first. Every image below already ships in the repository
+   and is covered by the visual-source ledger/build pipeline. CSS gradients supply
+   the futuristic time-machine framing without depending on missing binary assets. */
+rootStyle.setProperty("--wml-portal-grid","radial-gradient(circle at 50% 50%,rgba(119,224,212,.16) 0 1px,transparent 1.5px),linear-gradient(rgba(119,224,212,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(119,224,212,.04) 1px,transparent 1px)");
+rootStyle.setProperty("--wml-brand-orbit","radial-gradient(circle,transparent 46%,rgba(119,224,212,.14) 47% 47.5%,transparent 48%),conic-gradient(from 12deg,transparent 0 8%,rgba(228,192,119,.26) 8.2% 8.6%,transparent 8.8% 24%,rgba(119,224,212,.2) 24.2% 24.7%,transparent 25% 100%)");
+rootStyle.setProperty("--wml-brand-seal","radial-gradient(circle at 40% 35%,#d8b56b 0 4%,#172522 4.5% 21%,#7cded2 21.5% 23%,#0d1513 23.5% 100%)");
+rootStyle.setProperty("--wml-cassette-player",runtimeAsset("assets/media/cassette.jpg"));
+rootStyle.setProperty("--wml-handheld-game",runtimeAsset("assets/media/gameboy-color.jpg"));
+rootStyle.setProperty("--wml-ramadan-lantern",runtimeAsset("assets/media/ramadan.jpg"));
+
+const rasterSceneAssets={
+ rumah:['assets/media/crt.jpg','assets/media/cassette.jpg'],
+ kampung:['assets/media/permainan-tradisional.jpg','assets/media/warung.jpg'],
+ sekolah:['assets/media/kelereng.jpg','assets/media/dr-grip.jpg'],
+ kota:['assets/media/jakarta-1991.jpg','assets/media/pager.jpg'],
+ digital:['assets/media/floppy.jpg','assets/media/gameboy-color.jpg']
+};
 for(const id of Object.keys(scenes)){
- rootStyle.setProperty(`--wml-scene-${id}`,runtimeAsset(`assets/world/raster/${id}-90.webp`));
+ const pair=rasterSceneAssets[id]||rasterSceneAssets.rumah;
+ rootStyle.setProperty(`--wml-scene-${id}`,runtimeAsset(pair[0]));
+ rootStyle.setProperty(`--wml-scene-${id}-detail`,runtimeAsset(pair[1]));
 }
 
 try{
