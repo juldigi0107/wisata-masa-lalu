@@ -5,3 +5,4 @@ import './visual-dna-v6.css';
 import './social-visual-dna-v6.css';
 import './visual-dna-optical-v6.css';
 import './visual-raster-v7.css';
+import './social-raster-v7.css';
