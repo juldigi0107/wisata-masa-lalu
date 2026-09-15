@@ -1,6 +1,6 @@
 import React from "react";
 import {createRoot} from "react-dom/client";
-import WorldApp from "./world/WorldApp.jsx";
+import WorldApp from "./world/WorldAppV4.jsx";
 import baseCatalog from "../shared/catalog.js";
 import assembledCatalog from "../shared/assembled-catalog.js";
 import {scenes,years} from "../shared/world-model.js";
@@ -20,6 +20,7 @@ import "./world/mobile-focus.css";
 import "./world/mobile-hardening-v2.css";
 import "./world/entry-flow-v2.css";
 import "./world/page-system.css";
+import "./world/feature-deep-dive-v4.css";
 
 Object.assign(baseCatalog, assembledCatalog);
 
