@@ -6,7 +6,7 @@ import {
  scenes,yearWorldState,nostalgiaProfiles,onboardingChoices,dayCampaign,weightedRandomEvent,
  collections,achievements,getScene,getWorldTrigger,worldVersion
 } from '../../shared/world-model.js';
-import {buildAchievementProgress,getSeasonalEvent,getSeasonalMemory,seasonalModes} from '../../shared/world-v4-experience.js';
+import {buildAchievementProgress,getSeasonalEvent,getSeasonalMemory,sanitizeWorldSettings,seasonalModes} from '../../shared/world-v4-experience.js';
 import GenericMechanic from './GenericMechanics.jsx';
 import ContextualArchivePage from './ContextualArchivePage.jsx';
 import {
@@ -48,7 +48,7 @@ function normalizeProfile(raw){
   schema:4,type:VALID_PROFILES.has(raw.type)?raw.type:'anak-tv',scene,year,
   completed:uniq(raw.completed).filter(id=>Boolean(getTrigger(id))),collections:uniq(raw.collections).filter(id=>collections.some(item=>item.id===id)),
   visitedScenes:uniq([...(raw.visitedScenes||[]),scene]).filter(id=>VALID_SCENES.has(id)),visitedYears:uniq([...(raw.visitedYears||[]).map(Number),year]).filter(value=>VALID_YEARS.has(value)),
-  score:Number.isFinite(Number(raw.score))?Math.max(0,Number(raw.score)):0,settings:{...DEFAULT_SETTINGS,...(raw.settings||{})}
+  score:Number.isFinite(Number(raw.score))?Math.max(0,Number(raw.score)):0,settings:sanitizeWorldSettings(raw.settings)
  };
 }
 function loadProfile(){try{return normalizeProfile(JSON.parse(localStorage.getItem(STORAGE)||'null'))}catch{return null}}
@@ -98,6 +98,7 @@ export default function WorldAppV4(){
  const achievementProgress=useMemo(()=>buildAchievementProgress(achievements,{completed,visitedScenes,visitedYears}),[completed,visitedScenes,visitedYears]);
  const unlockedAchievements=useMemo(()=>achievementProgress.filter(item=>item.unlocked),[achievementProgress]);
  useEffect(()=>{if(!profile)return;persistProfile(normalizeProfile({...profile,scene:sceneId,year,settings,visitedScenes,visitedYears,completed,collections:owned,score}))},[profile,sceneId,year,settings,visitedScenes,visitedYears,completed,owned,score]);
+ useEffect(()=>{if(!profile||typeof window==='undefined')return;const url=new URL(window.location.href);url.searchParams.set('scene',sceneId);url.searchParams.set('year',String(year));window.history.replaceState(window.history.state,'',url.href)},[sceneId,year,profile?.type]);
  useEffect(()=>{if(!profile||overlay||activeObject||event)return;const timer=setInterval(()=>{if(document.visibilityState==='visible'&&Math.random()<.36){const next=specialMode==='normal'?weightedRandomEvent(sceneId):(getSeasonalEvent(specialMode,Math.random())||weightedRandomEvent(sceneId));setEvent(next);showToast(next.label,4200)}},26000);return()=>clearInterval(timer)},[profile,sceneId,overlay,activeObject,event,specialMode]);
  useEffect(()=>{if(!('serviceWorker'in navigator))return;function onMessage(message){if(message.data?.type==='MEMORY_PACK_READY')setOfflineStatus(`Memory Pack siap · ${message.data.count}/${message.data.requested||message.data.count} aset tersimpan.`);if(message.data?.type==='MEMORY_PACKS_CLEARED')setOfflineStatus('Memory Pack tambahan sudah dihapus. Offline shell inti tetap tersimpan.')}navigator.serviceWorker.addEventListener('message',onMessage);return()=>navigator.serviceWorker.removeEventListener('message',onMessage)},[]);
  useEffect(()=>{function onKey(eventKey){if(eventKey.key!=='Escape'||overlay)return;if(activeObject){setActiveObject(null);setTrigger(null);return}if(event)setEvent(null)}window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[activeObject,overlay,event]);
