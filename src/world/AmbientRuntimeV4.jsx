@@ -8,6 +8,7 @@ const sceneCue={
  kota:{min:6500,max:11500,kind:'city'},
  digital:{min:7500,max:13000,kind:'digital'}
 };
+const MODES=['ramadan','lebaran','agustusan','minggu','malam-minggu'];
 
 function readSettings(){
  try{
@@ -19,7 +20,7 @@ function activeEnvironment(){
  const node=document.querySelector('.world-scene');
  if(!node)return null;
  const scene=Object.keys(sceneCue).find(id=>node.classList.contains(`scene-${id}`))||null;
- const mode=node.classList.contains('mode-ramadan')?'ramadan':node.classList.contains('mode-agustusan')?'agustusan':'normal';
+ const mode=MODES.find(id=>node.classList.contains(`mode-${id}`))||'normal';
  const phase=node.classList.contains('phase-malam')?'malam':node.classList.contains('phase-sore')?'sore':node.classList.contains('phase-pagi')?'pagi':'siang';
  return scene?{scene,mode,phase}:null;
 }
@@ -51,12 +52,19 @@ export default function AmbientRuntimeV4(){
   }
   function seasonalAccent(mode,phase){
    if(mode==='ramadan'){
-    tone(392,.16,'sine',.18,.04);tone(523,.22,'sine',.12,.16);
-    if(phase==='malam'||phase==='sore')tone(659,.28,'sine',.08,.31);
-    return;
+    tone(392,.16,'sine',.18,.04);tone(523,.22,'sine',.12,.16);if(phase==='malam'||phase==='sore')tone(659,.28,'sine',.08,.31);return;
+   }
+   if(mode==='lebaran'){
+    tone(523,.1,'sine',.14,.02);tone(659,.12,'sine',.11,.13);tone(784,.16,'sine',.08,.27);return;
    }
    if(mode==='agustusan'){
-    tone(124,.06,'triangle',.22,.02);tone(156,.05,'triangle',.17,.1);tone(124,.05,'triangle',.14,.18);
+    tone(124,.06,'triangle',.22,.02);tone(156,.05,'triangle',.17,.1);tone(124,.05,'triangle',.14,.18);return;
+   }
+   if(mode==='minggu'){
+    tone(740,.04,'sine',.11,.02);tone(980,.04,'sine',.08,.14);return;
+   }
+   if(mode==='malam-minggu'){
+    tone(220,.11,'triangle',.12,.03);tone(330,.08,'sine',.08,.18);return;
    }
   }
   function play(kind,mode,phase){
