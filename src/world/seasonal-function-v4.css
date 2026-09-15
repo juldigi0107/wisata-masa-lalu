@@ -1,0 +1,6 @@
+.memory-ribbon.seasonal{position:relative;background:linear-gradient(105deg,#efe2c7,#e7d0a7);border-top:1px solid rgba(126,91,45,.2)}
+.memory-ribbon .seasonal-note{display:block;margin-top:7px;max-width:64ch;color:rgba(54,43,31,.68);font:700 .52rem/1.5 "Courier New",monospace;font-style:normal;letter-spacing:.025em}
+.world-app:has(.mode-ramadan) .memory-ribbon.seasonal{background:linear-gradient(105deg,#e8dfc2,#d8c792)}
+.world-app:has(.mode-agustusan) .memory-ribbon.seasonal{background:linear-gradient(105deg,#f0e2cc,#e8c9b7)}
+.achievement-grid article:not(.unlocked) small{color:rgba(126,223,212,.72)}
+@media(max-width:720px){.memory-ribbon .seasonal-note{font-size:.48rem;line-height:1.45}}
