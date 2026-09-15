@@ -2,18 +2,30 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,readdir,stat} from 'node:fs/promises';
 
-const sceneFiles=['rumah-90.svg','kampung-90.svg','sekolah-90.svg','kota-90.svg','digital-90.svg'];
+const sourceSceneFiles=['rumah-90.svg','kampung-90.svg','sekolah-90.svg','kota-90.svg','digital-90.svg'];
+const rasterSceneFiles=['rumah-90.webp','kampung-90.webp','sekolah-90.webp','kota-90.webp','digital-90.webp'];
 
-test('premium world ships five lightweight original scene assets without embedded base64',async()=>{
+test('world keeps lightweight editable source art but production build rasterizes every scene',async()=>{
  const dir=new URL('../public/assets/world/scenes/',import.meta.url);
  const files=(await readdir(dir)).filter(name=>name.endsWith('.svg'));
- for(const name of sceneFiles)assert.ok(files.includes(name),`missing scene asset: ${name}`);
- for(const name of sceneFiles){
+ for(const name of sourceSceneFiles)assert.ok(files.includes(name),`missing scene authoring source: ${name}`);
+ for(const name of sourceSceneFiles){
   const file=new URL(name,dir);
   const [content,info]=await Promise.all([readFile(file,'utf8'),stat(file)]);
-  assert.ok(info.size<18*1024,`${name} is too large for a critical scene asset`);
+  assert.ok(info.size<24*1024,`${name} source is unexpectedly large`);
   assert.equal(content.includes('data:image'),false,`${name} must not embed base64 imagery`);
  }
+ const [generator,pkg,main]=await Promise.all([
+  readFile(new URL('../scripts/generate-world-raster.mjs',import.meta.url),'utf8'),
+  readFile(new URL('../package.json',import.meta.url),'utf8'),
+  readFile(new URL('../src/main.jsx',import.meta.url),'utf8')
+ ]);
+ assert.match(generator,/from 'sharp'/);
+ for(const name of rasterSceneFiles)assert.match(generator,new RegExp(name.replace('.','\\.')));
+ assert.match(pkg,/generate:world-art/);
+ assert.match(pkg,/npm run generate:world-art && vite build/);
+ for(const name of rasterSceneFiles)assert.match(main,new RegExp(name.replace('.','\\.')));
+ assert.equal(/assets\/world\/scenes\/[^"']+\.svg/.test(main),false,'production runtime must not point to scene SVGs');
 });
 
 test('premium CSS keeps anti-dashboard spatial layout and accessibility escape hatches',async()=>{
@@ -23,6 +35,18 @@ test('premium CSS keeps anti-dashboard spatial layout and accessibility escape h
  assert.match(css,/prefers-reduced-motion/);
  assert.match(css,/focus-visible/);
  assert.equal(/grid-template-columns:\s*repeat\(4,\s*1fr\)/.test(css),false,'premium world should not collapse into a generic four-card dashboard');
+});
+
+test('release-candidate visual layer replaces pictogram hotspot chrome with optical locators',async()=>{
+ const css=await readFile(new URL('../src/world/release-candidate-v6.css',import.meta.url),'utf8');
+ assert.match(css,/\.scene-object b\{[^}]*font-size:0!important/);
+ assert.match(css,/\.scene-object b:before/);
+ assert.match(css,/\.scene-object b:after/);
+ assert.match(css,/background-image:var\(--wml-scene-rumah\)/);
+ assert.match(css,/\.world-hud/);
+ assert.match(css,/\.experience-dock/);
+ assert.match(css,/\.interaction-drawer/);
+ assert.match(css,/prefers-reduced-motion/);
 });
 
 test('mobile premium layer is a dedicated composition, not a scaled dashboard',async()=>{
@@ -51,15 +75,16 @@ test('portrait focus pan covers every interactive object in every scene',async()
  assert.match(css,/:is\(\.active,:focus-visible\)/);
 });
 
-test('runtime visual assets are derived from Vite BASE_URL for Pages and custom-domain portability',async()=>{
+test('runtime visual assets are derived from Vite BASE_URL and use raster scenes',async()=>{
  const [main,runtime]=await Promise.all([
   readFile(new URL('../src/main.jsx',import.meta.url),'utf8'),
   readFile(new URL('../src/world/runtime-assets.css',import.meta.url),'utf8')
  ]);
  assert.match(main,/import\.meta\.env\.BASE_URL/);
  assert.match(main,/--wml-scene-/);
+ assert.match(main,/assets\/world\/raster\/\$\{id\}-90\.webp/);
  assert.match(runtime,/var\(--wml-scene-rumah\)/);
- assert.equal(runtime.includes('/wisata-masa-lalu/assets/world/scenes/'),false,'runtime scene CSS must not hardcode the repo path');
+ assert.equal(runtime.includes('/wisata-masa-lalu/assets/world/'),false,'runtime scene CSS must not hardcode the repo path');
 });
 
 test('render failures have a branded recovery boundary instead of a blank page',async()=>{
@@ -91,9 +116,10 @@ test('PWA manifest uses relative scope and shortcuts so install navigation survi
  }
 });
 
-test('PWA shell includes scene art memory-pack hooks and first-run production bundle discovery',async()=>{
+test('PWA shell caches generated raster scene art and memory-pack hooks',async()=>{
  const sw=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
- for(const name of sceneFiles)assert.match(sw,new RegExp(name.replace('.','\\.')));
+ for(const name of rasterSceneFiles)assert.match(sw,new RegExp(name.replace('.','\\.')));
+ for(const name of sourceSceneFiles)assert.equal(sw.includes(name),false,`service worker should not cache authoring SVG ${name}`);
  assert.match(sw,/CACHE_MEMORY_PACK/);
  assert.match(sw,/MEMORY_PACK_READY/);
  assert.match(sw,/function shellAssetUrls/);
