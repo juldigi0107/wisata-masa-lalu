@@ -40,6 +40,10 @@ const runtimeAsset=path=>`url("${appBase}${path}")`;
 const rootStyle=document.documentElement.style;
 rootStyle.setProperty("--wml-portal-grid",runtimeAsset("assets/world/raster/portal-grid.webp"));
 rootStyle.setProperty("--wml-brand-orbit",runtimeAsset("assets/world/raster/brand-orbit.webp"));
+rootStyle.setProperty("--wml-brand-seal",runtimeAsset("assets/brand-seal.webp"));
+rootStyle.setProperty("--wml-cassette-player",runtimeAsset("assets/cassette-player.webp"));
+rootStyle.setProperty("--wml-handheld-game",runtimeAsset("assets/handheld-game.webp"));
+rootStyle.setProperty("--wml-ramadan-lantern",runtimeAsset("assets/ramadan-lantern.webp"));
 for(const id of Object.keys(scenes)){
  rootStyle.setProperty(`--wml-scene-${id}`,runtimeAsset(`assets/world/raster/${id}-90.webp`));
 }
