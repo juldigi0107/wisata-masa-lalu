@@ -4,20 +4,21 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('main loads unified page, chapter, resilience, dossier, mechanic, mobile and focus layers in production entry',async()=>{
- const main=await text('src/main.jsx');
+test('main keeps world styles on critical path and loads archive pages through an async style chunk',async()=>{
+ const [main,archiveStyles]=await Promise.all([text('src/main.jsx'),text('src/world/archive-styles.js')]);
  for(const stylesheet of [
-  './world/archive-premium.css',
-  './world/archive-chapters-v2.css',
-  './world/archive-resilience-v2.css',
   './world/mechanics-v2.css',
-  './world/context-dossier-v2.css',
   './world/mobile-premium.css',
   './world/mobile-focus.css',
   './world/mobile-hardening-v2.css',
   './world/entry-flow-v2.css',
   './world/page-system.css'
  ]) assert.match(main,new RegExp(stylesheet.replaceAll('.','\\.').replaceAll('/','\\/')));
+ assert.match(main,/import\("\.\/world\/archive-styles\.js"\)/);
+ for(const stylesheet of ['./archive-premium.css','./archive-chapters-v2.css','./archive-resilience-v2.css','./context-archive.css','./context-dossier-v2.css']){
+  assert.match(archiveStyles,new RegExp(stylesheet.replaceAll('.','\\.').replaceAll('/','\\/')));
+ }
+ assert.equal(main.includes('./world/archive-chapters-v2.css'),false,'archive chapter CSS must not stay in the critical world chunk');
 });
 
 test('page system covers every primary world overlay without hiding functionality',async()=>{
