@@ -27,10 +27,11 @@ test('premium CSS keeps anti-dashboard spatial layout and accessibility escape h
 
 test('mobile premium layer is a dedicated composition, not a scaled dashboard',async()=>{
  const css=await readFile(new URL('../src/world/mobile-premium.css',import.meta.url),'utf8');
- assert.match(css,/@media\(max-width:760px\)/);
+ assert.match(css,/@media\s*\(max-width:\s*(?:760|900)px\)/);
  assert.match(css,/\.world-hud/);
  assert.match(css,/\.scene-object/);
  assert.match(css,/safe-area-inset/);
+ assert.match(css,/scroll-snap-type/);
 });
 
 test('mobile keeps every primary HUD feature reachable and gives archive its own scrolling surface',async()=>{
@@ -47,6 +48,7 @@ test('portrait focus pan covers every interactive object in every scene',async()
  const css=await readFile(new URL('../src/world/mobile-focus.css',import.meta.url),'utf8');
  for(const id of ['rumah','kampung','sekolah','kota','digital'])assert.match(css,new RegExp(`scene-${id}`));
  assert.match(css,/:has\(\.scene-object:focus-visible\)/);
+ assert.match(css,/:is\(\.active,:focus-visible\)/);
 });
 
 test('runtime visual assets are derived from Vite BASE_URL for Pages and custom-domain portability',async()=>{
