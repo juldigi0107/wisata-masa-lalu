@@ -3,6 +3,7 @@ import {createRoot} from "react-dom/client";
 import WorldExperienceShell from "./world/WorldExperienceShell.jsx";
 import AmbientRuntimeV4 from "./world/AmbientRuntimeV4.jsx";
 import PremiumRuntimeV5 from "./world/PremiumRuntimeV5.jsx";
+import EasterEggRuntime from "./world/EasterEggRuntime.jsx";
 import baseCatalog from "../shared/catalog.js";
 import assembledCatalog from "../shared/assembled-catalog.js";
 import {scenes,years} from "../shared/world-model.js";
@@ -30,6 +31,7 @@ import "./world/archive-recovery-v4.css";
 import "./world/entry-premium-v5.css";
 import "./world/social-memory.css";
 import "./world/memory-card.css";
+import "./world/easter-eggs.css";
 
 Object.assign(baseCatalog, assembledCatalog);
 
@@ -85,7 +87,7 @@ class AppErrorBoundary extends React.Component{
 }
 
 createRoot(document.getElementById("root")).render(
- <React.StrictMode><AppErrorBoundary><WorldExperienceShell/><AmbientRuntimeV4/><PremiumRuntimeV5/></AppErrorBoundary></React.StrictMode>
+ <React.StrictMode><AppErrorBoundary><WorldExperienceShell/><AmbientRuntimeV4/><PremiumRuntimeV5/><EasterEggRuntime/></AppErrorBoundary></React.StrictMode>
 );
 
 void import("./world/premium-runtime-styles.js").catch(error=>console.warn('Premium atmosphere style chunk unavailable',error));
