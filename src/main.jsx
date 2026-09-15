@@ -18,6 +18,7 @@ import "./world/device-controls.css";
 import "./world/resilience.css";
 import "./world/mobile-premium.css";
 import "./world/mobile-focus.css";
+import "./world/page-system.css";
 
 Object.assign(baseCatalog, assembledCatalog);
 
