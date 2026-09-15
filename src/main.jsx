@@ -5,6 +5,7 @@ import AmbientRuntimeV4 from "./world/AmbientRuntimeV4.jsx";
 import PremiumRuntimeV5 from "./world/PremiumRuntimeV5.jsx";
 import EasterEggRuntime from "./world/EasterEggRuntime.jsx";
 import EventVisualRuntimeV7 from "./world/EventVisualRuntimeV7.jsx";
+import ObjectLensVisualRuntimeV7 from "./world/ObjectLensVisualRuntimeV7.jsx";
 import baseCatalog from "../shared/catalog.js";
 import assembledCatalog from "../shared/assembled-catalog.js";
 import {scenes,years} from "../shared/world-model.js";
@@ -65,7 +66,7 @@ class AppErrorBoundary extends React.Component{
  componentDidCatch(error,info){console.error('Wisata Masa Lalu render recovery',error,info)}
  render(){if(!this.state.failed)return this.props.children;return <main className="fatal-shell" role="alert"><section><small>RECOVERY / TIME MACHINE</small><h1>Mesin waktu tersendat.</h1><p>Perjalanan lokalmu tidak dihapus. Muat ulang aplikasi untuk membangun ulang scene dan melanjutkan dari progress yang tersimpan di perangkat ini.</p><button onClick={()=>window.location.reload()}>MUAT ULANG DUNIA ↻</button></section></main>;}
 }
-createRoot(document.getElementById("root")).render(<React.StrictMode><AppErrorBoundary><WorldExperienceShell/><AmbientRuntimeV4/><PremiumRuntimeV5/><EventVisualRuntimeV7/><EasterEggRuntime/></AppErrorBoundary></React.StrictMode>);
+createRoot(document.getElementById("root")).render(<React.StrictMode><AppErrorBoundary><WorldExperienceShell/><AmbientRuntimeV4/><PremiumRuntimeV5/><EventVisualRuntimeV7/><ObjectLensVisualRuntimeV7/><EasterEggRuntime/></AppErrorBoundary></React.StrictMode>);
 void import("./world/premium-runtime-styles.js").catch(error=>console.warn('Premium atmosphere style chunk unavailable',error));
 void import("./world/interaction-runtime-styles.js").catch(error=>console.warn('Deep interaction style chunk unavailable',error));
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register(`${appBase}sw.js`).catch(()=>{}));
