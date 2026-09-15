@@ -5,6 +5,7 @@ const looks={
  bottoms:['Jeans high-waist','Celana longgar','Rok denim'],
  extras:['Tas pinggang','Scrunchie','Jam digital generik']
 };
+const cultureTabs=[['radio','Radio Lab'],['fashion','Fashion Lookbook'],['film','Film Shelf']];
 
 function RadioLab(){
  const [dial,setDial]=useState(46);const [status,setStatus]=useState('Putar tuner lalu tekan salah satu cue.');const ctx=useRef(null);const timers=useRef([]);
@@ -34,7 +35,7 @@ function RadioLab(){
 function FashionLab(){
  const [top,setTop]=useState(looks.tops[0]);const [bottom,setBottom]=useState(looks.bottoms[0]);const [extra,setExtra]=useState(looks.extras[0]);
  function randomize(){const pick=list=>list[Math.floor(Math.random()*list.length)];setTop(pick(looks.tops));setBottom(pick(looks.bottoms));setExtra(pick(looks.extras))}
- return <div className="fashion-lab"><div className="paper-doll" aria-label={`Look: ${top}, ${bottom}, ${extra}`}><div className="look-head"/><div className="look-top"><span>{top}</span></div><div className="look-bottom"><span>{bottom}</span></div><div className="look-extra"><span>{extra}</span></div></div><div className="look-controls"><p>Ini <b>style lab original-inspired</b>, bukan klaim bahwa kombinasi ini mewakili satu tren nasional. Tujuannya membangun rasa visual 90-an tanpa menyalin katalog atau foto mode berhak cipta.</p><label>Atasan<select value={top} onChange={event=>setTop(event.target.value)}>{looks.tops.map(value=><option key={value}>{value}</option>)}</select></label><label>Bawahan<select value={bottom} onChange={event=>setBottom(event.target.value)}>{looks.bottoms.map(value=><option key={value}>{value}</option>)}</select></label><label>Aksesori<select value={extra} onChange={event=>setExtra(event.target.value)}>{looks.extras.map(value=><option key={value}>{value}</option>)}</select></label><button onClick={randomize}>ACAK LOOK ↻</button></div></div>;
+ return <div className="fashion-lab"><div className="paper-doll" role="img" aria-label={`Look original-inspired: ${top}, ${bottom}, ${extra}`}><div className="look-head"/><div className="look-top"><span>{top}</span></div><div className="look-bottom"><span>{bottom}</span></div><div className="look-extra"><span>{extra}</span></div></div><div className="look-controls"><p>Ini <b>style lab original-inspired</b>, bukan klaim bahwa kombinasi ini mewakili satu tren nasional. Tujuannya membangun rasa visual 90-an tanpa menyalin katalog atau foto mode berhak cipta.</p><label>Atasan<select value={top} onChange={event=>setTop(event.target.value)}>{looks.tops.map(value=><option key={value}>{value}</option>)}</select></label><label>Bawahan<select value={bottom} onChange={event=>setBottom(event.target.value)}>{looks.bottoms.map(value=><option key={value}>{value}</option>)}</select></label><label>Aksesori<select value={extra} onChange={event=>setExtra(event.target.value)}>{looks.extras.map(value=><option key={value}>{value}</option>)}</select></label><button onClick={randomize}>ACAK LOOK ↻</button></div></div>;
 }
 
 function FilmShelf({data,onOpenEntry}){
@@ -43,6 +44,16 @@ function FilmShelf({data,onOpenEntry}){
 }
 
 export default function CultureStudioV4({data,onOpenEntry}){
- const [tab,setTab]=useState('radio');
- return <section id="culture-studio" className="culture-studio wrap"><div className="section-head"><div><p className="eyebrow">08A / CULTURE STUDIO</p><h2>Radio, gaya, dan rak film.</h2></div><p>Tiga fitur yang sebelumnya tersebar kini punya ruang sendiri. Radio dan lookbook bersifat simulatif/original; Film Shelf membaca SSOT agar fakta dan provenance tetap satu sumber.</p></div><div className="culture-tabs" role="tablist" aria-label="Culture Studio"><button role="tab" aria-selected={tab==='radio'} onClick={()=>setTab('radio')}>Radio Lab</button><button role="tab" aria-selected={tab==='fashion'} onClick={()=>setTab('fashion')}>Fashion Lookbook</button><button role="tab" aria-selected={tab==='film'} onClick={()=>setTab('film')}>Film Shelf</button></div><div className="culture-stage">{tab==='radio'&&<RadioLab/>}{tab==='fashion'&&<FashionLab/>}{tab==='film'&&<FilmShelf data={data} onOpenEntry={onOpenEntry}/>}</div></section>;
+ const [tab,setTab]=useState('radio');const tabRefs=useRef([]);
+ function choose(next,focus=false){setTab(next);if(focus)requestAnimationFrame(()=>tabRefs.current[cultureTabs.findIndex(([id])=>id===next)]?.focus())}
+ function keydown(event,index){
+  let next=index;
+  if(event.key==='ArrowRight')next=(index+1)%cultureTabs.length;
+  else if(event.key==='ArrowLeft')next=(index-1+cultureTabs.length)%cultureTabs.length;
+  else if(event.key==='Home')next=0;
+  else if(event.key==='End')next=cultureTabs.length-1;
+  else return;
+  event.preventDefault();choose(cultureTabs[next][0],true);
+ }
+ return <section id="culture-studio" className="culture-studio wrap"><div className="section-head"><div><p className="eyebrow">08A / CULTURE STUDIO</p><h2>Radio, gaya, dan rak film.</h2></div><p>Tiga fitur yang sebelumnya tersebar kini punya ruang sendiri. Radio dan lookbook bersifat simulatif/original; Film Shelf membaca SSOT agar fakta dan provenance tetap satu sumber.</p></div><div className="culture-tabs" role="tablist" aria-label="Culture Studio">{cultureTabs.map(([id,label],index)=><button key={id} ref={node=>{tabRefs.current[index]=node}} id={`culture-tab-${id}`} role="tab" aria-selected={tab===id} aria-controls={`culture-panel-${id}`} tabIndex={tab===id?0:-1} onKeyDown={event=>keydown(event,index)} onClick={()=>choose(id)}>{label}</button>)}</div><div id={`culture-panel-${tab}`} className="culture-stage" role="tabpanel" tabIndex="0" aria-labelledby={`culture-tab-${tab}`}>{tab==='radio'&&<RadioLab/>}{tab==='fashion'&&<FashionLab/>}{tab==='film'&&<FilmShelf data={data} onOpenEntry={onOpenEntry}/>}</div></section>;
 }
