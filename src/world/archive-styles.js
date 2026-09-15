@@ -7,3 +7,4 @@ import './context-archive.css';
 import './context-dossier-v2.css';
 import './archive-premium-v5.css';
 import './context-premium-v5.css';
+import './archive-release-v6.css';
