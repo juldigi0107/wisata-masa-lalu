@@ -21,10 +21,11 @@ test('world keeps lightweight editable source art but production build rasterize
   readFile(new URL('../src/main.jsx',import.meta.url),'utf8')
  ]);
  assert.match(generator,/from 'sharp'/);
- for(const name of rasterSceneFiles)assert.match(generator,new RegExp(name.replace('.','\\.')));
+ assert.match(generator,/const scenes=\['rumah','kampung','sekolah','kota','digital'\]/);
+ assert.match(generator,/`\$\{id\}-90\.webp`/);
  assert.match(pkg,/generate:world-art/);
  assert.match(pkg,/npm run generate:world-art && vite build/);
- for(const name of rasterSceneFiles)assert.match(main,new RegExp(name.replace('.','\\.')));
+ assert.match(main,/assets\/world\/raster\/\$\{id\}-90\.webp/);
  assert.equal(/assets\/world\/scenes\/[^"']+\.svg/.test(main),false,'production runtime must not point to scene SVGs');
 });
 
