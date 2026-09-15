@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {achievements} from '../shared/world-model.js';
-import {buildAchievementProgress,getSeasonalEvent,getSeasonalMemory,seasonalModes} from '../shared/world-v4-experience.js';
+import {buildAchievementProgress,getSeasonalEvent,getSeasonalMemory,sanitizeWorldSettings,seasonalModes} from '../shared/world-v4-experience.js';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
@@ -40,6 +40,13 @@ test('achievement progress counts actual category scene and year state',()=>{
  assert.equal(years.unlocked,false);
 });
 
+test('persisted audio and intensity settings are clamped to supported values',()=>{
+ assert.deepEqual(sanitizeWorldSettings({master:4,ambience:-3,ui:'0.25',mute:'yes',intensity:'unknown'}),{
+  master:1,ambience:0,ui:.25,mute:true,intensity:'imersif'
+ });
+ assert.deepEqual(sanitizeWorldSettings(null),{master:.7,ambience:.55,ui:.75,mute:false,intensity:'imersif'});
+});
+
 test('world engine applies seasonal memory to daily ribbon random events and collection progress',async()=>{
  const app=await text('src/world/WorldAppV4.jsx');
  assert.match(app,/getSeasonalMemory\(specialMode,dailySeed\)/);
@@ -56,4 +63,13 @@ test('search dialog prioritizes its explicitly marked autofocus target and resto
  assert.match(panel,/querySelector\('\[data-autofocus\]/);
  assert.match(panel,/data-autofocus autoFocus/);
  assert.match(panel,/previous\.current\?\.focus/);
+});
+
+test('startup deep links accept scene and year independently',async()=>{
+ const main=await text('src/main.jsx');
+ assert.match(main,/const hasScene=/);
+ assert.match(main,/const hasYear=/);
+ assert.match(main,/if\(hasScene\|\|hasYear\)/);
+ assert.match(main,/if\(hasScene\)/);
+ assert.match(main,/if\(hasYear\)/);
 });
