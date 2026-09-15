@@ -8,6 +8,7 @@ test('premium v5 runtime is mounted on the production path without replacing the
  const main=await text('src/main.jsx');
  assert.match(main,/PremiumRuntimeV5/);
  assert.match(main,/premium-experience-v5\.css/);
+ assert.match(main,/entry-premium-v5\.css/);
  assert.match(main,/WorldAppV4/);
  assert.match(main,/AmbientRuntimeV4/);
 });
@@ -19,6 +20,8 @@ test('cinematic atmosphere portals inside the world stacking context and disappe
  assert.match(runtime,/childList:true/);
  assert.match(runtime,/premium-scene-entering/);
  assert.match(runtime,/premium-season-shift/);
+ assert.match(runtime,/lastScene/);
+ assert.match(runtime,/lastMode/);
  assert.match(runtime,/if\(!state\.active\|\|!state\.host\)return null/);
 });
 
@@ -39,10 +42,21 @@ test('ambient synthesis reacts to scene, phase and seasonal mode without externa
  assert.equal(/\.(mp3|wav|ogg|m4a)/i.test(runtime),false);
 });
 
-test('archive premium v5 remains in the lazy archive style chunk and enhances long-form reading',async()=>{
- const [loader,css,main]=await Promise.all([text('src/world/archive-styles.js'),text('src/world/archive-premium-v5.css'),text('src/main.jsx')]);
- assert.match(loader,/archive-premium-v5\.css/);
- assert.equal(main.includes('archive-premium-v5.css'),false);
- for(const selector of ['\.hero','\.module-card','\.clip-card','\.feature-story','\.quiz-ticket','\.credits'])assert.match(css,new RegExp(selector));
+test('entry onboarding and recovery states receive the same premium language with motion fallback',async()=>{
+ const css=await text('src/world/entry-premium-v5.css');
+ for(const selector of ['\.time-intro','\.onboarding-paper','\.profile-choices','\.archive-loading','\.fatal-shell'])assert.match(css,new RegExp(selector));
  assert.match(css,/prefers-reduced-motion:reduce/);
+ assert.match(css,/safe-area-inset/);
+});
+
+test('archive premium v5 remains in the lazy archive style chunk and enhances long-form reading',async()=>{
+ const [loader,css,contextCss,main]=await Promise.all([text('src/world/archive-styles.js'),text('src/world/archive-premium-v5.css'),text('src/world/context-premium-v5.css'),text('src/main.jsx')]);
+ assert.match(loader,/archive-premium-v5\.css/);
+ assert.match(loader,/context-premium-v5\.css/);
+ assert.equal(main.includes('archive-premium-v5.css'),false);
+ assert.equal(main.includes('context-premium-v5.css'),false);
+ for(const selector of ['\.hero','\.module-card','\.clip-card','\.feature-story','\.quiz-ticket','\.credits'])assert.match(css,new RegExp(selector));
+ for(const selector of ['\.context-entry-hero','\.context-entry-provenance','\.context-source-room','\.context-source-list'])assert.match(contextCss,new RegExp(selector));
+ assert.match(css,/prefers-reduced-motion:reduce/);
+ assert.match(contextCss,/prefers-reduced-motion:reduce/);
 });
