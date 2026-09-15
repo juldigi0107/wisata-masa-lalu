@@ -1,0 +1,62 @@
+/* Mobile hardening v2 — safe areas, virtual keyboard, long copy and short landscape screens. */
+@media(max-width:900px){
+ .world-app,.archive-mode,.context-entry-page{font-size:16px}
+ .interaction-drawer,.time-machine-panel,.collection-panel,.search-panel,.campaign-panel,.settings-panel{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+ .interaction-drawer :where(h1,h2,h3,p,small,b,span),.time-machine-panel :where(h1,h2,h3,p,small,b,span),.collection-panel :where(h1,h2,h3,p,small,b,span),.search-panel :where(h1,h2,h3,p,small,b,span),.campaign-panel :where(h1,h2,h3,p,small,b,span),.settings-panel :where(h1,h2,h3,p,small,b,span){overflow-wrap:anywhere}
+ .search-panel input,.mechanic-box input,.mechanic-box textarea,.settings-panel select{font-size:16px!important}
+ .search-panel:focus-within,.interaction-drawer:has(input:focus),.interaction-drawer:has(textarea:focus),.settings-panel:focus-within{bottom:max(4px,env(safe-area-inset-bottom))!important;max-height:calc(100dvh - max(10px,env(safe-area-inset-top)) - max(10px,env(safe-area-inset-bottom)))!important}
+ .search-panel:focus-within{top:max(6px,env(safe-area-inset-top))!important}
+ .search-panel>input{scroll-margin-top:10px}
+ .mechanic-box textarea,.mechanic-box input{scroll-margin:18px}
+ .context-entry-page{padding-bottom:max(70px,env(safe-area-inset-bottom))}
+ .context-local-nav{padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+ .context-source-list a b,.context-source-list a small{overflow-wrap:anywhere;word-break:break-word}
+ .archive-mode .site-header,.archive-mode .archive-return{padding-left:max(10px,env(safe-area-inset-left))!important;padding-right:max(10px,env(safe-area-inset-right))!important}
+ .archive-mode .module-grid,.archive-mode .type-filter,.archive-mode .status-filter,.archive-mode .guide-tabs,.archive-mode .region-bar,.archive-mode .object-nav{overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}
+}
+
+@media(max-width:430px){
+ .world-hud{gap:3px!important}.brand-ticket{padding-left:38px!important}.brand-ticket:before{left:4px!important}
+ .world-hud nav button{font-size:.42rem!important;min-width:42px!important}
+ .scene-caption{top:82px!important;left:14px!important}.scene-caption small{max-width:78vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .scene-caption h2{max-width:8ch!important}.scene-caption p{max-width:32ch!important}
+ .memory-ribbon{left:6px!important;right:6px!important}.memory-ribbon button{max-width:104px;white-space:normal!important;line-height:1.15!important}
+ .environment-nav{left:6px!important;max-width:calc(100vw - 12px)!important}.experience-dock{left:6px!important;right:6px!important}
+ .interaction-drawer,.time-machine-panel,.collection-panel,.search-panel,.campaign-panel,.settings-panel{left:6px!important;right:6px!important;padding-left:15px!important;padding-right:15px!important}
+ .interaction-drawer h3{max-width:9ch!important}.trigger-brief:before{display:none}
+ .year-strip{grid-template-columns:repeat(5,minmax(0,1fr))!important}.year-strip button{font-size:.52rem!important}
+ .collection-grid{grid-template-columns:1fr 1fr!important}.collection-grid article{min-height:104px!important}
+ .memory-pack-settings>div>button{min-height:88px!important}
+ .archive-return button{max-width:48vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.archive-return span{display:none!important}
+ .archive-mode .hero-copy{padding-left:16px!important;padding-right:16px!important}.archive-mode .hero-meta{gap:10px!important}.archive-mode .hero-meta span{font-size:.43rem!important}
+ .archive-mode .module-card{flex-basis:82vw!important}.archive-mode .module-card h3{font-size:1.35rem!important}
+ .archive-mode .screen{min-height:320px!important}.archive-mode .broadcast h3{font-size:2.4rem!important}
+ .archive-mode .remote{padding:13px!important}.archive-mode .channel-grid{grid-template-columns:repeat(3,1fr)!important}
+ .archive-mode .archive-strip{grid-template-columns:1fr!important}.archive-mode .archive-strip>div{min-height:74px!important;border-right:0!important;border-bottom:1px solid rgba(23,21,31,.16)!important}
+ .archive-mode .game-gallery figure,.archive-mode .game-gallery figure:last-child{min-height:280px!important}
+ .archive-mode .object-stage,.archive-mode .object-stage img{min-height:330px!important}.archive-mode .object-copy{padding:24px 18px!important}
+ .archive-mode .warung-photo{min-height:320px!important}.archive-mode .ramadan{min-height:0!important}.archive-mode .music-player{min-height:310px!important}
+ .archive-mode .quiz-ticket{padding:24px 18px 52px!important}.archive-mode .clip-card{min-width:0!important}
+ .context-entry-copy{padding-left:16px!important;padding-right:16px!important}.context-entry-copy h1{font-size:clamp(3rem,16vw,4.8rem)!important}.context-entry-summary{font-size:.73rem!important}
+ .context-entry-provenance{grid-template-columns:1fr 1fr!important}.context-entry-provenance>span{padding:9px!important}
+ .context-local-nav a{padding:7px 9px;font-size:.43rem}.context-source-room{width:calc(100% - 24px)!important}.context-entry-body{width:calc(100% - 24px)!important}
+}
+
+@media(max-width:360px){
+ .brand-ticket b{font-size:.56rem!important}.world-hud nav button{min-width:38px!important;padding-inline:5px!important}
+ .scene-caption h2{font-size:2.35rem!important}.scene-caption p{font-size:.57rem!important}
+ .memory-ribbon b{font-size:.66rem!important}.memory-ribbon button{font-size:.34rem!important;max-width:92px}
+ .experience-dock button{min-width:72px!important}.environment-nav button{min-width:64px!important}
+ .context-entry-provenance{grid-template-columns:1fr!important}
+ .archive-mode .channel-grid{grid-template-columns:1fr 1fr!important}.archive-mode .quiz-options button{font-size:.68rem!important}
+}
+
+@media(max-width:900px) and (max-height:520px) and (orientation:landscape){
+ .world-hud{top:4px!important;left:6px!important;right:6px!important}.interaction-drawer,.time-machine-panel,.collection-panel,.search-panel,.campaign-panel,.settings-panel{top:4px!important;bottom:4px!important;max-height:calc(100dvh - 8px)!important}
+ .interaction-drawer{width:min(52vw,520px)!important;left:auto!important}.experience-dock{bottom:4px!important}.environment-nav{bottom:60px!important}
+ .context-entry-hero{grid-template-columns:1fr 1fr!important;grid-template-rows:1fr!important;min-height:100dvh!important}.context-entry-copy,.context-entry-visual{grid-row:1!important;min-height:100dvh!important}
+}
+
+@supports(height:100dvh){
+ @media(max-width:900px){.world-app,.world-scene{height:100dvh!important;min-height:100dvh!important}}
+}
