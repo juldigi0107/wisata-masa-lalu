@@ -28,8 +28,6 @@ import "./world/page-system.css";
 import "./world/feature-deep-dive-v4.css";
 import "./world/seasonal-function-v4.css";
 import "./world/archive-recovery-v4.css";
-import "./world/premium-experience-v5.css";
-import "./world/premium-intensity-v5.css";
 import "./world/entry-premium-v5.css";
 
 Object.assign(baseCatalog, assembledCatalog);
@@ -88,6 +86,8 @@ class AppErrorBoundary extends React.Component{
 createRoot(document.getElementById("root")).render(
  <React.StrictMode><AppErrorBoundary><WorldApp/><AmbientRuntimeV4/><PremiumRuntimeV5/></AppErrorBoundary></React.StrictMode>
 );
+
+void import("./world/premium-runtime-styles.js").catch(error=>console.warn('Premium atmosphere style chunk unavailable',error));
 
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>navigator.serviceWorker.register(`${appBase}sw.js`).catch(()=>{}));
