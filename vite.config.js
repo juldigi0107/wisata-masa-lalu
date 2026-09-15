@@ -1,6 +1,7 @@
 import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react";
 import tailwind from "@tailwindcss/vite";
+import {rm} from "node:fs/promises";
 
 const portableWorldAssets={
  name:"portable-world-assets",
@@ -22,7 +23,19 @@ const portableWorldAssets={
  }
 };
 
+const stripWorldAuthoringVectors={
+ name:"strip-world-authoring-vectors",
+ apply:"build",
+ async closeBundle(){
+  await Promise.all([
+   rm('dist/assets/world/scenes',{recursive:true,force:true}),
+   rm('dist/assets/world/brand-orbit.svg',{force:true}),
+   rm('dist/assets/world/portal-grid.svg',{force:true})
+  ]);
+ }
+};
+
 export default defineConfig({
- plugins:[portableWorldAssets,react(),tailwind()],
+ plugins:[portableWorldAssets,react(),tailwind(),stripWorldAuthoringVectors],
  base:"./"
 });
