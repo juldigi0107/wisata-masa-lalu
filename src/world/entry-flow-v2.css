@@ -1,0 +1,45 @@
+/* Entry Flow v2 — cinematic onboarding and contextual traversal hierarchy. */
+.time-intro{background:radial-gradient(circle at 50% 48%,rgba(130,222,211,.08),transparent 24%),linear-gradient(145deg,#050908,#0a1110 48%,#111713)!important}
+.time-intro>p{padding:7px 10px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.025)}
+.time-intro .intro-year{position:relative;isolation:isolate}.time-intro .intro-year:after{content:"";position:absolute;left:50%;bottom:-18px;width:70%;height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(130,222,211,.45),transparent)}
+.time-intro>button:not(.intro-skip){min-width:190px;border-radius:999px!important;background:#e4c174!important;color:#111613!important;box-shadow:0 18px 50px rgba(0,0,0,.3)!important}
+.time-intro .intro-skip{border-radius:999px!important;color:rgba(242,229,205,.55)!important}
+
+.onboarding{min-height:100svh}.onboarding-paper{overflow:hidden!important;isolation:isolate}.onboarding-paper:after{content:"";position:absolute;inset:auto -12% -42% 35%;height:70%;background:radial-gradient(circle,rgba(130,222,211,.08),transparent 62%);pointer-events:none;z-index:-1}.onboarding-hint{margin-top:18px!important}.profile-choices{position:relative;z-index:2}.profile-choices button{min-height:46px!important}.profile-choices button:before{content:"";width:5px;height:5px;border-radius:50%;background:#7eddd2;opacity:.4}.profile-choices button:hover:before,.profile-choices button:focus-visible:before{opacity:1;box-shadow:0 0 12px rgba(126,221,210,.5)}
+
+/* Idle scene hierarchy: world first, controls second. */
+.world-hud,.environment-nav,.memory-ribbon,.experience-dock,.profile-strip{transition:opacity .22s ease,transform .22s ease,background .22s ease,border-color .22s ease}
+.world-app:not(:has(.interaction-drawer)):not(:has(.time-machine-panel)):not(:has(.collection-panel)):not(:has(.search-panel)):not(:has(.campaign-panel)):not(:has(.settings-panel)) .environment-nav{opacity:.78}
+.world-app:not(:has(.interaction-drawer)) .memory-ribbon{opacity:.9}
+.world-app:has(.interaction-drawer) .memory-ribbon,.world-app:has(.interaction-drawer) .environment-nav,.world-app:has(.interaction-drawer) .experience-dock,.world-app:has(.interaction-drawer) .profile-strip{opacity:.16;pointer-events:none}
+.world-app:has(.time-machine-panel) .world-scene,.world-app:has(.collection-panel) .world-scene,.world-app:has(.search-panel) .world-scene,.world-app:has(.campaign-panel) .world-scene,.world-app:has(.settings-panel) .world-scene{filter:brightness(.66) saturate(.78)}
+
+.world-hud{overflow:hidden}.world-hud:after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(130,222,211,.22),transparent)}
+.hud-status span:first-child{color:#e5c479}.hud-status span:last-child{text-transform:capitalize}
+
+.scene-caption{pointer-events:none}.scene-caption h2{filter:drop-shadow(0 12px 35px rgba(0,0,0,.26))}.scene-caption p{border-left:1px solid rgba(255,255,255,.17);padding-left:12px}
+.scene-object{will-change:transform}.scene-object.active{z-index:34!important}.scene-object.active em{color:#d8fff9!important}
+
+.environment-nav button{position:relative}.environment-nav button:after{content:"→";position:absolute;right:9px;top:50%;transform:translateY(-50%);opacity:0;color:#82ded3;transition:.16s}.environment-nav button:hover:after,.environment-nav button:focus-visible:after{opacity:.7}
+
+.memory-ribbon{overflow:hidden}.memory-ribbon:after{content:"TODAY";position:absolute;right:12px;top:7px;font:700 .34rem "Courier New",monospace;letter-spacing:.13em;color:rgba(228,193,116,.28)}
+.memory-ribbon button{align-self:center}
+
+.experience-dock{scroll-snap-type:x proximity}.experience-dock button{scroll-snap-align:center;position:relative}.experience-dock button+button:before{content:"";position:absolute;left:-2px;top:12px;bottom:12px;width:1px;background:rgba(255,255,255,.05)}
+.experience-dock button:hover span,.experience-dock button:focus-visible span{opacity:1!important}
+
+.profile-strip{overflow:hidden}.profile-strip:after{content:"";position:absolute;right:-22px;bottom:-36px;width:90px;height:90px;border:1px solid rgba(130,222,211,.08);border-radius:50%}.profile-meter i{box-shadow:0 0 12px rgba(126,221,210,.28)}
+
+.world-toast{border:1px solid rgba(130,222,211,.24)!important;border-radius:999px!important;background:rgba(8,13,12,.88)!important;color:#e8f7f2!important;box-shadow:0 18px 60px rgba(0,0,0,.35)!important;backdrop-filter:blur(18px)!important;font-size:.56rem!important;letter-spacing:.03em!important}
+.ambient-event{border-radius:20px!important;border:1px solid rgba(228,193,116,.2)!important;background:linear-gradient(145deg,rgba(9,14,13,.94),rgba(19,24,20,.94))!important;box-shadow:0 30px 90px rgba(0,0,0,.48)!important;backdrop-filter:blur(22px)!important}.ambient-event small{color:#dfbd76!important;letter-spacing:.14em!important}.ambient-event b{font:600 1.15rem Georgia,serif!important}.ambient-event button{border-radius:999px!important}
+
+@media(max-width:900px){
+ .world-app:has(.interaction-drawer) .world-hud{opacity:.45}.world-app:has(.interaction-drawer) .scene-caption{opacity:.28}.world-app:has(.interaction-drawer) .world-scene{filter:brightness(.72) saturate(.8)}
+ .scene-caption p{border-left:0;padding-left:0}.environment-nav button:after{display:none}.memory-ribbon:after{display:none}
+ .onboarding-paper{padding-top:max(34px,env(safe-area-inset-top))!important;padding-bottom:max(34px,env(safe-area-inset-bottom))!important}
+}
+@media(max-width:520px){
+ .profile-choices{display:grid!important;grid-template-columns:1fr!important;width:100%}.profile-choices button{justify-content:space-between!important;width:100%!important}.profile-choices button:before{display:none}
+ .time-intro>button:not(.intro-skip){width:min(86vw,310px)}
+}
+@media(prefers-reduced-motion:reduce){.world-hud,.environment-nav,.memory-ribbon,.experience-dock,.profile-strip,.environment-nav button:after{transition:none!important}}
