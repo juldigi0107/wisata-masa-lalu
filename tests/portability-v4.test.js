@@ -10,9 +10,10 @@ test('scene art source itself contains no hardcoded GitHub repository path',asyn
  for(const id of ['rumah','kampung','sekolah','kota','digital'])assert.match(css,new RegExp(`var\\(--wml-scene-${id}\\)`));
 });
 
-test('runtime asset variables are supplied from Vite BASE_URL',async()=>{
+test('runtime asset variables are supplied from Vite BASE_URL and point to generated WebP scenes',async()=>{
  const main=await text('src/main.jsx');
  assert.match(main,/import\.meta\.env\.BASE_URL/);
  assert.match(main,/rootStyle\.setProperty\(`--wml-scene-/);
- assert.match(main,/runtimeAsset\(`assets\/world\/scenes\/\$\{id\}-90\.svg`\)/);
+ assert.match(main,/runtimeAsset\(`assets\/world\/raster\/\$\{id\}-90\.webp`\)/);
+ assert.equal(main.includes('assets/world/scenes/${id}-90.svg'),false);
 });
