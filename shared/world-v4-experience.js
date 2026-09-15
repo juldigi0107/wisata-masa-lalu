@@ -1,9 +1,12 @@
 import {getTrigger} from './memory-triggers.js';
 
 export const seasonalModes={
- normal:{id:'normal',label:'Mode normal',eyebrow:'MEMORI HARI INI',note:'Kurasi harian lintas tema 90-an.',triggers:[]},
- ramadan:{id:'ramadan',label:'Ramadan 90-an',eyebrow:'SEASONAL MEMORY / RAMADAN',note:'Kurasi pengalaman untuk suasana Ramadan; bukan rekonstruksi jadwal historis.',triggers:['magrib','kartu-lebaran','suara-malam','penjual-keliling','radio-tuner']},
- agustusan:{id:'agustusan',label:'Kampung Merdeka',eyebrow:'SEASONAL MEMORY / AGUSTUSAN',note:'Kurasi permainan dan suasana perayaan; bukan klaim bahwa semua aktivitas terjadi di setiap daerah.',triggers:['upacara','bentengan','kelereng','gasing','pistol-air']}
+ normal:{id:'normal',label:'Mode normal',eyebrow:'MEMORI HARI INI',note:'Kurasi harian lintas tema 90-an.',accent:'neutral',triggers:[]},
+ ramadan:{id:'ramadan',label:'Ramadan 90-an',eyebrow:'SEASONAL MEMORY / RAMADAN',note:'Kurasi pengalaman untuk suasana Ramadan; bukan rekonstruksi jadwal historis.',accent:'emerald',triggers:['magrib','kartu-lebaran','suara-malam','penjual-keliling','radio-tuner']},
+ lebaran:{id:'lebaran',label:'Lebaran di Kampung',eyebrow:'SEASONAL MEMORY / LEBARAN',note:'Ritual silaturahmi, kartu ucapan, foto keluarga, THR dan perjalanan pulang dalam treatment nostalgia original.',accent:'gold',triggers:['kartu-lebaran','album-keluarga','kamera-36-frame','surat-pos','telepon-rumah']},
+ agustusan:{id:'agustusan',label:'Kampung Merdeka',eyebrow:'SEASONAL MEMORY / 17 AGUSTUS',note:'Kurasi permainan dan suasana perayaan; bukan klaim bahwa semua aktivitas terjadi di setiap daerah.',accent:'red',triggers:['upacara','bentengan','kelereng','gasing','pistol-air']},
+ minggu:{id:'minggu',label:'Minggu Pagi',eyebrow:'SEASONAL MEMORY / HARI MINGGU',note:'Ritme santai dari TV pagi, main di luar, radio dan jalan sore.',accent:'sky',triggers:['tv-tabung','channel-surfing','radio-tuner','kelereng','album-keluarga']},
+ 'malam-minggu':{id:'malam-minggu',label:'Malam Minggu',eyebrow:'SEASONAL MEMORY / MALAM MINGGU',note:'Kurasi telepon teman, radio, rental, arcade dan jalan kota—tanpa memaksakan satu gaya hidup untuk semua orang.',accent:'violet',triggers:['malam-minggu','telepon-rumah','radio-tuner','mesin-arcade','rumor-cheat-code']}
 };
 
 const safeSeed=value=>Math.min(.999999,Math.max(0,Number.isFinite(Number(value))?Number(value):0));
