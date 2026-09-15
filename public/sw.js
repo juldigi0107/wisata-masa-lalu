@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v6-3';
+const VERSION='wml-time-machine-v6-4';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
@@ -13,16 +13,17 @@ const shellUrls=[
  `${base}assets/world/raster/sekolah-90.webp`,
  `${base}assets/world/raster/kota-90.webp`,
  `${base}assets/world/raster/digital-90.webp`,
- `${base}assets/brand-seal.webp`
+ `${base}assets/brand-seal.webp`,
+ `${base}assets/icons/wml-64.png`,
+ `${base}assets/icons/wml-180.png`,
+ `${base}assets/icons/wml-192.png`,
+ `${base}assets/icons/wml-512.png`,
+ `${base}assets/icons/wml-maskable-512.png`
 ];
 
 function shellAssetUrls(html){
  const refs=[...html.matchAll(/(?:src|href)=["']([^"']+\.(?:js|css))["']/gi)].map(match=>match[1]);
  return [...new Set(refs.map(ref=>new URL(ref,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href))];
-}
-function normalizePackAsset(value){
- if(typeof value!=='string')return value;
- return value.replace('assets/world/scenes/','assets/world/raster/').replace(/-90\.svg(?:$|\?)/,'-90.webp');
 }
 
 async function installShell(){
@@ -101,7 +102,6 @@ self.addEventListener('message',event=>{
   event.waitUntil((async()=>{
    const urls=data.urls
     .filter(value=>typeof value==='string')
-    .map(normalizePackAsset)
     .map(value=>new URL(value,swBase))
     .filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base))
     .map(url=>url.href);
