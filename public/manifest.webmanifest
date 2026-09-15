@@ -1,10 +1,10 @@
 {
-  "id": "/wisata-masa-lalu/",
+  "id": "./",
   "name": "Wisata Masa Lalu — Indonesia 90-an",
   "short_name": "Wisata 90-an",
   "description": "Mesin waktu digital interaktif menuju Indonesia 1990–1999.",
-  "start_url": "/wisata-masa-lalu/",
-  "scope": "/wisata-masa-lalu/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone"],
   "background_color": "#08100e",
@@ -17,8 +17,8 @@
     {"src":"assets/world/brand-orbit.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
   ],
   "shortcuts": [
-    {"name":"Masuk Rumah 90-an","short_name":"Rumah","description":"Mulai dari ruang keluarga Indonesia 90-an.","url":"/wisata-masa-lalu/?scene=rumah"},
-    {"name":"Kembali ke Sekolah","short_name":"Sekolah","description":"Masuk kelas, kantin, koperasi, dan lapangan.","url":"/wisata-masa-lalu/?scene=sekolah"},
-    {"name":"Dunia Digital 90-an","short_name":"Digital","description":"PC, disket, modem, chat room, dan warnet.","url":"/wisata-masa-lalu/?scene=digital&year=1998"}
+    {"name":"Masuk Rumah 90-an","short_name":"Rumah","description":"Mulai dari ruang keluarga Indonesia 90-an.","url":"./?scene=rumah"},
+    {"name":"Kembali ke Sekolah","short_name":"Sekolah","description":"Masuk kelas, kantin, dan lapangan.","url":"./?scene=sekolah"},
+    {"name":"Dunia Digital 90-an","short_name":"Digital","description":"PC, disket, modem, chat room, dan warnet.","url":"./?scene=digital&year=1998"}
   ]
 }
