@@ -11,13 +11,8 @@ import "./world/scene-art.css";
 import "./world/runtime-assets.css";
 import "./world/motion.css";
 import "./world/polish.css";
-import "./world/archive-premium.css";
-import "./world/archive-chapters-v2.css";
-import "./world/archive-resilience-v2.css";
 import "./world/special-mechanics.css";
 import "./world/mechanics-v2.css";
-import "./world/context-archive.css";
-import "./world/context-dossier-v2.css";
 import "./world/device-controls.css";
 import "./world/resilience.css";
 import "./world/mobile-premium.css";
@@ -70,6 +65,8 @@ class AppErrorBoundary extends React.Component{
 createRoot(document.getElementById("root")).render(
  <React.StrictMode><AppErrorBoundary><WorldApp/></AppErrorBoundary></React.StrictMode>
 );
+
+void import("./world/archive-styles.js").catch(error=>console.warn('Archive style chunk unavailable',error));
 
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>navigator.serviceWorker.register(`${appBase}sw.js`).catch(()=>{}));
