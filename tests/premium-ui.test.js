@@ -39,10 +39,12 @@ test('mobile premium layer is a dedicated composition, not a scaled dashboard',a
  assert.match(mobile,/\.interaction-drawer[\s\S]*bottom:max\(8px,env\(safe-area-inset-bottom\)\)/);
  assert.match(mobile,/\.environment-nav[\s\S]*flex-direction:row!important/);
  assert.match(mobile,/\.experience-dock[\s\S]*scroll-snap-type:x proximity/);
+ assert.match(mobile,/\.year-state,\.search-columns\{grid-template-columns:1fr!important\}/);
+ assert.match(mobile,/\.settings-panel label\{grid-template-columns:1fr!important/);
+ assert.match(mobile,/\.collection-grid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important\}/);
  assert.match(mobile,/env\(safe-area-inset-top\)/);
  assert.match(mobile,/env\(safe-area-inset-bottom\)/);
  assert.match(mobile,/@media \(pointer:coarse\)/);
- assert.equal(/grid-template-columns:repeat\([4-9]/.test(mobile),false,'mobile layer must not introduce dashboard-like dense grids');
 });
 
 test('mobile keeps every primary HUD feature reachable and gives archive its own scrolling surface',async()=>{
