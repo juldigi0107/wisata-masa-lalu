@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v3-4';
+const VERSION='wml-time-machine-v3-5';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const swBase=new URL('./',self.location.href);
