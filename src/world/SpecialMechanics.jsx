@@ -1,9 +1,14 @@
-import {useEffect,useMemo,useState} from 'react';
+import {useEffect,useMemo,useRef,useState} from 'react';
+
+function useOnceComplete(onComplete){
+ const done=useRef(false);
+ return value=>{if(done.current)return;done.current=true;onComplete(value)};
+}
 
 function Schedule({onComplete}){
  const slots=[['06:30','Kartun pagi'],['12:30','Acara keluarga'],['19:30','Prime time'],['21:00','Film / hiburan']];
- const [clock,setClock]=useState('19:30');
- return <div className="mechanic-box special-mechanic schedule-mechanic"><p className="mechanic-kicker">KORAN / JADWAL SIARAN</p><div className="paper-schedule">{slots.map(([time,label])=><button key={time} className={clock===time?'selected':''} onClick={()=>setClock(time)}><time>{time}</time><span>{label}</span></button>)}</div><div className="mechanic-readout"><small>JAM DINDING</small><b>{clock}</b></div><button onClick={()=>onComplete(clock)}>LINGKARI ACARA ↘</button></div>;
+ const [clock,setClock]=useState('');
+ return <div className="mechanic-box special-mechanic schedule-mechanic"><p className="mechanic-kicker">KORAN / JADWAL SIARAN</p><div className="paper-schedule">{slots.map(([time,label])=><button key={time} className={clock===time?'selected':''} aria-pressed={clock===time} onClick={()=>setClock(time)}><time>{time}</time><span>{label}</span></button>)}</div><div className="mechanic-readout"><small>JAM DINDING</small><b>{clock||'--:--'}</b></div><button disabled={!clock} onClick={()=>onComplete(clock)}>LINGKARI ACARA ↘</button></div>;
 }
 
 function Sequence({trigger,onComplete}){
@@ -38,7 +43,7 @@ function Dialup({onComplete}){
  const stages=['Dialing…','Carrier detected','Handshake 33.6k','Verifying user','Connected'];
  const [running,setRunning]=useState(false);const [index,setIndex]=useState(0);
  useEffect(()=>{if(!running||index>=stages.length-1)return;const timer=setTimeout(()=>setIndex(i=>i+1),620);return()=>clearTimeout(timer)},[running,index,stages.length]);
- return <div className="mechanic-box special-mechanic dialup-mechanic"><div className="modem-orbit"><i className={running?'active':''}/><strong>{stages[index]}</strong><small>{index===4?'00:00:01 · CONNECTED':'MODEM / TELEPHONE LINE'}</small></div><button onClick={()=>{if(index===4)onComplete('connected');else setRunning(true)}}>{index===4?'MASUK INTERNET ↘':running?'MENUNGGU HANDSHAKE…':'DIAL SEKARANG'}</button></div>;
+ return <div className="mechanic-box special-mechanic dialup-mechanic"><div className="modem-orbit"><i className={running?'active':''}/><strong>{stages[index]}</strong><small>{index===4?'00:00:01 · CONNECTED':'MODEM / TELEPHONE LINE'}</small></div><button disabled={running&&index<4} onClick={()=>{if(index===4)onComplete('connected');else setRunning(true)}}>{index===4?'MASUK INTERNET ↘':running?'MENUNGGU HANDSHAKE…':'DIAL SEKARANG'}</button></div>;
 }
 
 function EventMechanic({trigger,onComplete}){
@@ -73,33 +78,34 @@ function Meter({label,value}){return <div className="pet-meter"><span>{label}</s
 function Secret({onComplete}){
  const target=['↑','↑','←','→','A'];const [input,setInput]=useState([]);const solved=target.every((value,i)=>input[i]===value)&&input.length===target.length;
  function add(value){setInput(current=>[...current,value].slice(-target.length))}
- return <div className="mechanic-box special-mechanic secret-mechanic"><div className="secret-display">{input.length?input.join(' '):'· · · · ·'}</div><div className="secret-pad">{['↑','↓','←','→','A','B'].map(key=><button key={key} onClick={()=>add(key)}>{key}</button>)}</div><small>Rumor di rental: “dua kali atas, lalu kiri…”</small><button disabled={!solved} onClick={()=>onComplete(input)}>SECRET TERBUKA ✦</button></div>;
+ return <div className="mechanic-box special-mechanic secret-mechanic"><div className="secret-display">{input.length?input.join(' '):'· · · · ·'}</div><div className="secret-pad">{['↑','↓','←','→','A','B'].map(key=><button key={key} onClick={()=>add(key)}>{key}</button>)}</div><small>Rumor di rental: “dua kali atas, lalu kiri…” Catatan sobek di meja: “kanan, A.”</small><button disabled={!solved} onClick={()=>onComplete(input)}>SECRET TERBUKA ✦</button></div>;
 }
 
 function Ambient({trigger,onComplete}){
- const layers=trigger.id==='suara-malam'?['jangkrik','tokek','motor jauh','TV tetangga']:trigger.id==='penjual-keliling'?['roda gerobak','panggilan','bel kecil','motor lewat']:['hujan genteng','air talang','angin','suara rumah'];
+ const layers=trigger.id==='suara-malam'?['jangkrik','tokek','motor jauh','TV tetangga']:trigger.id==='penjual-keliling'?['roda gerobak','panggilan','bel kecil','motor lewat']:trigger.id==='magrib'?['suara mushola','anak-anak pulang','motor melambat','rumah mulai terang']:['hujan genteng','air talang','angin','suara rumah'];
  const [heard,setHeard]=useState([]);
- return <div className="mechanic-box special-mechanic ambient-mechanic"><div className="wave-field" aria-hidden="true">{Array.from({length:18},(_,i)=><i key={i} style={{height:`${20+((i*17)%65)}%`}}/>)}</div><p>Dengarkan dengan mata: sentuh layer yang kamu kenali.</p><div className="ambient-layers">{layers.map(layer=><button key={layer} className={heard.includes(layer)?'heard':''} onClick={()=>setHeard(h=>h.includes(layer)?h:[...h,layer])}>{layer}</button>)}</div><button disabled={heard.length<3} onClick={()=>onComplete(heard)}>SIMPAN SOUNDSCAPE</button></div>;
+ return <div className="mechanic-box special-mechanic ambient-mechanic"><div className="wave-field" aria-hidden="true">{Array.from({length:18},(_,i)=><i key={i} style={{height:`${20+((i*17)%65)}%`}}/>)}</div><p>Dengarkan dengan mata: sentuh layer yang kamu kenali.</p><div className="ambient-layers">{layers.map(layer=><button key={layer} className={heard.includes(layer)?'heard':''} aria-pressed={heard.includes(layer)} onClick={()=>setHeard(h=>h.includes(layer)?h:[...h,layer])}>{layer}</button>)}</div><button disabled={heard.length<3} onClick={()=>onComplete(heard)}>SIMPAN SOUNDSCAPE</button></div>;
 }
 
 function Inspect({onComplete}){
  const frames=['01A','02A','03A','04A','05A','06A'];const [selected,setSelected]=useState([]);
- return <div className="mechanic-box special-mechanic inspect-mechanic"><div className="negative-strip">{frames.map((frame,i)=><button key={frame} className={selected.includes(i)?'selected':''} onClick={()=>setSelected(v=>v.includes(i)?v:[...v,i])}><span>{frame}</span><i/></button>)}</div><small>Pilih tiga frame yang ingin diperiksa lebih dekat.</small><button disabled={selected.length<3} onClick={()=>onComplete(selected)}>BACA CONTACT SHEET</button></div>;
+ return <div className="mechanic-box special-mechanic inspect-mechanic"><div className="negative-strip">{frames.map((frame,i)=><button key={frame} className={selected.includes(i)?'selected':''} aria-pressed={selected.includes(i)} onClick={()=>setSelected(v=>v.includes(i)?v:[...v,i])}><span>{frame}</span><i/></button>)}</div><small>Pilih tiga frame yang ingin diperiksa lebih dekat.</small><button disabled={selected.length<3} onClick={()=>onComplete(selected)}>BACA CONTACT SHEET</button></div>;
 }
 
 export default function SpecialMechanic({family,trigger,onComplete}){
- if(family==='schedule')return <Schedule onComplete={onComplete}/>;
- if(family==='sequence')return <Sequence trigger={trigger} onComplete={onComplete}/>;
- if(family==='browse')return <Browse trigger={trigger} onComplete={onComplete}/>;
- if(family==='boot')return <Boot onComplete={onComplete}/>;
- if(family==='dialup')return <Dialup onComplete={onComplete}/>;
- if(family==='event')return <EventMechanic trigger={trigger} onComplete={onComplete}/>;
- if(family==='random')return <RandomReveal onComplete={onComplete}/>;
- if(family==='ledger')return <Ledger onComplete={onComplete}/>;
- if(family==='strategy')return <Strategy onComplete={onComplete}/>;
- if(family==='pet')return <Pet onComplete={onComplete}/>;
- if(family==='secret')return <Secret onComplete={onComplete}/>;
- if(family==='ambient')return <Ambient trigger={trigger} onComplete={onComplete}/>;
- if(family==='inspect')return <Inspect onComplete={onComplete}/>;
+ const complete=useOnceComplete(onComplete);
+ if(family==='schedule')return <Schedule onComplete={complete}/>;
+ if(family==='sequence')return <Sequence trigger={trigger} onComplete={complete}/>;
+ if(family==='browse')return <Browse trigger={trigger} onComplete={complete}/>;
+ if(family==='boot')return <Boot onComplete={complete}/>;
+ if(family==='dialup')return <Dialup onComplete={complete}/>;
+ if(family==='event')return <EventMechanic trigger={trigger} onComplete={complete}/>;
+ if(family==='random')return <RandomReveal onComplete={complete}/>;
+ if(family==='ledger')return <Ledger onComplete={complete}/>;
+ if(family==='strategy')return <Strategy onComplete={complete}/>;
+ if(family==='pet')return <Pet onComplete={complete}/>;
+ if(family==='secret')return <Secret onComplete={complete}/>;
+ if(family==='ambient')return <Ambient trigger={trigger} onComplete={complete}/>;
+ if(family==='inspect')return <Inspect onComplete={complete}/>;
  return null;
 }
