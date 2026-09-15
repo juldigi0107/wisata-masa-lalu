@@ -1,0 +1,137 @@
+/* WISATA MASA LALU — mobile spatial composition
+   Mobile is not a shrunken desktop. The scene remains primary and controls collapse around it. */
+
+@media (max-width:900px){
+ html,body,#root,.world-app{min-height:100%;min-height:100svh}
+ body{overflow:hidden}
+ .world-app{height:100svh;min-height:100svh;overflow:hidden}
+ .world-scene{height:100svh!important;min-height:100svh!important}
+
+ .world-hud{
+  top:max(8px,env(safe-area-inset-top))!important;
+  left:max(8px,env(safe-area-inset-left))!important;
+  right:max(8px,env(safe-area-inset-right))!important;
+  width:auto!important;max-width:none!important;height:58px!important;
+  grid-template-columns:1fr auto!important;gap:6px!important;padding:6px!important;
+  border-radius:17px!important;background:rgba(7,12,11,.68)!important;
+ }
+ .brand-ticket{min-width:0!important;padding:7px 8px 7px 42px!important}
+ .brand-ticket:before{width:30px!important;height:30px!important;left:6px!important}
+ .brand-ticket span{display:none!important}
+ .brand-ticket b{font-size:.72rem!important;white-space:nowrap}
+ .hud-status{display:none!important}
+ .world-hud nav{display:flex!important;gap:2px!important;border:0!important;background:transparent!important;padding:0!important}
+ .world-hud nav button{min-width:44px!important;min-height:44px!important;padding:7px 8px!important;font-size:.48rem!important;letter-spacing:0!important}
+ .world-hud nav button:nth-child(2){display:none!important}
+
+ .scene-caption{left:18px!important;right:72px!important;top:92px!important;max-width:none!important;pointer-events:none}
+ .scene-caption small{font-size:.44rem!important;padding:5px 8px!important;background:rgba(7,12,11,.4)!important}
+ .scene-caption h2{font-size:clamp(2.6rem,14vw,5.4rem)!important;line-height:.82!important;margin:11px 0 10px!important;max-width:7.5ch!important}
+ .scene-caption p{font-size:.62rem!important;line-height:1.45!important;max-width:36ch!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+ .scene-object{min-width:52px!important;min-height:52px!important}
+ .scene-object b{width:46px!important;height:46px!important}
+ .scene-object em{display:none!important}
+ .scene-object.active em,.scene-object:focus-visible em{display:block!important;position:absolute;top:48px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.45rem!important}
+ .scene-object small{display:none!important}
+ .object-pulse{width:58px!important;height:58px!important}
+
+ /* exits become a horizontal spatial rail, not a second menu column */
+ .environment-nav{
+  position:fixed!important;z-index:76!important;
+  left:8px!important;right:auto!important;top:auto!important;
+  bottom:calc(max(8px,env(safe-area-inset-bottom)) + 66px)!important;
+  transform:none!important;width:auto!important;max-width:calc(100vw - 16px)!important;
+  min-height:0!important;display:flex!important;flex-direction:row!important;gap:3px!important;
+  padding:4px!important;border-radius:15px!important;overflow-x:auto!important;overflow-y:hidden!important;
+  background:rgba(7,12,11,.7)!important;scrollbar-width:none;
+ }
+ .environment-nav::-webkit-scrollbar{display:none}
+ .environment-nav:before{content:'PINDAH';display:grid;place-items:center;padding:0 7px!important;font-size:.37rem!important;letter-spacing:.13em!important;white-space:nowrap}
+ .environment-nav button{opacity:1!important;pointer-events:auto!important;transform:none!important;width:auto!important;min-width:74px!important;min-height:46px!important;padding:7px 9px!important;white-space:nowrap}
+ .environment-nav button span{display:none!important}
+ .environment-nav button b{font-size:.55rem!important;margin:0!important}
+
+ /* daily memory becomes one calm chip above the transport controls */
+ .memory-ribbon{
+  left:8px!important;right:8px!important;bottom:calc(max(8px,env(safe-area-inset-bottom)) + 122px)!important;
+  width:auto!important;max-width:none!important;padding:9px 10px 9px 12px!important;
+  grid-template-columns:1fr auto!important;border-radius:15px!important;gap:8px!important;
+  background:rgba(7,12,11,.7)!important;
+ }
+ .memory-ribbon small{font-size:.37rem!important}.memory-ribbon b{font-size:.82rem!important;margin:3px 0 0!important}
+ .memory-ribbon p{display:none!important}
+ .memory-ribbon button{min-height:42px!important;padding:8px 10px!important;font-size:.42rem!important}
+
+ .experience-dock{
+  left:max(8px,env(safe-area-inset-left))!important;right:max(8px,env(safe-area-inset-right))!important;
+  bottom:max(8px,env(safe-area-inset-bottom))!important;transform:none!important;
+  width:auto!important;min-width:0!important;max-width:none!important;height:58px!important;
+  padding:4px!important;border-radius:15px!important;gap:2px!important;
+  scroll-snap-type:x proximity;
+ }
+ .experience-dock button{min-width:88px!important;min-height:48px!important;padding:7px 8px!important;scroll-snap-align:start}
+ .experience-dock button span{display:none!important}
+ .experience-dock button b{font-size:.48rem!important;white-space:normal!important;line-height:1.1!important;text-align:center!important}
+ .profile-strip{display:none!important}
+ .world-footer{display:none!important}
+
+ /* object interaction becomes a bottom sheet */
+ .interaction-drawer{
+  left:max(8px,env(safe-area-inset-left))!important;right:max(8px,env(safe-area-inset-right))!important;
+  top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;
+  width:auto!important;max-height:min(78svh,720px)!important;
+  padding:22px 18px calc(22px + env(safe-area-inset-bottom))!important;
+  border-radius:26px 26px 18px 18px!important;
+  box-shadow:0 -28px 100px rgba(0,0,0,.62)!important;
+ }
+ .interaction-drawer:before{font-size:.4rem!important;margin-bottom:12px!important}
+ .interaction-drawer h3{font-size:clamp(2rem,10vw,3.2rem)!important}
+ .drawer-close,.panel-close{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+ .trigger-tabs button{min-height:42px!important;padding:8px 11px!important}
+ .mechanic-box button,.row-actions button,.choice-grid button,.find-grid button,.builder-grid button,.shop-grid button{min-height:46px}
+
+ .time-machine-panel,.collection-panel,.search-panel,.campaign-panel,.settings-panel{
+  top:auto!important;left:max(8px,env(safe-area-inset-left))!important;right:max(8px,env(safe-area-inset-right))!important;
+  bottom:max(8px,env(safe-area-inset-bottom))!important;transform:none!important;
+  width:auto!important;max-height:calc(100svh - max(16px,env(safe-area-inset-top)) - max(16px,env(safe-area-inset-bottom)))!important;
+  padding:22px 18px calc(22px + env(safe-area-inset-bottom))!important;border-radius:26px!important;
+ }
+ .time-machine-panel h2,.collection-panel h2,.search-panel h2,.campaign-panel h2,.settings-panel h2{font-size:clamp(2.4rem,13vw,4.5rem)!important}
+ .year-strip{grid-template-columns:repeat(5,1fr)!important}
+ .year-strip button{min-height:44px!important}
+ .year-state,.search-columns{grid-template-columns:1fr!important}
+ .settings-panel label{grid-template-columns:1fr!important;gap:8px!important}
+ .settings-panel input[type='range'],.settings-panel select{width:100%!important}
+ .collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+
+ .world-toast{left:50%!important;right:auto!important;bottom:calc(max(8px,env(safe-area-inset-bottom)) + 196px)!important;transform:translateX(-50%)!important;max-width:calc(100vw - 32px)!important;text-align:center}
+ .ambient-event{left:12px!important;right:12px!important;bottom:calc(max(8px,env(safe-area-inset-bottom)) + 196px)!important;width:auto!important}
+}
+
+@media (max-width:430px){
+ .brand-ticket b{font-size:.64rem!important}
+ .world-hud nav button{min-width:40px!important;padding:6px!important;font-size:.43rem!important}
+ .scene-caption{right:58px!important}
+ .scene-caption h2{font-size:clamp(2.35rem,13.5vw,4.6rem)!important}
+ .memory-ribbon b{font-size:.72rem!important}
+ .memory-ribbon button{font-size:.38rem!important}
+ .environment-nav button{min-width:68px!important}
+ .experience-dock button{min-width:78px!important}
+}
+
+/* landscape phones: preserve object field and remove nonessential narration */
+@media (max-width:900px) and (max-height:520px) and (orientation:landscape){
+ .world-hud{height:52px!important}
+ .scene-caption{top:70px!important;right:auto!important;max-width:290px!important}
+ .scene-caption h2{font-size:2.5rem!important;margin:7px 0!important}.scene-caption p{display:none!important}.scene-caption small{display:none!important}
+ .memory-ribbon{display:none!important}
+ .environment-nav{bottom:64px!important}
+ .experience-dock{height:52px!important}
+ .interaction-drawer{left:auto!important;width:min(48vw,480px)!important;max-height:calc(100svh - 16px)!important}
+}
+
+@media (pointer:coarse){
+ .scene-object,.world-hud button,.environment-nav button,.experience-dock button,.trigger-tabs button{touch-action:manipulation}
+ .scene-object b{box-shadow:0 10px 28px rgba(0,0,0,.38),0 0 0 5px rgba(130,223,212,.035)!important}
+}
