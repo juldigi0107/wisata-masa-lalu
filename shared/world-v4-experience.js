@@ -7,6 +7,19 @@ export const seasonalModes={
 };
 
 const safeSeed=value=>Math.min(.999999,Math.max(0,Number.isFinite(Number(value))?Number(value):0));
+const clamp01=(value,fallback)=>Number.isFinite(Number(value))?Math.min(1,Math.max(0,Number(value))):fallback;
+
+export function sanitizeWorldSettings(raw={}){
+ const source=raw&&typeof raw==='object'?raw:{};
+ const intensity=['ringan','imersif','total'].includes(source.intensity)?source.intensity:'imersif';
+ return {
+  master:clamp01(source.master,.7),
+  ambience:clamp01(source.ambience,.55),
+  ui:clamp01(source.ui,.75),
+  mute:Boolean(source.mute),
+  intensity
+ };
+}
 
 export function getSeasonalMemory(mode,seed=.5){
  const config=seasonalModes[mode]||seasonalModes.normal;
