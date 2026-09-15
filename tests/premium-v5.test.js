@@ -4,16 +4,17 @@ import {readFile} from 'node:fs/promises';
 
 const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
-test('premium v5 runtime is mounted without inflating the critical stylesheet',async()=>{
- const [main,styleLoader]=await Promise.all([text('src/main.jsx'),text('src/world/premium-runtime-styles.js')]);
+test('premium v5 runtime is mounted with the World Experience Shell without inflating the critical stylesheet',async()=>{
+ const [main,shell,styleLoader]=await Promise.all([text('src/main.jsx'),text('src/world/WorldExperienceShell.jsx'),text('src/world/premium-runtime-styles.js')]);
  assert.match(main,/PremiumRuntimeV5/);
+ assert.match(main,/WorldExperienceShell/);
+ assert.match(shell,/WorldAppV4/);
  assert.match(main,/import\("\.\/world\/premium-runtime-styles\.js"\)/);
  assert.match(styleLoader,/premium-experience-v5\.css/);
  assert.match(styleLoader,/premium-intensity-v5\.css/);
  assert.equal(main.includes('premium-experience-v5.css'),false);
  assert.equal(main.includes('premium-intensity-v5.css'),false);
  assert.match(main,/entry-premium-v5\.css/);
- assert.match(main,/WorldAppV4/);
  assert.match(main,/AmbientRuntimeV4/);
 });
 
@@ -29,19 +30,19 @@ test('cinematic atmosphere portals inside the world stacking context and disappe
  assert.match(runtime,/if\(!state\.active\|\|!state\.host\)return null/);
 });
 
-test('premium scene treatment covers time of day, seasonal modes reduced motion and nostalgia intensity',async()=>{
- const [css,intensity]=await Promise.all([text('src/world/premium-experience-v5.css'),text('src/world/premium-intensity-v5.css')]);
+test('premium scene treatment covers time of day seasonal modes reduced motion and nostalgia intensity',async()=>{
+ const [css,intensity,runtime]=await Promise.all([text('src/world/premium-experience-v5.css'),text('src/world/premium-intensity-v5.css'),text('src/world/PremiumRuntimeV5.jsx')]);
  for(const selector of ['premium-pagi','premium-siang','premium-sore','premium-malam','premium-ramadan','premium-agustusan','premium-scene-entering'])assert.match(css,new RegExp(selector));
+ for(const mode of ['ramadan','lebaran','agustusan','minggu','malam-minggu'])assert.ok(runtime.includes(mode));
  for(const selector of ['intensity-ringan','intensity-imersif','intensity-total','year-accent'])assert.match(intensity,new RegExp(selector));
  assert.match(css,/prefers-reduced-motion:reduce/);
  assert.match(intensity,/prefers-reduced-motion:reduce/);
  assert.match(css,/experience-dock button\[aria-pressed=true\]/);
 });
 
-test('ambient synthesis reacts to scene, phase and seasonal mode without external audio files',async()=>{
+test('ambient synthesis reacts to scene phase and every seasonal mode without external audio files',async()=>{
  const runtime=await text('src/world/AmbientRuntimeV4.jsx');
- assert.match(runtime,/mode-ramadan/);
- assert.match(runtime,/mode-agustusan/);
+ for(const mode of ['ramadan','lebaran','agustusan','minggu','malam-minggu'])assert.ok(runtime.includes(mode));
  assert.match(runtime,/seasonalAccent/);
  assert.match(runtime,/phase==='malam'/);
  assert.equal(/https?:\/\//.test(runtime),false);
