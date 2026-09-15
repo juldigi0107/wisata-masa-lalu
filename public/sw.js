@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v6-1';
+const VERSION='wml-time-machine-v6-2';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
@@ -19,6 +19,10 @@ const shellUrls=[
 function shellAssetUrls(html){
  const refs=[...html.matchAll(/(?:src|href)=["']([^"']+\.(?:js|css))["']/gi)].map(match=>match[1]);
  return [...new Set(refs.map(ref=>new URL(ref,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href))];
+}
+function normalizePackAsset(value){
+ if(typeof value!=='string')return value;
+ return value.replace('assets/world/scenes/','assets/world/raster/').replace(/-90\.svg(?:$|\?)/,'-90.webp');
 }
 
 async function installShell(){
@@ -97,6 +101,7 @@ self.addEventListener('message',event=>{
   event.waitUntil((async()=>{
    const urls=data.urls
     .filter(value=>typeof value==='string')
+    .map(normalizePackAsset)
     .map(value=>new URL(value,swBase))
     .filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base))
     .map(url=>url.href);
