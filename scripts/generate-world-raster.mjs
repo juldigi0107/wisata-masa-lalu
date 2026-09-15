@@ -66,7 +66,7 @@ for(const [sourceName,outName,width,height] of editorial){
 const sealSource=join('public/assets','brand-seal.svg');
 async function appIcon(size,fileName,{maskable=false}={}){
  if(!(await exists(sealSource)))throw new Error(`Missing app icon source: ${sealSource}`);
- const logoSize=Math.round(size*(maskable?.62:.74));
+ const logoSize=Math.round(size*(maskable ? .62 : .74));
  const logo=await sharp(sealSource,{density:260})
   .resize(logoSize,logoSize,{fit:'contain'})
   .png()
