@@ -8,7 +8,8 @@ test('visual generator produces phase-specific raster scenes instead of relying 
  const script=await text('scripts/generate-world-raster.mjs');
  for(const phase of ['pagi','siang','sore','malam'])assert.match(script,new RegExp(`${phase}:svg`));
  assert.match(script,/sceneModes=id==='kampung'/);
- assert.match(script,/kampung-hujan/);
+ assert.match(script,/\['hujan','ramadan','agustusan','minggu'\]/);
+ assert.match(script,/\$\{id\}-\$\{mode\}\.webp/);
  assert.match(script,/premium-surface/);
  assert.match(script,/texture-/);
 });
@@ -34,6 +35,7 @@ test('premium raster pack is build-gated for presence size and total payload',as
  const [pkg,check]=await Promise.all([text('package.json'),text('scripts/check-premium-raster-pack.mjs')]);
  assert.match(pkg,/check-premium-raster-pack\.mjs/);
  assert.match(check,/420\*1024/);
- assert.match(check,/11\*1024\*1024/);
+ assert.match(check,/16\*1024\*1024/);
+ assert.match(check,/Object Lens coverage/);
  assert.match(check,/Premium raster pack/);
 });
