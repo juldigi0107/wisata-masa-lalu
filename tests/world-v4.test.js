@@ -116,13 +116,16 @@ test('journey scene and year are written back to the current URL',async()=>{
  assert.match(app,/history\.replaceState/);
 });
 
-test('archive portal lazy loads both full archive and contextual dossier with archive styles',async()=>{
+test('archive portal dynamically loads both full archive and contextual dossier with recovery',async()=>{
  const [app,portal,contextRoute]=await Promise.all([text('src/world/WorldAppV4.jsx'),text('src/world/ArchivePortal.jsx'),text('src/world/ContextualArchiveRoute.jsx')]);
  assert.match(app,/ArchivePortal/);
  assert.equal(app.includes("import LegacyArchive"),false);
  assert.equal(app.includes("import ContextualArchivePage"),false);
- assert.match(portal,/lazy\(\(\)=>import\('\.\.\/ArchiveRoute\.jsx'\)\)/);
- assert.match(portal,/lazy\(\(\)=>import\('\.\/ContextualArchiveRoute\.jsx'\)\)/);
+ assert.match(portal,/full:\(\)=>import\('\.\.\/ArchiveRoute\.jsx'\)/);
+ assert.match(portal,/context:\(\)=>import\('\.\/ContextualArchiveRoute\.jsx'\)/);
+ assert.match(portal,/useArchiveModule/);
+ assert.match(portal,/ArchiveFailure/);
+ assert.match(portal,/setRetryToken/);
  assert.match(portal,/returnButton\.current\?\.focus\(\)/);
  assert.match(contextRoute,/archive-styles\.js/);
 });
