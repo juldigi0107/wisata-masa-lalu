@@ -1,5 +1,6 @@
 import {stat} from 'node:fs/promises';
 import {join} from 'node:path';
+import {scenes} from '../shared/world-model.js';
 
 const required=[];
 for(const scene of ['rumah','kampung','sekolah','kota','digital']){
@@ -9,13 +10,18 @@ for(const scene of ['rumah','kampung','sekolah','kota','digital']){
 for(const name of ['rumah-ramadan','rumah-lebaran','rumah-minggu','rumah-malam-minggu','kampung-hujan','kampung-ramadan','kampung-lebaran','kampung-agustusan','kampung-minggu','sekolah-agustusan','kota-ramadan','kota-lebaran','kota-malam-minggu'])required.push(`assets/world/raster/${name}.webp`);
 for(const id of ['archive','tv','games','objects','timeline','warung','ramadan','music','quiz','collection','school'])required.push(`assets/generated/${id}.webp`);
 for(const id of ['paper','wood','plastic','photo','crt'])required.push(`assets/generated/texture-${id}.webp`);
+const objectArt=[];
+for(const scene of Object.values(scenes))for(const object of scene.objects)objectArt.push(`assets/generated/objects/${scene.id}-${object.id}.webp`);
+required.push(...objectArt);
 
-const missing=[];let total=0;let largest={path:'',size:0};
+const missing=[];let total=0;let objectTotal=0;let largest={path:'',size:0};
 for(const path of required){
- try{const info=await stat(join('dist',path));if(!info.isFile())throw Error('not-file');total+=info.size;if(info.size>largest.size)largest={path,size:info.size}}
+ try{const info=await stat(join('dist',path));if(!info.isFile())throw Error('not-file');total+=info.size;if(path.includes('/objects/'))objectTotal+=info.size;if(info.size>largest.size)largest={path,size:info.size}}
  catch{missing.push(path)}
 }
 if(missing.length)throw new Error(`Premium raster pack incomplete: ${missing.join(', ')}`);
 if(largest.size>420*1024)throw new Error(`Premium raster asset too large: ${largest.path} ${(largest.size/1024).toFixed(1)} kB`);
-if(total>11*1024*1024)throw new Error(`Premium raster pack exceeds 11 MB: ${(total/1024/1024).toFixed(2)} MB`);
+if(objectTotal>5*1024*1024)throw new Error(`Object Lens raster pack exceeds 5 MB: ${(objectTotal/1024/1024).toFixed(2)} MB`);
+if(total>16*1024*1024)throw new Error(`Premium raster pack exceeds 16 MB: ${(total/1024/1024).toFixed(2)} MB`);
 console.log(`Premium raster pack: ${required.length}/${required.length} assets · ${(total/1024/1024).toFixed(2)} MB · largest ${largest.path} ${(largest.size/1024).toFixed(1)} kB`);
+console.log(`Object Lens coverage: ${objectArt.length}/${objectArt.length} objects · ${(objectTotal/1024/1024).toFixed(2)} MB`);
