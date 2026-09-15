@@ -67,8 +67,6 @@ createRoot(document.getElementById("root")).render(
  <React.StrictMode><AppErrorBoundary><WorldApp/></AppErrorBoundary></React.StrictMode>
 );
 
-void import("./world/archive-styles.js").catch(error=>console.warn('Archive style chunk unavailable',error));
-
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>navigator.serviceWorker.register(`${appBase}sw.js`).catch(()=>{}));
 }
