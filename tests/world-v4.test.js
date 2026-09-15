@@ -1,0 +1,97 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+
+const text=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
+
+test('production entry uses modular WorldAppV4 and its feature-state layer',async()=>{
+ const main=await text('src/main.jsx');
+ assert.match(main,/WorldAppV4\.jsx/);
+ assert.match(main,/feature-deep-dive-v4\.css/);
+});
+
+test('v4 profile migration sanitizes scene year arrays settings and corrupted progress',async()=>{
+ const app=await text('src/world/WorldAppV4.jsx');
+ assert.match(app,/function normalizeProfile/);
+ assert.match(app,/VALID_SCENES/);
+ assert.match(app,/VALID_YEARS/);
+ assert.match(app,/VALID_PROFILES/);
+ assert.match(app,/completed:uniq\(raw\.completed\)\.filter/);
+ assert.match(app,/collections:uniq\(raw\.collections\)\.filter/);
+ assert.match(app,/settings:\{\.\.\.DEFAULT_SETTINGS/);
+});
+
+test('daily memory uses device-local calendar rather than UTC ISO date',async()=>{
+ const app=await text('src/world/WorldAppV4.jsx');
+ assert.match(app,/getFullYear\(\)/);
+ assert.match(app,/getMonth\(\)/);
+ assert.match(app,/getDate\(\)/);
+ assert.equal(app.includes("toISOString().slice(0,10)"),false);
+});
+
+test('replaying a completed memory cannot farm score repeatedly',async()=>{
+ const app=await text('src/world/WorldAppV4.jsx');
+ assert.match(app,/already\?0:item\.points/);
+ assert.match(app,/progress tidak dihitung dua kali/);
+});
+
+test('random events never compete visually with a focused modal or object lens',async()=>{
+ const app=await text('src/world/WorldAppV4.jsx');
+ assert.match(app,/if\(!profile\|\|overlay\|\|activeObject\|\|event\)return/);
+ assert.match(app,/event&&!overlay&&!activeObject/);
+ assert.match(app,/setEvent\(next\)\}\}><span>MEMORY ENGINE/);
+});
+
+test('campaign selection and campaign activity launch are separate actions',async()=>{
+ const panel=await text('src/world/FeaturePanelsV2.jsx');
+ assert.match(panel,/JALANI MOMEN INI/);
+ assert.match(panel,/onClick=\{\(\)=>onPlay\(step\)\}/);
+ assert.match(panel,/Memilih waktu hanya mengubah itinerary/);
+});
+
+test('time machine now derives archive recommendations from SSOT by selected year',async()=>{
+ const panel=await text('src/world/FeaturePanelsV2.jsx');
+ assert.match(panel,/catalog\.entries\.filter/);
+ assert.match(panel,/includes\(String\(year\)\)/);
+ assert.match(panel,/ARSIP YANG MENYEBUT/);
+});
+
+test('search has intentional discovery and empty states instead of query-empty result spam',async()=>{
+ const panel=await text('src/world/FeaturePanelsV2.jsx');
+ assert.match(panel,/item\.scene===currentScene/);
+ assert.match(panel,/menampilkan pengalaman di/);
+ assert.match(panel,/Tidak ada pengalaman yang cocok/);
+ assert.match(panel,/Tidak ada entri arsip yang cocok/);
+});
+
+test('collection panel exposes both artifact completion and achievements',async()=>{
+ const panel=await text('src/world/FeaturePanelsV2.jsx');
+ assert.match(panel,/cabinet-progress/);
+ assert.match(panel,/Achievement/);
+ assert.match(panel,/achievement-grid/);
+ assert.match(panel,/unlockedAchievements/);
+});
+
+test('all v4 modal surfaces trap Tab focus restore origin focus and close with Escape',async()=>{
+ const panel=await text('src/world/FeaturePanelsV2.jsx');
+ assert.match(panel,/event\.key==='Escape'/);
+ assert.match(panel,/event\.key!=='Tab'/);
+ assert.match(panel,/previous\.current=document\.activeElement/);
+ assert.match(panel,/previous\.current\?\.focus/);
+});
+
+test('generic billing and arcade timers use real one-second ticks and completion is guarded once',async()=>{
+ const mechanics=await text('src/world/GenericMechanics.jsx');
+ assert.match(mechanics,/function useOnceComplete/);
+ assert.match(mechanics,/setInterval\(\(\)=>setSeconds\(s=>s\+1\),1000\)/);
+ assert.match(mechanics,/setTimeout\(\(\)=>setTime\(t=>t-1\),1000\)/);
+});
+
+test('offline memory packs can be cleared independently from the core offline shell',async()=>{
+ const sw=await text('public/sw.js');
+ assert.match(sw,/CLEAR_MEMORY_PACKS/);
+ assert.match(sw,/caches\.delete\(MEDIA\)/);
+ assert.match(sw,/MEMORY_PACKS_CLEARED/);
+ const clearBlock=sw.slice(sw.indexOf("data.type==='CLEAR_MEMORY_PACKS'"),sw.indexOf("data.type==='CACHE_MEMORY_PACK'"));
+ assert.equal(clearBlock.includes('caches.delete(SHELL)'),false);
+});
