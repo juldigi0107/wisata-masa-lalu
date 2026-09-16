@@ -1,10 +1,11 @@
-const VERSION='wml-time-machine-v7-0';
+const VERSION='wml-time-machine-v8-0';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
 const swBase=new URL('./',self.location.href);
 const base=swBase.pathname;
 const phaseScenes=['rumah','kampung','sekolah','kota','digital'].flatMap(scene=>['pagi','siang','sore','malam'].map(phase=>`${base}assets/world/raster/${scene}-${phase}.webp`));
+const premiumPages=['intro','onboarding','time-machine','search','collection','campaign','settings','social','season','culture','memory-card','archive-loading'].map(id=>`${base}assets/generated/${id}-premium.webp`);
 const shellUrls=[
  `${base}manifest.webmanifest`,
  `${base}assets/world/raster/brand-orbit.webp`,
@@ -15,6 +16,7 @@ const shellUrls=[
  `${base}assets/world/raster/kota-90.webp`,
  `${base}assets/world/raster/digital-90.webp`,
  ...phaseScenes,
+ ...premiumPages,
  `${base}assets/brand-seal.webp`,
  `${base}assets/icons/wml-64.png`,
  `${base}assets/icons/wml-180.png`,
