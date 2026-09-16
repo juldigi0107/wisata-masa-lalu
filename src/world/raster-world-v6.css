@@ -1,0 +1,65 @@
+/* Raster World v6 — cinematic memory reconstruction using real raster media.
+   SVG scene art remains only as a technical fallback in earlier layers; this file wins the cascade. */
+.world-scene{background:#07100f;isolation:isolate;overflow:hidden}
+.world-scene .scene-architecture{inset:-4%!important;opacity:1!important;background-image:var(--wml-scene-rumah);background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;filter:saturate(.78) contrast(1.06) brightness(.66)!important;transform:scale(1.035);transition:filter .55s ease,transform .8s cubic-bezier(.2,.7,.2,1),background-position .7s ease;z-index:0}
+.scene-rumah .scene-architecture{background-image:var(--wml-scene-rumah)!important}
+.scene-kampung .scene-architecture{background-image:var(--wml-scene-kampung)!important}
+.scene-sekolah .scene-architecture{background-image:var(--wml-scene-sekolah)!important}
+.scene-kota .scene-architecture{background-image:var(--wml-scene-kota)!important}
+.scene-digital .scene-architecture{background-image:var(--wml-scene-digital)!important}
+
+.world-scene .scene-architecture:before,.world-scene .scene-architecture:after{content:""!important;display:block!important;position:absolute;pointer-events:none;border:1px solid rgba(255,255,255,.12);box-shadow:0 26px 80px rgba(0,0,0,.42);background-repeat:no-repeat;background-position:center;background-size:cover;opacity:.9;filter:saturate(.82) contrast(1.04)}
+.world-scene .scene-architecture:before{width:min(32vw,430px);aspect-ratio:4/3;right:5.5%;top:7%;background-image:var(--wml-scene-rumah-detail-a);clip-path:polygon(3% 1%,98% 4%,96% 96%,0 99%);transform:rotate(1.6deg)}
+.world-scene .scene-architecture:after{width:min(25vw,330px);aspect-ratio:1/1;left:7%;bottom:8%;background-image:var(--wml-scene-rumah-detail-b);clip-path:polygon(2% 5%,94% 0,100% 93%,7% 100%);transform:rotate(-2deg)}
+.scene-rumah .scene-architecture:before{background-image:var(--wml-scene-rumah-detail-a)}
+.scene-rumah .scene-architecture:after{background-image:var(--wml-scene-rumah-detail-b)}
+.scene-kampung .scene-architecture:before{background-image:var(--wml-scene-kampung-detail-a)}
+.scene-kampung .scene-architecture:after{background-image:var(--wml-scene-kampung-detail-b)}
+.scene-sekolah .scene-architecture:before{background-image:var(--wml-scene-sekolah-detail-a)}
+.scene-sekolah .scene-architecture:after{background-image:var(--wml-scene-sekolah-detail-b)}
+.scene-kota .scene-architecture:before{background-image:var(--wml-scene-kota-detail-a)}
+.scene-kota .scene-architecture:after{background-image:var(--wml-scene-kota-detail-b)}
+.scene-digital .scene-architecture:before{background-image:var(--wml-scene-digital-detail-a)}
+.scene-digital .scene-architecture:after{background-image:var(--wml-scene-digital-detail-b)}
+
+.world-scene:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(4,10,10,.18),rgba(5,9,9,.06) 38%,rgba(5,8,8,.62) 100%),radial-gradient(circle at 50% 44%,transparent 15%,rgba(3,8,8,.16) 72%,rgba(3,7,7,.62) 100%);mix-blend-mode:normal}
+.world-scene:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background-image:none!important;background:repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 6px);opacity:.17;mask-image:linear-gradient(to bottom,transparent,#000 16%,#000 84%,transparent)}
+.scene-grain{z-index:3!important;opacity:.16!important;mix-blend-mode:soft-light}
+.scene-sky,.scene-ground{display:none!important}
+
+/* Scene-specific reconstruction language */
+.scene-rumah{--scene-glow:rgba(233,182,110,.24)}
+.scene-kampung{--scene-glow:rgba(164,197,136,.22)}
+.scene-sekolah{--scene-glow:rgba(121,166,181,.21)}
+.scene-kota{--scene-glow:rgba(199,126,164,.22)}
+.scene-digital{--scene-glow:rgba(101,217,199,.22)}
+.world-scene .scene-caption{z-index:14!important;background:linear-gradient(135deg,rgba(5,13,12,.78),rgba(5,13,12,.38))!important;border:1px solid rgba(255,255,255,.11)!important;box-shadow:0 22px 70px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.035);backdrop-filter:blur(18px) saturate(1.1)}
+.world-scene .scene-caption:before{content:"MEMORY RECONSTRUCTION";display:block;margin-bottom:8px;color:rgba(151,233,222,.62);font:700 .42rem/1 "Courier New",monospace;letter-spacing:.16em}
+.world-scene .scene-object{z-index:16!important;filter:drop-shadow(0 12px 26px rgba(0,0,0,.28))}
+.world-scene .scene-object .object-pulse{box-shadow:0 0 0 1px rgba(255,255,255,.24),0 0 24px var(--scene-glow)!important;background:rgba(5,17,16,.5)!important;backdrop-filter:blur(10px)}
+.world-scene .scene-object:hover .object-pulse,.world-scene .scene-object:focus-visible .object-pulse,.world-scene .scene-object.active .object-pulse{box-shadow:0 0 0 1px rgba(165,240,230,.62),0 0 38px var(--scene-glow)!important}
+
+/* Time of day affects photographic reconstruction, not only overlay colors. */
+.phase-pagi .scene-architecture{filter:saturate(.8) contrast(1.03) brightness(.82) sepia(.035)!important}
+.phase-siang .scene-architecture{filter:saturate(.78) contrast(1.06) brightness(.77)!important}
+.phase-sore .scene-architecture{filter:saturate(.84) contrast(1.07) brightness(.7) sepia(.07)!important}
+.phase-malam .scene-architecture{filter:saturate(.67) contrast(1.12) brightness(.45) hue-rotate(-4deg)!important}
+.phase-malam:after{background:linear-gradient(180deg,rgba(5,10,18,.3),rgba(4,7,12,.2) 40%,rgba(2,4,8,.74)),radial-gradient(circle at 72% 32%,rgba(230,180,96,.12),transparent 18%),radial-gradient(circle at 50% 50%,transparent 12%,rgba(1,4,7,.36) 70%)}
+
+/* Futuristic frame belongs to the time machine, not to the historical world itself. */
+.world-scene .scene-caption,.environment-nav,.experience-dock,.memory-ribbon{--temporal-line:rgba(132,225,213,.18)}
+.world-scene .scene-caption:after{content:"";position:absolute;inset:7px;pointer-events:none;border-top:1px solid var(--temporal-line);border-right:1px solid transparent;opacity:.6}
+
+@media(max-width:900px){
+ .world-scene .scene-architecture:before{width:42vw;right:-4%;top:11%;opacity:.76}
+ .world-scene .scene-architecture:after{width:35vw;left:-6%;bottom:12%;opacity:.72}
+ .world-scene .scene-caption{max-width:min(86vw,440px)!important}
+}
+@media(max-width:620px){
+ .world-scene .scene-architecture{inset:-8%!important;transform:scale(1.1)}
+ .world-scene .scene-architecture:before{width:54vw;right:-16%;top:9%;opacity:.66}
+ .world-scene .scene-architecture:after{width:46vw;left:-18%;bottom:16%;opacity:.58}
+ .world-scene:after{background:linear-gradient(180deg,rgba(3,8,8,.12),rgba(3,8,8,.28) 55%,rgba(2,6,6,.78)),radial-gradient(circle at 50% 48%,transparent 8%,rgba(2,7,7,.2) 64%,rgba(2,6,6,.66))}
+ .world-scene .scene-caption:before{font-size:.36rem}
+}
+@media(prefers-reduced-motion:reduce){.world-scene .scene-architecture{transition:none!important}}
