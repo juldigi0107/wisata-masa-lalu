@@ -14,7 +14,7 @@
 .find-grid button.checked{opacity:.52;text-decoration:line-through}
 .mechanic-box output{font:700 .58rem "Courier New",monospace;color:rgba(235,225,204,.65)}
 
-/* Time Machine now has actual recommendations */
+/* Time Machine */
 .year-recommendations{margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.09)}
 .year-recommendations>div:first-child{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:10px}
 .year-recommendations>div:first-child small{font:700 .45rem "Courier New",monospace;letter-spacing:.1em;color:rgba(231,222,203,.5)}
@@ -52,7 +52,7 @@
 .search-columns h3 sup{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 4px;border-radius:99px;background:rgba(126,223,212,.1);color:#85ded4}
 .panel-empty{padding:14px!important;border:1px dashed rgba(255,255,255,.1);border-radius:12px;color:rgba(235,225,204,.48)!important;font-size:.56rem!important;line-height:1.5!important}
 
-/* Campaign: timeline selection is separate from playing a moment */
+/* Campaign */
 .campaign-timeline{display:flex;gap:4px;overflow-x:auto;scroll-snap-type:x proximity;margin:16px 0 12px;padding-bottom:5px;scrollbar-width:thin}
 .campaign-timeline button{flex:0 0 92px!important;min-height:66px!important;display:grid!important;align-content:center!important;gap:4px!important;text-align:left!important;scroll-snap-align:start;border-radius:12px!important;background:rgba(255,255,255,.025)!important}
 .campaign-timeline button.active{border-color:rgba(229,195,125,.5)!important;background:rgba(229,195,125,.08)!important}
@@ -67,26 +67,41 @@
 .danger-soft{width:100%;margin-top:9px!important;border-color:rgba(231,127,104,.22)!important;color:rgba(246,211,202,.72)!important;background:rgba(231,127,104,.04)!important}
 .danger-soft.armed{background:rgba(231,127,104,.12)!important;border-color:rgba(231,127,104,.52)!important;color:#ffd8ce!important}
 
-/* Seasonal modes now communicate where their contextual memories live. */
-.mode-ramadan .scene-sky:after,.mode-agustusan .scene-sky:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.48}
-.mode-ramadan .scene-sky:after{background:radial-gradient(circle at 82% 18%,rgba(246,215,132,.5) 0 1.5%,transparent 1.8%),radial-gradient(circle at 76% 18%,rgba(7,16,18,.92) 0 1.3%,transparent 1.55%),linear-gradient(180deg,rgba(24,63,55,.22),transparent 55%)}
+/* Seasonal modes are environmental states, not decorative themes. */
+.world-scene[class*="mode-"] .scene-sky:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;transition:opacity .5s ease}
+.mode-normal .scene-sky:after{opacity:0}
+.mode-ramadan .scene-sky:after{background:radial-gradient(circle at 82% 18%,rgba(246,215,132,.5) 0 1.5%,transparent 1.8%),radial-gradient(circle at 76% 18%,rgba(7,16,18,.92) 0 1.3%,transparent 1.55%),linear-gradient(180deg,rgba(24,63,55,.24),transparent 58%)}
+.mode-lebaran .scene-sky:after{background:radial-gradient(circle at 28% 18%,rgba(246,220,148,.22),transparent 25%),linear-gradient(180deg,rgba(78,111,65,.12),rgba(240,210,145,.05) 64%,transparent)}
 .mode-agustusan .scene-sky:after{background:repeating-linear-gradient(135deg,transparent 0 42px,rgba(220,61,55,.14) 43px 50px,rgba(255,255,255,.12) 51px 58px,transparent 59px 100px)}
+.mode-minggu .scene-sky:after{background:radial-gradient(circle at 50% 6%,rgba(255,232,171,.19),transparent 34%),linear-gradient(180deg,rgba(120,197,211,.07),transparent 62%)}
+.mode-malam-minggu .scene-sky:after{background:radial-gradient(circle at 60% 20%,rgba(193,116,214,.13),transparent 24%),linear-gradient(180deg,rgba(45,31,69,.22),transparent 65%)}
+.mode-ramadan .scene-architecture{filter:saturate(.78) sepia(.05) brightness(.9)}
+.mode-lebaran .scene-architecture{filter:saturate(.9) sepia(.035) brightness(1.03)}
+.mode-agustusan .scene-architecture{filter:saturate(.96) contrast(1.04)}
+.mode-minggu .scene-architecture{filter:saturate(.88) brightness(1.04)}
+.mode-malam-minggu .scene-architecture{filter:saturate(.9) brightness(.75) contrast(1.08)}
 .world-app:has(.mode-ramadan) .scene-caption small:after{content:" · RAMADAN MODE";color:#e7c77e}
+.world-app:has(.mode-lebaran) .scene-caption small:after{content:" · LEBARAN MODE";color:#e9d79e}
 .world-app:has(.mode-agustusan) .scene-caption small:after{content:" · AGUSTUSAN MODE";color:#efb1a3}
-.world-app:has(.mode-ramadan) .memory-ribbon,.world-app:has(.mode-agustusan) .memory-ribbon{grid-template-rows:auto 1fr;border-color:rgba(229,195,125,.33)!important}
-.world-app:has(.mode-ramadan) .memory-ribbon:before,.world-app:has(.mode-agustusan) .memory-ribbon:before{grid-column:1/-1;font:700 .42rem/1.4 "Courier New",monospace;letter-spacing:.09em;color:#e5c37d}
-.world-app:has(.mode-ramadan) .memory-ribbon:before{content:"SEASONAL CUE · COBA MUSHOLA MENJELANG MAGRIB ATAU KARTU LEBARAN DI RUMAH"}
-.world-app:has(.mode-agustusan) .memory-ribbon:before{content:"SEASONAL CUE · COBA LAPANGAN, BENTENGAN, ATAU UPACARA DI SEKOLAH"}
+.world-app:has(.mode-minggu) .scene-caption small:after{content:" · MINGGU PAGI";color:#a6dde2}
+.world-app:has(.mode-malam-minggu) .scene-caption small:after{content:" · MALAM MINGGU";color:#d2afe8}
+.world-app:has(.mode-ramadan) .memory-ribbon,.world-app:has(.mode-lebaran) .memory-ribbon,.world-app:has(.mode-agustusan) .memory-ribbon,.world-app:has(.mode-minggu) .memory-ribbon,.world-app:has(.mode-malam-minggu) .memory-ribbon{grid-template-rows:auto 1fr;border-color:rgba(229,195,125,.29)!important}
+.world-app:has(.mode-ramadan) .memory-ribbon:before,.world-app:has(.mode-lebaran) .memory-ribbon:before,.world-app:has(.mode-agustusan) .memory-ribbon:before,.world-app:has(.mode-minggu) .memory-ribbon:before,.world-app:has(.mode-malam-minggu) .memory-ribbon:before{grid-column:1/-1;font:700 .42rem/1.4 "Courier New",monospace;letter-spacing:.09em;color:#e5c37d}
+.world-app:has(.mode-ramadan) .memory-ribbon:before{content:"SEASONAL ROUTE · PEDAGANG → MAGRIB → SUARA MALAM → KARTU LEBARAN"}
+.world-app:has(.mode-lebaran) .memory-ribbon:before{content:"SEASONAL ROUTE · KARTU LEBARAN → ALBUM KELUARGA → KAMERA → TELEPON"}
+.world-app:has(.mode-agustusan) .memory-ribbon:before{content:"SEASONAL ROUTE · UPACARA → KELERENG → GASING → BENTENGAN"}
+.world-app:has(.mode-minggu) .memory-ribbon:before{content:"SEASONAL ROUTE · TV PAGI → RADIO → KELERENG → ALBUM KELUARGA"}
+.world-app:has(.mode-malam-minggu) .memory-ribbon:before{content:"SEASONAL ROUTE · TELEPON → RADIO → JALAN KOTA → ARCADE → RENTAL"}
 
-/* Lazy archive route keeps the world responsive while its encyclopedia chunk arrives. */
+/* Lazy archive */
 .archive-loading{position:fixed;inset:0;z-index:180;display:grid;place-content:center;gap:10px;padding:28px;text-align:center;background:radial-gradient(circle at 50% 32%,rgba(126,223,212,.08),transparent 30%),#0b1110;color:#efe3cd}
 .archive-loading small{font:700 .52rem "Courier New",monospace;letter-spacing:.16em;color:#82ddd3}.archive-loading h1{max-width:10ch;margin:0 auto;font:600 clamp(2.5rem,7vw,6rem)/.85 Georgia,serif;letter-spacing:-.05em}.archive-loading p{max-width:48ch;margin:6px auto;color:rgba(239,227,205,.55);font-size:.66rem;line-height:1.6}
 
 @media(max-width:720px){
  .year-reco-list{grid-template-columns:1fr}.cabinet-progress{grid-template-columns:auto 1fr}.cabinet-progress>b{grid-column:1/-1}.campaign-timeline{margin-inline:-4px;padding-inline:4px}.hud-status .online-dot,.hud-status .offline-dot{display:none!important}
- .world-app:has(.mode-ramadan) .memory-ribbon:before,.world-app:has(.mode-agustusan) .memory-ribbon:before{font-size:.38rem}
+ .world-app:has(.mode-ramadan) .memory-ribbon:before,.world-app:has(.mode-lebaran) .memory-ribbon:before,.world-app:has(.mode-agustusan) .memory-ribbon:before,.world-app:has(.mode-minggu) .memory-ribbon:before,.world-app:has(.mode-malam-minggu) .memory-ribbon:before{font-size:.38rem}
 }
 @media(max-width:430px){
  .year-recommendations>div:first-child{display:grid;gap:4px}.panel-tabs button{min-height:42px!important}.achievement-grid article{grid-template-columns:28px 1fr;padding:10px}.campaign-timeline button{flex-basis:82px!important}.search-mode-note{font-size:.5rem!important}.memory-intent-strip span{font-size:.36rem}
 }
-@media(prefers-reduced-motion:reduce){.cabinet-meter i,.achievement-progress i{transition:none}.campaign-timeline{scroll-behavior:auto}}
+@media(prefers-reduced-motion:reduce){.cabinet-meter i,.achievement-progress i{transition:none}.campaign-timeline{scroll-behavior:auto}.world-scene[class*="mode-"] .scene-sky:after{transition:none}}
