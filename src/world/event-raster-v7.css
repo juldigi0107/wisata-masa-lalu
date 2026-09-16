@@ -1,10 +1,5 @@
-/* Environmental event calibration uses the active raster reconstruction.
-   No event state may depend on an undeployed scene image. */
-.mode-lebaran .scene-architecture{filter:contrast(1.025) saturate(.94) brightness(1.03)!important}
-.mode-lebaran:after{background:radial-gradient(circle at 24% 20%,rgba(247,215,151,.13),transparent 24%),linear-gradient(180deg,rgba(43,69,46,.08),transparent 55%,rgba(8,12,10,.18))!important}
-
-/* Random Memory Engine becomes environmental while its event card is active. */
-.scene-kampung.runtime-hujan .scene-architecture{filter:contrast(1.035) saturate(.7) brightness(.58)!important}.runtime-hujan:after{background:linear-gradient(180deg,rgba(92,123,132,.14),rgba(5,15,17,.32)),repeating-linear-gradient(105deg,transparent 0 14px,rgba(218,237,239,.075) 15px 16px,transparent 17px 31px)!important}
+/* Event Raster V7 — environmental state uses generated contextual WebP whenever available. */
+.scene-kampung.runtime-hujan .scene-architecture{background-image:var(--wml-scene-kampung-hujan)!important;filter:contrast(1.035) saturate(.82) brightness(.68)!important}.runtime-hujan:after{background:linear-gradient(180deg,rgba(92,123,132,.11),rgba(5,15,17,.26)),repeating-linear-gradient(105deg,transparent 0 14px,rgba(218,237,239,.07) 15px 16px,transparent 17px 31px)!important}
 .scene-rumah.runtime-blackout .scene-architecture{filter:brightness(.2) saturate(.48) contrast(1.18)!important}.runtime-blackout:after{background:radial-gradient(circle at 52% 62%,rgba(239,194,105,.09),transparent 18%),rgba(0,0,0,.64)!important}.runtime-blackout .scene-caption{opacity:.7}
 .runtime-magrib .scene-architecture{filter:brightness(.56) saturate(.72) sepia(.09) contrast(1.08)!important}.runtime-magrib:after{background:linear-gradient(180deg,rgba(59,55,92,.18),transparent 48%,rgba(12,17,19,.34))!important}
 .runtime-tv-static .scene-grain{opacity:.18!important;mix-blend-mode:screen!important}.runtime-tv-static:after{background:repeating-linear-gradient(180deg,rgba(255,255,255,.032) 0 1px,transparent 1px 5px),radial-gradient(circle at 50% 45%,transparent 46%,rgba(0,0,0,.38))!important}
@@ -12,4 +7,12 @@
 .runtime-pedagang .scene-caption:after{content:"PEDAGANG LEWAT · DENGARKAN PANGGILANNYA";display:block;margin-top:12px;color:#e4c27b;font:700 .43rem/1.4 "Courier New",monospace;letter-spacing:.12em}
 .runtime-modem .scene-architecture{filter:contrast(1.07) saturate(.82) brightness(.56)!important}.runtime-modem:after{background:radial-gradient(circle at 68% 38%,rgba(102,227,207,.1),transparent 18%),linear-gradient(180deg,transparent,rgba(0,0,0,.28))!important}
 .runtime-arcade .scene-architecture{filter:contrast(1.12) saturate(1.02) brightness(.6)!important}.runtime-arcade:after{background:radial-gradient(circle at 40% 62%,rgba(224,95,185,.08),transparent 18%),radial-gradient(circle at 58% 62%,rgba(92,210,232,.08),transparent 18%),linear-gradient(180deg,transparent,rgba(0,0,0,.28))!important}
+
+/* Seasonal contextual frames generated from the same photo-assisted scene preserve spatial hotspot alignment. */
+.scene-rumah.mode-ramadan .scene-architecture{background-image:var(--wml-scene-rumah-ramadan)!important}.scene-kampung.mode-ramadan .scene-architecture{background-image:var(--wml-scene-kampung-ramadan)!important}.scene-kota.mode-ramadan .scene-architecture{background-image:var(--wml-scene-kota-ramadan)!important}
+.scene-rumah.mode-lebaran .scene-architecture{background-image:var(--wml-scene-rumah-lebaran)!important}.scene-kampung.mode-lebaran .scene-architecture{background-image:var(--wml-scene-kampung-lebaran)!important}.scene-kota.mode-lebaran .scene-architecture{background-image:var(--wml-scene-kota-lebaran)!important}
+.scene-kampung.mode-agustusan .scene-architecture{background-image:var(--wml-scene-kampung-agustusan)!important}.scene-sekolah.mode-agustusan .scene-architecture{background-image:var(--wml-scene-sekolah-agustusan)!important}
+.scene-rumah.mode-minggu .scene-architecture{background-image:var(--wml-scene-rumah-minggu)!important}.scene-kampung.mode-minggu .scene-architecture{background-image:var(--wml-scene-kampung-minggu)!important}
+.scene-rumah.mode-malam-minggu .scene-architecture{background-image:var(--wml-scene-rumah-malam-minggu)!important}.scene-kota.mode-malam-minggu .scene-architecture{background-image:var(--wml-scene-kota-malam-minggu)!important}
+
 @media(prefers-reduced-motion:reduce){.runtime-layangan .scene-architecture,.runtime-layangan .scene-caption{transform:none!important}}
