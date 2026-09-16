@@ -34,49 +34,25 @@ jobs:
           const base = process.env.API_CANDIDATE;
           const origin = 'https://juldigi0107.github.io';
           try {
-            const healthResponse = await fetch(base + '/api/health', {
-              headers: { Origin: origin, 'Cache-Control': 'no-cache' },
-              signal: AbortSignal.timeout(20000)
-            });
+            const healthResponse = await fetch(base + '/api/health', {headers: { Origin: origin, 'Cache-Control': 'no-cache' },signal: AbortSignal.timeout(20000)});
             if (!healthResponse.ok) throw Error('health HTTP ' + healthResponse.status);
             if (healthResponse.headers.get('access-control-allow-origin') !== origin) throw Error('health CORS mismatch');
             const health = await healthResponse.json();
-
-            const catalogResponse = await fetch(base + '/api/catalog', {
-              headers: { Origin: origin, 'Cache-Control': 'no-cache' },
-              signal: AbortSignal.timeout(20000)
-            });
+            const catalogResponse = await fetch(base + '/api/catalog', {headers: { Origin: origin, 'Cache-Control': 'no-cache' },signal: AbortSignal.timeout(20000)});
             if (!catalogResponse.ok) throw Error('catalog HTTP ' + catalogResponse.status);
             if (catalogResponse.headers.get('access-control-allow-origin') !== origin) throw Error('catalog CORS mismatch');
             const catalog = await catalogResponse.json();
-
             const localIds = new Set(localCatalog.entries.map(entry => entry.id));
             const remoteIds = new Set(Array.isArray(catalog.entries) ? catalog.entries.map(entry => entry.id) : []);
             const exactIds = localIds.size === remoteIds.size && [...localIds].every(id => remoteIds.has(id));
             const noDuplicateRemoteIds = Array.isArray(catalog.entries) && remoteIds.size === catalog.entries.length;
-            const compatible = health.ok === true &&
-              health.version === localCatalog.version &&
-              health.mode === 'curated-static-v2' &&
-              health.entries === localCatalog.entries.length &&
-              Array.isArray(catalog.entries) &&
-              catalog.version === localCatalog.version &&
-              catalog.entries.length === localCatalog.entries.length &&
-              noDuplicateRemoteIds &&
-              exactIds;
-
+            const compatible = health.ok === true && health.version === localCatalog.version && health.mode === 'curated-static-v2' && health.entries === localCatalog.entries.length && Array.isArray(catalog.entries) && catalog.version === localCatalog.version && catalog.entries.length === localCatalog.entries.length && noDuplicateRemoteIds && exactIds;
             console.log(`Local catalog: v${localCatalog.version}, ${localCatalog.entries.length} entries.`);
             console.log(`Live Worker: v${health.version ?? 'unknown'}, mode=${health.mode ?? 'unknown'}, catalog=${catalog.version ?? 'unknown'}, entries=${catalog.entries?.length ?? 0}.`);
-
-            if (!compatible) {
-              console.log('Worker is reachable but not an exact SSOT match (version/mode/count/IDs/CORS); building with bundled catalog to prevent a runtime downgrade.');
-              process.exit(0);
-            }
-
+            if (!compatible) {console.log('Worker is reachable but not an exact SSOT match (version/mode/count/IDs/CORS); building with bundled catalog to prevent a runtime downgrade.');process.exit(0);}
             appendFileSync(process.env.GITHUB_ENV, `VITE_API_BASE_URL=${base}\n`);
             console.log('Exact Worker/SSOT match accepted; runtime Cloudflare binding enabled.');
-          } catch (error) {
-            console.log(`Cloudflare API unavailable/incompatible (${error.message}); building with bundled catalog.`);
-          }
+          } catch (error) {console.log(`Cloudflare API unavailable/incompatible (${error.message}); building with bundled catalog.`);}
           NODE
       - name: Restore licensed visual cache
         uses: actions/cache@v4
@@ -87,6 +63,8 @@ jobs:
             visual-assets-v2-${{ runner.os }}-
       - name: Fetch licensed editorial assets into public/assets/media
         run: node scripts/fetch-assets.mjs
+      - name: Verify runtime raster asset contract
+        run: node scripts/check-runtime-assets.mjs
       - name: Build production bundle
         run: npm run build
       - name: Enforce production performance budget
