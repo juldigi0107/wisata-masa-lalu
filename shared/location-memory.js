@@ -1,0 +1,12 @@
+export const memoryCities=[
+ {id:'jakarta',name:'Jakarta',region:'Jabodetabek',x:36,y:56,scene:'kota',mood:'Kota besar, perjalanan, pusat hiburan dan komunikasi.',themes:['wartel & telepon','toko kaset','rental & arcade','transportasi kota'],triggerIds:['wartel','billing-wartel','toko-kaset','mesin-arcade','malam-minggu']},
+ {id:'bandung',name:'Bandung',region:'Jawa Barat',x:34,y:62,scene:'kota',mood:'Kota remaja, musik, sekolah, jalan sore dan benda-benda koleksi.',themes:['radio & kaset','sekolah','jalan sore','foto & album'],triggerIds:['radio-tuner','toko-kaset','binder','studio-foto','malam-minggu']},
+ {id:'semarang',name:'Semarang',region:'Jawa Tengah',x:45,y:59,scene:'kampung',mood:'Kampung-kota, warung, sekolah dan ritme sore yang dekat.',themes:['warung','jajanan','sekolah','permainan sore'],triggerIds:['toples-permen','jajanan-gerbang','kelereng','penjual-keliling','magrib']},
+ {id:'yogyakarta',name:'Yogyakarta',region:'DI Yogyakarta',x:46,y:65,scene:'sekolah',mood:'Sekolah, bacaan, musik, jalan kota dan budaya berkumpul.',themes:['sekolah','bacaan','kaset & radio','jalan kota'],triggerIds:['binder','buku-biodata','radio-tuner','toko-kaset','malam-minggu']},
+ {id:'surabaya',name:'Surabaya',region:'Jawa Timur',x:55,y:61,scene:'kota',mood:'Kota besar dengan ritme jalan, rental, foto, jajanan dan permainan.',themes:['rental','arcade','jajanan','studio foto'],triggerIds:['mini-racing','mesin-arcade','jajanan-gerbang','studio-foto','wartel']},
+ {id:'medan',name:'Medan',region:'Sumatra Utara',x:20,y:30,scene:'kampung',mood:'Lensa untuk mengingat rumah, warung, radio dan perjalanan keluarga.',themes:['rumah & keluarga','warung','radio','permainan lingkungan'],triggerIds:['album-keluarga','warung-bon','radio-tuner','kelereng','telepon-rumah']},
+ {id:'makassar',name:'Makassar',region:'Sulawesi Selatan',x:72,y:68,scene:'kampung',mood:'Lensa untuk suasana lingkungan, warung, permainan dan komunikasi.',themes:['kampung','warung','permainan','telepon & surat'],triggerIds:['penjual-keliling','toples-permen','gasing','telepon-koin','surat-pos']},
+ {id:'lainnya',name:'Kota Lain',region:'Indonesia',x:59,y:42,scene:'rumah',mood:'Gunakan kota atau kabupatenmu sendiri; peta ini hanya pemicu ingatan, bukan batas cerita.',themes:['rumah','sekolah','warung','media & komunikasi'],triggerIds:['interior-rumah','buku-biodata','toples-permen','tv-tabung','telepon-rumah']}
+];
+
+export function memoryCityById(id){return memoryCities.find(city=>city.id===id)||memoryCities.at(-1)}
