@@ -38,30 +38,42 @@ Object.assign(baseCatalog, assembledCatalog);
 const appBase=import.meta.env.BASE_URL||"/";
 const runtimeAsset=path=>`url("${appBase}${path}")`;
 const rootStyle=document.documentElement.style;
-
-/* Production visual registry intentionally references only assets that are either committed
-   or produced by the licensed build-time media pipeline. Missing future art must never become
-   the primary render path. */
-rootStyle.setProperty("--wml-portal-grid",runtimeAsset("assets/world/portal-grid.svg"));
-rootStyle.setProperty("--wml-brand-orbit",runtimeAsset("assets/world/brand-orbit.svg"));
-const sceneRaster={
- rumah:{hero:'assets/media/crt.jpg',a:'assets/media/cassette.jpg',b:'assets/media/camera.jpg'},
- kampung:{hero:'assets/media/warung.jpg',a:'assets/media/permainan-tradisional.jpg',b:'assets/media/kelereng.jpg'},
- sekolah:{hero:'assets/media/bobo-logo.png',a:'assets/media/dr-grip.jpg',b:'assets/media/pilot-pens.jpg'},
- kota:{hero:'assets/media/pager.jpg',a:'assets/media/rollerskates.png',b:'assets/media/discman.jpg'},
- digital:{hero:'assets/media/gameboy-color.jpg',a:'assets/media/floppy.jpg',b:'assets/media/discman.jpg'}
+const sceneIds=['rumah','kampung','sekolah','kota','digital'];
+const phases=['pagi','siang','sore','malam'];
+const contextualStates={
+ rumah:['ramadan','lebaran','minggu','malam-minggu'],
+ kampung:['hujan','ramadan','lebaran','agustusan','minggu'],
+ sekolah:['agustusan'],
+ kota:['ramadan','lebaran','malam-minggu'],
+ digital:[]
 };
-for(const [id,assets] of Object.entries(sceneRaster)){
- rootStyle.setProperty(`--wml-scene-${id}`,runtimeAsset(assets.hero));
- rootStyle.setProperty(`--wml-scene-${id}-detail-a`,runtimeAsset(assets.a));
- rootStyle.setProperty(`--wml-scene-${id}-detail-b`,runtimeAsset(assets.b));
+const detailRaster={
+ rumah:['assets/media/cassette.jpg','assets/media/camera.jpg'],
+ kampung:['assets/media/permainan-tradisional.jpg','assets/media/kelereng.jpg'],
+ sekolah:['assets/media/dr-grip.jpg','assets/media/pilot-pens.jpg'],
+ kota:['assets/media/pager.jpg','assets/media/discman.jpg'],
+ digital:['assets/media/floppy.jpg','assets/media/gameboy-color.jpg']
+};
+
+/* Every public world scene is a build-generated WebP. The SVG sources are authoring
+   intermediates only and are scrubbed from the final Pages artifact. */
+for(const id of sceneIds){
+ rootStyle.setProperty(`--wml-scene-${id}`,runtimeAsset(`assets/world/raster/${id}-90.webp`));
+ for(const phase of phases)rootStyle.setProperty(`--wml-scene-${id}-${phase}`,runtimeAsset(`assets/world/raster/${id}-${phase}.webp`));
+ for(const state of contextualStates[id])rootStyle.setProperty(`--wml-scene-${id}-${state}`,runtimeAsset(`assets/world/raster/${id}-${state}.webp`));
+ const [a,b]=detailRaster[id];
+ rootStyle.setProperty(`--wml-scene-${id}-detail-a`,runtimeAsset(a));
+ rootStyle.setProperty(`--wml-scene-${id}-detail-b`,runtimeAsset(b));
 }
-const surfaceRaster={archive:'jakarta-1991.jpg',tv:'crt.jpg',games:'permainan-tradisional.jpg',objects:'cassette.jpg',timeline:'pager.jpg',warung:'warung.jpg',ramadan:'ramadan.jpg',music:'cassette.jpg',quiz:'camera.jpg',collection:'bobo-logo.png',school:'dr-grip.jpg'};
-for(const [id,file] of Object.entries(surfaceRaster))rootStyle.setProperty(`--wml-surface-${id}`,runtimeAsset(`assets/media/${file}`));
-const textureRaster={paper:'bobo-logo.png',wood:'cassette.jpg',plastic:'gameboy-color.jpg',photo:'camera.jpg',crt:'crt.jpg'};
-for(const [id,file] of Object.entries(textureRaster))rootStyle.setProperty(`--wml-texture-${id}`,runtimeAsset(`assets/media/${file}`));
-const pageRaster={intro:'jakarta-1991.jpg',onboarding:'camera.jpg','time-machine':'pager.jpg',search:'bobo-logo.png',collection:'cassette.jpg',campaign:'permainan-tradisional.jpg',settings:'floppy.jpg',social:'warung.jpg',contextual:'camera.jpg',moderation:'bobo-logo.png',recovery:'crt.jpg',season:'ramadan.jpg',culture:'permainan-tradisional.jpg','memory-card':'camera.jpg','archive-loading':'jakarta-1991.jpg','memory-wall':'warung.jpg'};
-for(const [id,file] of Object.entries(pageRaster))rootStyle.setProperty(`--wml-page-${id}`,runtimeAsset(`assets/media/${file}`));
+rootStyle.setProperty("--wml-portal-grid",runtimeAsset("assets/world/raster/portal-grid.webp"));
+rootStyle.setProperty("--wml-brand-orbit",runtimeAsset("assets/world/raster/brand-orbit.webp"));
+
+const surfaceIds=['archive','tv','games','objects','timeline','warung','ramadan','music','quiz','collection','school'];
+for(const id of surfaceIds)rootStyle.setProperty(`--wml-surface-${id}`,runtimeAsset(`assets/generated/${id}.webp`));
+const textureIds=['paper','wood','plastic','photo','crt'];
+for(const id of textureIds)rootStyle.setProperty(`--wml-texture-${id}`,runtimeAsset(`assets/generated/texture-${id}.webp`));
+const pageIds=['intro','onboarding','time-machine','search','collection','campaign','settings','social','contextual','moderation','recovery','season','culture','memory-card','archive-loading','memory-wall'];
+for(const id of pageIds)rootStyle.setProperty(`--wml-page-${id}`,runtimeAsset(`assets/generated/${id}-premium.webp`));
 
 try{
  const key='wml-v3-profile',params=new URLSearchParams(window.location.search),requestedScene=params.get('scene'),requestedYear=Number(params.get('year')),hasScene=Boolean(requestedScene&&scenes[requestedScene]),hasYear=years.includes(requestedYear),existing=JSON.parse(localStorage.getItem(key)||'null');let stored=existing;
