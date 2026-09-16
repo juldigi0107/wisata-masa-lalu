@@ -31,6 +31,7 @@ import "./world/page-system.css";
 import "./world/seasonal-function-v4.css";
 import "./world/archive-recovery-v4.css";
 import "./world/entry-premium-v5.css";
+import "./world/premium-photo-pages.css";
 
 Object.assign(baseCatalog, assembledCatalog);
 const appBase=import.meta.env.BASE_URL||"/";
@@ -53,6 +54,7 @@ const sceneDetailAssets={rumah:'assets/media/cassette.jpg',kampung:'assets/media
 for(const [id,path] of Object.entries(sceneDetailAssets))rootStyle.setProperty(`--wml-scene-${id}-detail`,runtimeAsset(path));
 for(const id of ['archive','tv','games','objects','timeline','warung','ramadan','music','quiz','collection','school'])rootStyle.setProperty(`--wml-surface-${id}`,runtimeAsset(`assets/generated/${id}.webp`));
 for(const id of ['paper','wood','plastic','photo','crt'])rootStyle.setProperty(`--wml-texture-${id}`,runtimeAsset(`assets/generated/texture-${id}.webp`));
+for(const id of ['intro','onboarding','time-machine','search','collection','campaign','settings','social','contextual','moderation','recovery'])rootStyle.setProperty(`--wml-page-${id}`,runtimeAsset(`assets/generated/${id}-premium.webp`));
 
 try{
  const key='wml-v3-profile',params=new URLSearchParams(window.location.search),requestedScene=params.get('scene'),requestedYear=Number(params.get('year')),hasScene=Boolean(requestedScene&&scenes[requestedScene]),hasYear=years.includes(requestedYear),existing=JSON.parse(localStorage.getItem(key)||'null');let stored=existing;
