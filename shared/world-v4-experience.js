@@ -11,9 +11,9 @@ export const seasonalModes={
 
 export const achievementSemantics={
  'anak-kaset-sejati':{description:'Tuntaskan lima ritual kaset dan player portabel.',triggerIds:['tape-recorder','side-a-b','kaset-kusut','pensil-kaset','mixtape-maker','walkman-simulator'],target:5},
- 'penguasa-wartel':{description:'Tuntaskan sepuluh pengalaman komunikasi analog.',category:'komunikasi',target:10},
+ 'penguasa-wartel':{description:'Tuntaskan panggilan Wartel dan billing-nya.',triggerIds:['wartel','billing-wartel'],target:2},
  'raja-dingdong':{description:'Kuasai mesin arcade, token, dan papan high score.',triggerIds:['mesin-arcade','token-arcade','high-score'],target:3},
- 'pemburu-layangan':{description:'Berhasil mengejar satu layangan putus.',triggerIds:['layangan-putus'],target:1},
+ 'pemburu-layangan':{description:'Tuntaskan lima aksi bidik, timing, atau kejar dalam permainan lapangan.',category:'permainan',mechanics:['timing','chase','aim'],target:5},
  'penjelajah-waktu':{description:'Kunjungi seluruh tahun 1990–1999.',kind:'years',target:10},
  'keliling-kota':{description:'Kunjungi lima area utama.',kind:'scenes',target:5}
 };
