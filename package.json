@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm run generate:world-art && vite",
-    "generate:world-art": "node scripts/generate-world-raster.mjs && node scripts/generate-premium-photo-scenes.mjs && node scripts/generate-premium-editorial-assets.mjs && node scripts/generate-event-raster.mjs && node scripts/generate-object-lens-raster.mjs",
+    "generate:world-art": "node scripts/generate-world-raster.mjs && node scripts/generate-premium-photo-scenes.mjs && node scripts/generate-premium-secondary-pages.mjs && node scripts/generate-premium-editorial-assets.mjs && node scripts/generate-event-raster.mjs && node scripts/generate-object-lens-raster.mjs",
     "build": "npm run generate:world-art && vite build && node scripts/scrub-runtime-svg.mjs && node scripts/check-premium-raster-pack.mjs && node scripts/check-photo-premium.mjs",
     "preview": "vite preview",
     "test": "node --test tests/*.test.js",
