@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v8-0';
+const VERSION='wml-time-machine-v8-1';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
@@ -29,6 +29,12 @@ function shellAssetUrls(html){
  const refs=[...html.matchAll(/(?:src|href)=["']([^"']+\.(?:js|css))["']/gi)].map(match=>match[1]);
  return [...new Set(refs.map(ref=>new URL(ref,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href))];
 }
+function normalizeMemoryPackUrl(value){
+ const raw=String(value||'');
+ const match=raw.match(/assets\/world\/scenes\/(rumah|kampung|sekolah|kota|digital)-90\.svg(?:[?#].*)?$/i);
+ if(match)return `assets/world/raster/${match[1].toLowerCase()}-90.webp`;
+ return raw;
+}
 
 async function installShell(){
  const cache=await caches.open(SHELL);
@@ -58,6 +64,6 @@ self.addEventListener('message',event=>{
  if(data.type==='SKIP_WAITING'){self.skipWaiting();return}
  if(data.type==='CLEAR_MEMORY_PACKS'){event.waitUntil((async()=>{await caches.delete(PACKS);event.source?.postMessage?.({type:'MEMORY_PACKS_CLEARED'})})());return}
  if(data.type==='CACHE_MEMORY_PACK'&&Array.isArray(data.urls)){
-  event.waitUntil((async()=>{const urls=data.urls.filter(value=>typeof value==='string').map(value=>new URL(value,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href);const cache=await caches.open(PACKS);const results=await Promise.allSettled(urls.map(url=>cache.add(url)));const ready=results.filter(result=>result.status==='fulfilled').length;event.source?.postMessage?.({type:'MEMORY_PACK_READY',count:ready,requested:urls.length})})())
+  event.waitUntil((async()=>{const urls=data.urls.filter(value=>typeof value==='string').map(normalizeMemoryPackUrl).map(value=>new URL(value,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href);const cache=await caches.open(PACKS);const results=await Promise.allSettled(urls.map(url=>cache.add(url)));const ready=results.filter(result=>result.status==='fulfilled').length;event.source?.postMessage?.({type:'MEMORY_PACK_READY',count:ready,requested:urls.length})})())
  }
 });
