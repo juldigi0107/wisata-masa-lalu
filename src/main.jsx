@@ -49,7 +49,7 @@ const contextualStates={
 };
 const detailRaster={
  rumah:['assets/media/cassette.jpg','assets/media/camera.jpg'],
- kampung:['assets/media/permainan-tradisional.jpg','assets/media/kelereng.jpg'],
+ kampung:['assets/media/warung.jpg','assets/media/kelereng.jpg'],
  sekolah:['assets/media/dr-grip.jpg','assets/media/pilot-pens.jpg'],
  kota:['assets/media/pager.jpg','assets/media/discman.jpg'],
  digital:['assets/media/floppy.jpg','assets/media/gameboy-color.jpg']
