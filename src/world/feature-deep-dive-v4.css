@@ -34,16 +34,21 @@
 .panel-tabs button{flex:1;border:0!important;border-radius:9px!important;background:transparent!important;color:rgba(235,225,204,.58)!important}
 .panel-tabs button[aria-selected=true]{background:rgba(126,223,212,.1)!important;color:#d5fff9!important;box-shadow:inset 0 0 0 1px rgba(126,223,212,.16)}
 .achievement-grid{display:grid;gap:6px}
-.achievement-grid article{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px;border:1px solid rgba(255,255,255,.07);border-radius:12px;opacity:.46}
-.achievement-grid article.unlocked{opacity:1;border-color:rgba(126,223,212,.24);background:rgba(126,223,212,.045)}
+.achievement-grid article{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px;border:1px solid rgba(255,255,255,.07);border-radius:12px;opacity:.58;background:linear-gradient(135deg,rgba(255,255,255,.018),transparent)}
+.achievement-grid article.unlocked{opacity:1;border-color:rgba(126,223,212,.24);background:linear-gradient(135deg,rgba(126,223,212,.07),rgba(232,198,124,.025))}
 .achievement-grid article>span{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.05);color:#82ddd3}
 .achievement-grid b{font:600 .78rem Georgia,serif}.achievement-grid p{margin:3px 0!important;font-size:.54rem!important;line-height:1.45!important;color:rgba(235,225,204,.56)!important}.achievement-grid small{font:700 .4rem "Courier New",monospace;letter-spacing:.08em;color:#7edbd1}
+.achievement-progress{height:3px;margin:8px 0 6px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.07)}
+.achievement-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#75d8cf,#eccb83);box-shadow:0 0 10px rgba(117,216,207,.16);transition:width .35s ease}
 
 /* Search */
 .search-field{position:sticky;top:0;z-index:7;display:grid;grid-template-columns:1fr auto;gap:5px;background:rgba(9,14,13,.93);padding:4px 0 8px;backdrop-filter:blur(18px)}
 .search-field>input{position:static!important;min-width:0}
 .search-field>button{width:44px!important;min-width:44px!important;border-radius:12px!important}
-.search-mode-note{margin:0 0 14px!important;color:rgba(235,225,204,.52)!important;font-size:.53rem!important;line-height:1.5!important}
+.search-mode-note{margin:0 0 10px!important;color:rgba(235,225,204,.52)!important;font-size:.53rem!important;line-height:1.5!important}
+.search-mode-note.semantic{color:rgba(205,243,237,.72)!important}
+.memory-intent-strip{display:flex;gap:5px;flex-wrap:wrap;margin:-2px 0 14px}
+.memory-intent-strip span{padding:5px 8px;border-radius:999px;border:1px solid rgba(126,223,212,.18);background:rgba(126,223,212,.05);color:#93e7dd;font:700 .4rem "Courier New",monospace;letter-spacing:.06em;text-transform:uppercase}
 .search-columns h3 sup{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 4px;border-radius:99px;background:rgba(126,223,212,.1);color:#85ded4}
 .panel-empty{padding:14px!important;border:1px dashed rgba(255,255,255,.1);border-radius:12px;color:rgba(235,225,204,.48)!important;font-size:.56rem!important;line-height:1.5!important}
 
@@ -82,6 +87,6 @@
  .world-app:has(.mode-ramadan) .memory-ribbon:before,.world-app:has(.mode-agustusan) .memory-ribbon:before{font-size:.38rem}
 }
 @media(max-width:430px){
- .year-recommendations>div:first-child{display:grid;gap:4px}.panel-tabs button{min-height:42px!important}.achievement-grid article{grid-template-columns:28px 1fr;padding:10px}.campaign-timeline button{flex-basis:82px!important}.search-mode-note{font-size:.5rem!important}
+ .year-recommendations>div:first-child{display:grid;gap:4px}.panel-tabs button{min-height:42px!important}.achievement-grid article{grid-template-columns:28px 1fr;padding:10px}.campaign-timeline button{flex-basis:82px!important}.search-mode-note{font-size:.5rem!important}.memory-intent-strip span{font-size:.36rem}
 }
-@media(prefers-reduced-motion:reduce){.cabinet-meter i{transition:none}.campaign-timeline{scroll-behavior:auto}}
+@media(prefers-reduced-motion:reduce){.cabinet-meter i,.achievement-progress i{transition:none}.campaign-timeline{scroll-behavior:auto}}
