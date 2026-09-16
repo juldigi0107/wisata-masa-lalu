@@ -63,10 +63,10 @@ jobs:
             visual-assets-v2-${{ runner.os }}-
       - name: Fetch licensed editorial assets into public/assets/media
         run: node scripts/fetch-assets.mjs
-      - name: Verify runtime raster asset contract
-        run: node scripts/check-runtime-assets.mjs
       - name: Build production bundle
         run: npm run build
+      - name: Verify generated raster runtime and raster-only artifact
+        run: node scripts/check-runtime-assets.mjs
       - name: Enforce production performance budget
         run: node scripts/check-build-budget.mjs
       - uses: actions/upload-pages-artifact@v3
