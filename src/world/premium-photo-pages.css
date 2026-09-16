@@ -1,8 +1,8 @@
 /* Premium photo-assisted page layer.
    Every surface is generated to WebP during the build from licensed/local media.
-   This layer intentionally replaces vector-heavy decorative backdrops with cinematic raster depth. */
+   The shipped UI is raster-first: no authoring SVG survives production. */
 
-.time-intro,.onboarding,.time-machine-panel,.search-panel,.collection-panel,.campaign-panel,.settings-panel,.social-memory-panel,.moderation-panel,.context-entry-page,.fatal-shell{background-color:#07100e;background-repeat:no-repeat;background-position:center;background-size:cover;background-blend-mode:normal,soft-light,normal}
+.time-intro,.onboarding,.time-machine-panel,.search-panel,.collection-panel,.campaign-panel,.settings-panel,.social-memory-panel,.season-panel,.moderation-shell,.context-entry-page,.fatal-shell,.archive-loading,.culture-studio,.memory-card-studio{background-color:#07100e;background-repeat:no-repeat;background-position:center;background-size:cover}
 .time-intro{background-image:linear-gradient(90deg,rgba(3,7,6,.9) 0%,rgba(4,9,8,.54) 42%,rgba(3,7,6,.72) 100%),var(--wml-page-intro)!important}
 .onboarding{background-image:linear-gradient(120deg,rgba(4,9,8,.86),rgba(8,15,12,.62) 56%,rgba(3,6,5,.88)),var(--wml-page-onboarding)!important}
 .time-machine-panel{background-image:linear-gradient(135deg,rgba(4,10,9,.93),rgba(4,9,8,.72)),var(--wml-page-time-machine)!important}
@@ -11,13 +11,17 @@
 .campaign-panel{background-image:linear-gradient(135deg,rgba(5,10,8,.93),rgba(7,11,9,.66)),var(--wml-page-campaign)!important}
 .settings-panel{background-image:linear-gradient(135deg,rgba(4,9,8,.95),rgba(4,9,8,.76)),var(--wml-page-settings)!important}
 .social-memory-panel{background-image:linear-gradient(135deg,rgba(6,10,9,.93),rgba(5,9,8,.7)),var(--wml-page-social)!important}
-.moderation-panel{background-image:linear-gradient(135deg,rgba(7,10,9,.95),rgba(6,8,7,.76)),var(--wml-page-moderation)!important}
+.season-panel{background-image:linear-gradient(135deg,rgba(5,10,8,.94),rgba(8,12,9,.7)),var(--wml-page-season)!important}
+.moderation-shell{background-image:linear-gradient(135deg,rgba(7,10,9,.95),rgba(6,8,7,.78)),var(--wml-page-moderation)!important}
 .context-entry-page{background-image:linear-gradient(180deg,rgba(4,9,8,.55),rgba(4,8,7,.96) 44rem),var(--wml-page-contextual)!important;background-attachment:local}
 .fatal-shell{background-image:linear-gradient(135deg,rgba(4,8,7,.94),rgba(8,7,5,.78)),var(--wml-page-recovery)!important}
+.archive-loading{background-image:linear-gradient(135deg,rgba(4,9,8,.95),rgba(6,8,7,.75)),var(--wml-page-archive-loading)!important}
+.culture-studio{background-image:linear-gradient(180deg,rgba(7,11,9,.9),rgba(5,9,8,.72)),var(--wml-page-culture)!important;background-attachment:local;background-size:cover!important}
+.memory-card-studio{background-image:linear-gradient(135deg,rgba(6,10,8,.9),rgba(6,9,8,.72)),var(--wml-page-memory-card)!important;background-size:cover!important}
 
 /* The image supports hierarchy; content remains readable and interactive above it. */
-.time-machine-panel,.search-panel,.collection-panel,.campaign-panel,.settings-panel,.social-memory-panel,.moderation-panel{box-shadow:0 36px 110px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.08)!important;backdrop-filter:blur(28px) saturate(.88)}
-.time-machine-panel:before,.search-panel:before,.collection-panel:before,.campaign-panel:before,.settings-panel:before,.social-memory-panel:before,.moderation-panel:before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(145deg,rgba(255,255,255,.04),transparent 30%,rgba(219,185,108,.035) 68%,transparent);mix-blend-mode:screen;z-index:-1}
+.time-machine-panel,.search-panel,.collection-panel,.campaign-panel,.settings-panel,.social-memory-panel,.season-panel{box-shadow:0 36px 110px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.08)!important;backdrop-filter:blur(28px) saturate(.88)}
+.time-machine-panel:before,.search-panel:before,.collection-panel:before,.campaign-panel:before,.settings-panel:before,.social-memory-panel:before,.season-panel:before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(145deg,rgba(255,255,255,.04),transparent 30%,rgba(219,185,108,.035) 68%,transparent);mix-blend-mode:screen;z-index:-1}
 
 /* Photo-backed intro/onboarding should not look like a promotional poster: keep text panels quiet. */
 .time-intro .intro-console,.onboarding-paper{background:linear-gradient(180deg,rgba(9,14,12,.76),rgba(7,10,9,.88))!important;border-color:rgba(236,210,154,.16)!important;box-shadow:0 24px 70px rgba(0,0,0,.38)!important}
@@ -27,12 +31,28 @@
 .context-entry-hero:before,.context-source-room:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(6,11,9,.1),rgba(215,184,111,.025),rgba(6,11,9,.14))}
 .context-entry-body{background:rgba(8,13,11,.68);backdrop-filter:blur(14px)}
 
-/* Raster-backed archive chapter surfaces already use --wml-surface-*; intensify photographic depth without adding card noise. */
-.tv-section,.games,.object-section,.decade-section,.warung,.ramadan,.music,.quiz,.collection{background-blend-mode:multiply,soft-light,normal}
+/* Full archive chapters: every major room receives a photographic raster plate. */
+.hero.editorial-grid{background-image:linear-gradient(120deg,rgba(7,11,9,.88),rgba(8,12,10,.62)),var(--wml-surface-archive)!important;background-size:cover!important;background-position:center!important}
+.tv-section{background-image:linear-gradient(180deg,rgba(5,10,9,.72),rgba(4,8,7,.93)),var(--wml-surface-tv)!important;background-size:cover!important;background-position:center!important}
+.sunday{background-image:linear-gradient(180deg,rgba(246,235,210,.92),rgba(226,212,183,.86)),var(--wml-surface-tv)!important;background-size:cover!important;background-blend-mode:screen,soft-light}
+.games{background-image:linear-gradient(180deg,rgba(245,239,222,.92),rgba(233,223,200,.88)),var(--wml-surface-games)!important;background-size:cover!important;background-blend-mode:screen,soft-light}
+.object-section{background-image:linear-gradient(180deg,rgba(5,10,9,.88),rgba(5,8,7,.94)),var(--wml-surface-objects)!important;background-size:cover!important}
+.decade-section{background-image:linear-gradient(180deg,rgba(4,8,7,.88),rgba(5,8,7,.95)),var(--wml-surface-timeline)!important;background-size:cover!important}
+.warung{background-image:linear-gradient(120deg,rgba(59,37,20,.75),rgba(12,12,8,.88)),var(--wml-surface-warung)!important;background-size:cover!important}
+.ramadan{background-image:linear-gradient(140deg,rgba(6,24,20,.78),rgba(5,9,8,.92)),var(--wml-surface-ramadan)!important;background-size:cover!important}
+.music{background-image:linear-gradient(135deg,rgba(7,10,9,.84),rgba(8,8,7,.9)),var(--wml-surface-music)!important;background-size:cover!important}
+.quiz{background-image:linear-gradient(135deg,rgba(11,13,10,.86),rgba(7,9,8,.92)),var(--wml-surface-quiz)!important;background-size:cover!important}
+.collection{background-image:linear-gradient(180deg,rgba(242,235,219,.96),rgba(232,223,201,.9)),var(--wml-surface-collection)!important;background-size:cover!important;background-blend-mode:screen,soft-light}
+#culture-studio{background-image:linear-gradient(180deg,rgba(7,11,9,.88),rgba(6,9,8,.78)),var(--wml-page-culture)!important}
+
+/* Social and personal creation surfaces should feel tactile, not like SaaS forms. */
+.memory-compose,.capsule-compose,.memory-card-controls,.moderation-auth{background:linear-gradient(180deg,rgba(17,24,20,.88),rgba(8,13,11,.93))!important;border-color:rgba(224,194,124,.15)!important;box-shadow:0 18px 54px rgba(0,0,0,.28)!important}
+.memory-note,.capsule-list article,.moderation-queue article{background:linear-gradient(160deg,rgba(244,233,208,.96),rgba(220,205,175,.94))!important;color:#1b211d!important;border-color:rgba(54,47,35,.14)!important;box-shadow:0 18px 42px rgba(0,0,0,.22)!important}
 
 @media(max-width:760px){
  .time-intro,.onboarding{background-position:58% center!important}
- .time-machine-panel,.search-panel,.collection-panel,.campaign-panel,.settings-panel,.social-memory-panel,.moderation-panel{background-position:center!important;background-size:auto 100%!important}
+ .time-machine-panel,.search-panel,.collection-panel,.campaign-panel,.settings-panel,.social-memory-panel,.season-panel{background-position:center!important;background-size:auto 100%!important}
  .context-entry-page{background-attachment:scroll;background-position:center top}
+ .culture-studio{background-attachment:scroll}
 }
-@media(prefers-reduced-motion:reduce){.time-intro,.onboarding,.context-entry-page{background-attachment:scroll}}
+@media(prefers-reduced-motion:reduce){.time-intro,.onboarding,.context-entry-page,.culture-studio{background-attachment:scroll}}
