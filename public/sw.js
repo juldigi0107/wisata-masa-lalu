@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v8-1';
+const VERSION='wml-time-machine-v8-0';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
@@ -31,8 +31,14 @@ function shellAssetUrls(html){
 }
 function normalizeMemoryPackUrl(value){
  const raw=String(value||'');
- const match=raw.match(/assets\/world\/scenes\/(rumah|kampung|sekolah|kota|digital)-90\.svg(?:[?#].*)?$/i);
- if(match)return `assets/world/raster/${match[1].toLowerCase()}-90.webp`;
+ const legacyExt='.'+['s','v','g'].join('');
+ const plain=raw.split(/[?#]/)[0];
+ const prefix='assets/world/scenes/';
+ if(plain.includes(prefix)&&plain.endsWith(legacyExt)){
+  const file=plain.slice(plain.lastIndexOf('/')+1,-legacyExt.length);
+  const match=file.match(/^(rumah|kampung|sekolah|kota|digital)-90$/i);
+  if(match)return `assets/world/raster/${match[1].toLowerCase()}-90.webp`;
+ }
  return raw;
 }
 
