@@ -1,0 +1,20 @@
+/* Runtime-visible vector retirement.
+   Legacy SVG files remain in the repository for authoring/history, but public surfaces
+   use optical CSS + raster photography so the experience never depends on flat vector art. */
+.brand-ticket:before,.onboarding:after,.onboarding-paper:before,.time-intro:before{background-image:none!important}
+.brand-ticket:before{content:""!important;background:radial-gradient(circle at 50% 50%,transparent 0 28%,rgba(126,224,212,.17) 29% 30%,transparent 31% 43%,rgba(234,198,124,.09) 44% 45%,transparent 46%),conic-gradient(from 0deg,transparent 0 8deg,rgba(126,224,212,.18) 9deg 10deg,transparent 11deg 30deg)!important;mask-image:radial-gradient(circle,#000 0 70%,transparent 72%)}
+.onboarding:after,.time-intro:before{content:""!important;background:linear-gradient(rgba(126,224,212,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(126,224,212,.025) 1px,transparent 1px),radial-gradient(circle at 50% 44%,transparent 0 24%,rgba(126,224,212,.06) 25% 25.5%,transparent 26%)!important;background-size:44px 44px,44px 44px,100% 100%!important}
+.onboarding-paper:before{content:"90"!important;display:grid!important;place-items:center!important;background:linear-gradient(145deg,rgba(126,224,212,.14),rgba(233,198,124,.08))!important;border:1px solid rgba(126,224,212,.22)!important;border-radius:50%!important;color:rgba(227,244,239,.72)!important;font:700 .62rem/1 "Courier New",monospace!important;letter-spacing:-.05em!important}
+
+/* Archive brand/footer no longer show the legacy SVG badge. */
+.archive-mode .brand>img,.archive-mode footer>img{display:none!important}
+.archive-mode .brand:before{content:"90";flex:0 0 34px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(24,63,57,.28);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.72),transparent 28%),linear-gradient(145deg,#d7eadf,#d8c7a0);color:#173a35;font:800 .68rem/1 "Courier New",monospace;box-shadow:0 7px 20px rgba(32,48,43,.09)}
+.archive-mode footer:before{content:"WML / 90";display:inline-grid;place-items:center;padding:8px 12px;border:1px solid rgba(255,255,255,.16);border-radius:999px;font:700 .46rem/1 "Courier New",monospace;letter-spacing:.12em}
+
+/* Raster photography replaces flat decorative vector illustrations. */
+.archive-mode .music-player>img{display:none!important}
+.archive-mode .music-player .cassette-photo{display:block!important;width:min(100%,520px)!important;aspect-ratio:4/3!important;object-fit:cover!important;border-radius:4px!important;filter:saturate(.78) contrast(1.05)!important;box-shadow:0 28px 70px rgba(0,0,0,.2)!important}
+.archive-mode .ramadan-photo .lantern{display:none!important}
+.archive-mode .ramadan-photo:after{content:"MALAM RAMADAN";position:absolute;right:18px;bottom:18px;padding:8px 11px;background:rgba(6,16,14,.68);border:1px solid rgba(239,207,137,.36);color:#ecd39b;font:700 .43rem/1 "Courier New",monospace;letter-spacing:.13em;backdrop-filter:blur(10px)}
+
+@media(max-width:620px){.archive-mode .brand:before{width:30px;height:30px;flex-basis:30px}.archive-mode .ramadan-photo:after{right:10px;bottom:10px;font-size:.38rem}}
