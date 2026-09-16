@@ -13,8 +13,9 @@ test('random memory cards can alter world visuals without mutating historical da
 
 test('offline shell caches all twenty raster day-phase scenes',async()=>{
  const sw=await read('public/sw.js');
- assert.match(sw,/wml-time-machine-v7-0/);
+ assert.match(sw,/wml-time-machine-v8-0/);
  assert.match(sw,/\['rumah','kampung','sekolah','kota','digital'\]/);
  assert.match(sw,/\['pagi','siang','sore','malam'\]/);
  assert.match(sw,/phaseScenes/);
+ assert.match(sw,/premiumPages/);
 });
