@@ -1,4 +1,4 @@
-const VERSION='wml-time-machine-v8-0';
+const VERSION='wml-time-machine-v9-0';
 const SHELL=`${VERSION}-shell`;
 const MEDIA=`${VERSION}-media`;
 const PACKS=`${VERSION}-packs`;
@@ -7,69 +7,17 @@ const base=swBase.pathname;
 const phaseScenes=['rumah','kampung','sekolah','kota','digital'].flatMap(scene=>['pagi','siang','sore','malam'].map(phase=>`${base}assets/world/raster/${scene}-${phase}.webp`));
 const premiumPages=['intro','onboarding','time-machine','search','collection','campaign','settings','social','season','culture','memory-card','archive-loading'].map(id=>`${base}assets/generated/${id}-premium.webp`);
 const shellUrls=[
- `${base}manifest.webmanifest`,
- `${base}assets/world/raster/brand-orbit.webp`,
- `${base}assets/world/raster/portal-grid.webp`,
- `${base}assets/world/raster/rumah-90.webp`,
- `${base}assets/world/raster/kampung-90.webp`,
- `${base}assets/world/raster/sekolah-90.webp`,
- `${base}assets/world/raster/kota-90.webp`,
- `${base}assets/world/raster/digital-90.webp`,
- ...phaseScenes,
- ...premiumPages,
- `${base}assets/brand-seal.webp`,
- `${base}assets/icons/wml-64.png`,
- `${base}assets/icons/wml-180.png`,
- `${base}assets/icons/wml-192.png`,
- `${base}assets/icons/wml-512.png`,
- `${base}assets/icons/wml-maskable-512.png`
+ `${base}manifest.webmanifest`,`${base}assets/flagship-v8.css`,`${base}assets/flagship-v9.css`,
+ `${base}assets/world/raster/brand-orbit.webp`,`${base}assets/world/raster/portal-grid.webp`,
+ `${base}assets/world/raster/rumah-90.webp`,`${base}assets/world/raster/kampung-90.webp`,`${base}assets/world/raster/sekolah-90.webp`,`${base}assets/world/raster/kota-90.webp`,`${base}assets/world/raster/digital-90.webp`,
+ ...phaseScenes,...premiumPages,
+ `${base}assets/brand-seal.webp`,`${base}assets/icons/wml-64.png`,`${base}assets/icons/wml-180.png`,`${base}assets/icons/wml-192.png`,`${base}assets/icons/wml-512.png`,`${base}assets/icons/wml-maskable-512.png`
 ];
-
-function shellAssetUrls(html){
- const refs=[...html.matchAll(/(?:src|href)=["']([^"']+\.(?:js|css))["']/gi)].map(match=>match[1]);
- return [...new Set(refs.map(ref=>new URL(ref,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href))];
-}
-function normalizeMemoryPackUrl(value){
- const raw=String(value||'');
- const legacyExt='.'+['s','v','g'].join('');
- const plain=raw.split(/[?#]/)[0];
- const prefix='assets/world/scenes/';
- if(plain.includes(prefix)&&plain.endsWith(legacyExt)){
-  const file=plain.slice(plain.lastIndexOf('/')+1,-legacyExt.length);
-  const match=file.match(/^(rumah|kampung|sekolah|kota|digital)-90$/i);
-  if(match)return `assets/world/raster/${match[1].toLowerCase()}-90.webp`;
- }
- return raw;
-}
-
-async function installShell(){
- const cache=await caches.open(SHELL);
- const response=await fetch(base,{cache:'reload'});
- if(!response.ok)throw Error(`shell HTML ${response.status}`);
- const html=await response.clone().text();
- const discovered=shellAssetUrls(html);
- if(!discovered.some(url=>url.endsWith('.js')))throw Error('production JS bundle not discoverable');
- await cache.put(base,response);
- await Promise.all(discovered.map(url=>cache.add(url)));
- const optional=await Promise.allSettled(shellUrls.map(url=>cache.add(url)));
- const failed=optional.filter(result=>result.status==='rejected').length;
- if(failed)console.warn(`Offline shell installed with ${failed} optional asset cache failures.`);
-}
-
+function shellAssetUrls(html){const refs=[...html.matchAll(/(?:src|href)=["']([^"']+\.(?:js|css))["']/gi)].map(match=>match[1]);return [...new Set(refs.map(ref=>new URL(ref,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href))]}
+function normalizeMemoryPackUrl(value){const raw=String(value||'');const legacyExt='.'+['s','v','g'].join('');const plain=raw.split(/[?#]/)[0];const prefix='assets/world/scenes/';if(plain.includes(prefix)&&plain.endsWith(legacyExt)){const file=plain.slice(plain.lastIndexOf('/')+1,-legacyExt.length);const match=file.match(/^(rumah|kampung|sekolah|kota|digital)-90$/i);if(match)return `assets/world/raster/${match[1].toLowerCase()}-90.webp`}return raw}
+async function installShell(){const cache=await caches.open(SHELL);const response=await fetch(base,{cache:'reload'});if(!response.ok)throw Error(`shell HTML ${response.status}`);const html=await response.clone().text();const discovered=shellAssetUrls(html);if(!discovered.some(url=>url.endsWith('.js')))throw Error('production JS bundle not discoverable');await cache.put(base,response);await Promise.all(discovered.map(url=>cache.add(url)));const optional=await Promise.allSettled(shellUrls.map(url=>cache.add(url)));const failed=optional.filter(result=>result.status==='rejected').length;if(failed)console.warn(`Offline shell installed with ${failed} optional asset cache failures.`)}
 self.addEventListener('install',event=>{event.waitUntil(installShell().then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>key.startsWith('wml-time-machine-')&&!key.startsWith(VERSION)).map(key=>caches.delete(key)));await self.clients.claim()})())});
-function sameOrigin(request){return new URL(request.url).origin===self.location.origin}
-function isStatic(request){return ['style','script','font','image'].includes(request.destination)}
-self.addEventListener('fetch',event=>{
- const {request}=event;if(request.method!=='GET'||!sameOrigin(request))return;const url=new URL(request.url);if(!url.pathname.startsWith(base))return;
- if(request.mode==='navigate'){event.respondWith((async()=>{try{const fresh=await fetch(request);const cache=await caches.open(SHELL);if(url.pathname===base)cache.put(base,fresh.clone());return fresh}catch{return(await caches.match(base))||Response.error()}})());return}
- if(isStatic(request)){event.respondWith((async()=>{const cached=await caches.match(request);const refresh=fetch(request).then(async response=>{if(response.ok){const cache=await caches.open(MEDIA);await cache.put(request,response.clone())}return response}).catch(()=>null);if(cached){event.waitUntil(refresh);return cached}return(await refresh)||Response.error()})())}
-});
-self.addEventListener('message',event=>{
- const data=event.data||{};
- if(data.type==='SKIP_WAITING'){self.skipWaiting();return}
- if(data.type==='CLEAR_MEMORY_PACKS'){event.waitUntil((async()=>{await caches.delete(PACKS);event.source?.postMessage?.({type:'MEMORY_PACKS_CLEARED'})})());return}
- if(data.type==='CACHE_MEMORY_PACK'&&Array.isArray(data.urls)){
-  event.waitUntil((async()=>{const urls=data.urls.filter(value=>typeof value==='string').map(normalizeMemoryPackUrl).map(value=>new URL(value,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href);const cache=await caches.open(PACKS);const results=await Promise.allSettled(urls.map(url=>cache.add(url)));const ready=results.filter(result=>result.status==='fulfilled').length;event.source?.postMessage?.({type:'MEMORY_PACK_READY',count:ready,requested:urls.length})})())
- }
-});
+function sameOrigin(request){return new URL(request.url).origin===self.location.origin}function isStatic(request){return ['style','script','font','image'].includes(request.destination)}
+self.addEventListener('fetch',event=>{const {request}=event;if(request.method!=='GET'||!sameOrigin(request))return;const url=new URL(request.url);if(!url.pathname.startsWith(base))return;if(request.mode==='navigate'){event.respondWith((async()=>{try{const fresh=await fetch(request);const cache=await caches.open(SHELL);if(url.pathname===base)cache.put(base,fresh.clone());return fresh}catch{return(await caches.match(base))||Response.error()}})());return}if(isStatic(request)){event.respondWith((async()=>{const cached=await caches.match(request);const refresh=fetch(request).then(async response=>{if(response.ok){const cache=await caches.open(MEDIA);await cache.put(request,response.clone())}return response}).catch(()=>null);if(cached){event.waitUntil(refresh);return cached}return(await refresh)||Response.error()})())}});
+self.addEventListener('message',event=>{const data=event.data||{};if(data.type==='SKIP_WAITING'){self.skipWaiting();return}if(data.type==='CLEAR_MEMORY_PACKS'){event.waitUntil((async()=>{await caches.delete(PACKS);event.source?.postMessage?.({type:'MEMORY_PACKS_CLEARED'})})());return}if(data.type==='CACHE_MEMORY_PACK'&&Array.isArray(data.urls)){event.waitUntil((async()=>{const urls=data.urls.filter(value=>typeof value==='string').map(normalizeMemoryPackUrl).map(value=>new URL(value,swBase)).filter(url=>url.origin===self.location.origin&&url.pathname.startsWith(base)).map(url=>url.href);const cache=await caches.open(PACKS);const results=await Promise.allSettled(urls.map(url=>cache.add(url)));const ready=results.filter(result=>result.status==='fulfilled').length;event.source?.postMessage?.({type:'MEMORY_PACK_READY',count:ready,requested:urls.length})})())}});
