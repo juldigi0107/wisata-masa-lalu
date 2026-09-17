@@ -7,7 +7,8 @@ test('premium visual pipeline is photo-assisted after the legacy spatial raster 
  const [pkg,generator]=await Promise.all([text('package.json'),text('scripts/generate-premium-photo-scenes.mjs')]);
  assert.match(pkg,/generate-premium-photo-scenes\.mjs/);
  assert.ok(pkg.indexOf('generate-world-raster.mjs')<pkg.indexOf('generate-premium-photo-scenes.mjs'));
- assert.match(generator,/scenePhotoMap/);
+ assert.match(generator,/sceneSpecs/);
+ assert.match(generator,/sceneManifest/);
  assert.match(generator,/sharp/);
 });
 
@@ -17,10 +18,11 @@ test('all primary world and feature surfaces receive raster page backdrops',asyn
  assert.match(generator,/assets\/generated/);
 });
 
-test('archive chapters use raster photo surfaces instead of plain decorative geometry',async()=>{
+test('archive chapters use BASE_URL-safe raster surface variables instead of plain decorative geometry',async()=>{
  const [main,css]=await Promise.all([text('src/main.jsx'),text('src/world/premium-photo-pages.css')]);
- for(const id of ['archive','tv','games','objects','timeline','warung','ramadan','music','quiz','collection','school'])assert.match(main,new RegExp(`--wml-surface-${id}`));
- assert.match(css,/--wml-surface-archive/);
+ for(const id of ['archive','tv','games','objects','timeline','warung','ramadan','music','quiz','collection','school'])assert.match(main,new RegExp(`'${id}'`));
+ assert.match(main,/rootStyle\.setProperty\(`--wml-surface-\$\{id\}`/);
+ assert.match(css,/var\(--wml-surface-archive\)/);
 });
 
 test('release build enforces raster-only artifact and photo-premium coverage',async()=>{
