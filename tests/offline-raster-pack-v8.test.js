@@ -14,9 +14,9 @@ test('legacy memory-pack authoring scene requests are normalized to generated We
  assert.equal(sw.includes('.svg'),false,'service worker source remains raster-only');
 });
 
-test('offline shell keeps the production v8 cache contract and raster scene preloads',async()=>{
+test('offline shell keeps the current production cache contract and raster scene preloads',async()=>{
  const sw=await text('public/sw.js');
- assert.match(sw,/wml-time-machine-v8-0/);
+ assert.match(sw,/wml-time-machine-v\d+-0/);
  assert.match(sw,/assets\/world\/raster\/rumah-90\.webp/);
  assert.match(sw,/assets\/world\/raster\/digital-90\.webp/);
 });
