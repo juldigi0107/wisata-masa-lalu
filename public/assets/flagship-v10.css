@@ -1,0 +1,64 @@
+/* WISATA MASA LALU — FLAGSHIP V10
+   Final optical pass: contrast safety, scene-specific object mass, fluid typography,
+   calm deep-page composition and mobile flagship ergonomics. Loaded after V9. */
+:root{--v10-cream:#fff1dc;--v10-soft:rgba(255,241,220,.76);--v10-dim:rgba(255,241,220,.56);--v10-teal:#a5fff2;--v10-gold:#ffd58a;--v10-glass:rgba(3,9,8,.9);--v10-line:rgba(202,255,246,.15);--v10-r:clamp(18px,2vw,30px)}
+
+/* Readability contract: no image-backed copy without an optical field. */
+:is(.time-intro,.onboarding,.world-app,.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel,.archive-loading,.fatal-shell) :is(h1,h2,h3,h4,b,strong){text-wrap:balance}
+:is(.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel) :is(h1,h2,h3,h4,b,strong){color:var(--v10-cream)!important}
+:is(.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel) :is(p,li,label,dd){color:var(--v10-soft)!important}
+:is(.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel) :is(small,.panel-note,.campaign-note,.search-mode-note){color:var(--v10-dim)!important}
+:is(.deep-panel,.interaction-drawer) :is(input,textarea,select){color:#fff7e9!important;background:rgba(255,255,255,.055)!important;border-color:rgba(255,255,255,.13)!important}
+:is(.deep-panel,.interaction-drawer) :is(input,textarea)::placeholder{color:rgba(255,247,233,.42)!important}
+
+/* World labels remain legible over any raster frame. */
+.scene-caption{background:linear-gradient(100deg,rgba(2,7,6,.88),rgba(2,7,6,.54) 70%,transparent)!important;border:0!important;backdrop-filter:blur(7px)!important;padding:clamp(14px,1.8vw,24px)!important}
+.scene-caption h2{color:#fff0d9!important;font-size:clamp(2.8rem,7.2vw,7.8rem)!important;line-height:.84!important;letter-spacing:-.065em!important;text-shadow:0 10px 38px rgba(0,0,0,.48)!important}
+.scene-caption p{color:rgba(255,244,226,.82)!important;font-size:clamp(.78rem,.72rem + .22vw,1rem)!important;line-height:1.62!important;text-shadow:0 2px 14px rgba(0,0,0,.55)!important}
+.scene-caption small{color:#a9fff4!important;text-shadow:0 2px 12px rgba(0,0,0,.65)!important}
+
+/* Scene-specific object mass. Large anchors feel physical; utilities recede. */
+.world-scene{--v10-object:clamp(48px,4.2vw,72px)}
+.scene-object{width:calc(var(--v10-object)*var(--mass,1))!important;height:calc(var(--v10-object)*var(--mass,1))!important;min-width:44px!important;min-height:44px!important;transform:translate(-50%,-50%) scale(.94)!important;transition:transform .24s cubic-bezier(.2,.8,.2,1),filter .24s ease!important}
+.scene-object:hover,.scene-object:focus-visible,.scene-object.active{transform:translate(-50%,-50%) scale(1.1)!important;z-index:40!important}
+.scene-rumah .scene-object:nth-of-type(1){--mass:1.42}.scene-rumah .scene-object:nth-of-type(3){--mass:1.22}.scene-rumah .scene-object:nth-of-type(5){--mass:1.16}.scene-rumah .scene-object:nth-of-type(8){--mass:1.24}.scene-rumah .scene-object:nth-of-type(6),.scene-rumah .scene-object:nth-of-type(7),.scene-rumah .scene-object:nth-of-type(13){--mass:.8}
+.scene-kampung .scene-object:nth-of-type(1){--mass:1.42}.scene-kampung .scene-object:nth-of-type(2){--mass:1.38}.scene-kampung .scene-object:nth-of-type(4){--mass:1.2}.scene-kampung .scene-object:nth-of-type(6){--mass:1.12}
+.scene-sekolah .scene-object:nth-of-type(2){--mass:1.3}.scene-sekolah .scene-object:nth-of-type(6){--mass:1.34}.scene-sekolah .scene-object:nth-of-type(7){--mass:1.4}.scene-sekolah .scene-object:nth-of-type(5){--mass:.82}
+.scene-kota .scene-object:nth-of-type(1){--mass:1.38}.scene-kota .scene-object:nth-of-type(2){--mass:1.44}.scene-kota .scene-object:nth-of-type(3){--mass:1.32}.scene-kota .scene-object:nth-of-type(4){--mass:1.2}.scene-kota .scene-object:nth-of-type(5){--mass:.88}
+.scene-digital .scene-object:nth-of-type(1){--mass:1.5}.scene-digital .scene-object:nth-of-type(3){--mass:1.18}.scene-digital .scene-object:nth-of-type(4){--mass:1.14}.scene-digital .scene-object:nth-of-type(5){--mass:1.32}
+.scene-object>b{font-size:calc(clamp(1.1rem,1.5vw,1.7rem)*var(--mass,1))!important}.scene-object>em{color:#fff5e5!important;background:rgba(2,7,6,.9)!important;border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 10px 28px rgba(0,0,0,.4)!important}.scene-object>small{color:rgba(255,247,233,.84)!important;background:rgba(2,7,6,.93)!important;border-color:rgba(255,255,255,.12)!important}
+
+/* HUD behaves like optical chrome, never a dashboard bar. */
+.world-hud{background:linear-gradient(105deg,rgba(3,9,8,.88),rgba(3,9,8,.68))!important;border-color:var(--v10-line)!important;box-shadow:0 18px 70px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.07)!important}
+.world-hud nav button{color:rgba(255,245,228,.78)!important;font-size:clamp(.58rem,.54rem + .12vw,.7rem)!important}.world-hud nav button:hover,.world-hud nav button:focus-visible{color:#eafffb!important;background:rgba(165,255,242,.1)!important}.brand-ticket b{color:#fff1dc!important}.brand-ticket span{color:#a5fff2!important}
+
+/* Deep feature pages: fluid scale, protected copy, no tiny prototype labels. */
+.deep-panel,.interaction-drawer{padding:clamp(22px,3.2vw,48px)!important;border-radius:var(--v10-r)!important;background:linear-gradient(112deg,rgba(3,9,8,.97),rgba(4,11,9,.92) 62%,rgba(4,11,9,.82))!important}
+.deep-panel>h2,.interaction-drawer>h3{font-size:clamp(2.1rem,4.7vw,4.8rem)!important;line-height:.92!important;max-width:13ch!important}.deep-panel>p,.interaction-drawer>.object-hint{font-size:clamp(.78rem,.72rem + .2vw,.98rem)!important;line-height:1.65!important}
+.panel-close,.drawer-close{background:rgba(255,255,255,.065)!important;color:#fff1dc!important;border-color:rgba(255,255,255,.14)!important}
+.trigger-tabs button{min-height:44px!important;color:rgba(255,245,228,.78)!important}.trigger-tabs button.active{color:#ecfffb!important;background:rgba(165,255,242,.1)!important;border-color:rgba(165,255,242,.34)!important}
+.mechanic-box{background:rgba(255,255,255,.03)!important;border-color:rgba(255,255,255,.1)!important;border-radius:20px!important}.mechanic-box :is(button,input,textarea,select){min-height:44px}
+.context-archive{background:linear-gradient(135deg,rgba(255,213,138,.07),rgba(165,255,242,.035))!important;border-color:rgba(255,213,138,.18)!important}
+
+/* Search becomes a reading/discovery surface. */
+.search-panel{width:min(1040px,calc(100vw - 32px))!important}.search-columns{gap:clamp(18px,3vw,42px)!important}.search-columns section{background:transparent!important;border:0!important}.search-columns section>button{position:relative!important;min-height:68px!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.09)!important;border-radius:0!important;background:transparent!important;padding:12px 34px 12px 0!important;text-align:left!important}.search-columns section>button:after{content:"↘";position:absolute;right:4px;top:50%;transform:translateY(-50%);color:#a5fff2}.search-columns section>button:hover{padding-left:10px!important;background:linear-gradient(90deg,rgba(165,255,242,.055),transparent)!important}
+
+/* Time machine: the year is the hero object. */
+.time-machine-panel>h2{font-size:clamp(5rem,15vw,11rem)!important;line-height:.72!important;color:#fff0d2!important;text-shadow:0 16px 60px rgba(0,0,0,.35)}.year-strip{display:flex!important;overflow-x:auto!important;gap:4px!important;padding:4px 0 10px!important;scroll-snap-type:x mandatory!important}.year-strip button{flex:0 0 auto!important;min-width:70px!important;min-height:46px!important;border-radius:999px!important;color:rgba(255,243,225,.62)!important;scroll-snap-align:center}.year-strip button.active{min-width:96px!important;color:#07100e!important;background:linear-gradient(135deg,#a5fff2,#ffd58a)!important;border-color:transparent!important}
+
+/* Collection is a cabinet with variable rhythm rather than uniform cards. */
+.collection-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important}.collection-grid article{min-height:clamp(112px,14vw,170px)!important;border-radius:18px!important}.collection-grid article:nth-child(5n+1){grid-column:span 2;min-height:clamp(136px,16vw,190px)!important}.collection-grid article.owned{background:linear-gradient(145deg,rgba(165,255,242,.09),rgba(255,213,138,.035))!important;border-color:rgba(165,255,242,.22)!important}.collection-grid article>span{font-size:clamp(1.3rem,2.4vw,2.4rem)!important}
+
+/* Campaign / settings retain clear hierarchy at all depths. */
+.campaign-time{font-size:clamp(4rem,10vw,8.5rem)!important;line-height:.8!important;color:#ffd58a!important}.campaign-timeline button{flex-basis:clamp(100px,11vw,132px)!important;background:transparent!important;border-color:rgba(255,255,255,.1)!important}.campaign-timeline button.active{background:linear-gradient(135deg,rgba(255,213,138,.11),rgba(165,255,242,.04))!important;border-color:rgba(255,213,138,.42)!important}.settings-panel>label{padding:13px 0!important;border-bottom:1px solid rgba(255,255,255,.08)!important;color:rgba(255,245,228,.8)!important}
+
+/* Archive/contextual pages use dark ink on paper; hero copy is protected separately. */
+.archive-mode,.context-entry-page{--v10-paper:#f1e7d3;--v10-ink:#171916;--v10-muted:#555950}.archive-mode :is(h1,h2,h3,h4,b,strong),.context-entry-page :is(h1,h2,h3,h4,b,strong){color:var(--v10-ink)!important}.archive-mode :is(p,li,dd),.context-entry-page :is(p,li,dd){color:var(--v10-muted)!important}.archive-mode a,.context-entry-page a{color:#155e59!important;text-decoration-color:rgba(21,94,89,.35)!important}.archive-return{background:rgba(15,18,16,.94)!important;color:#fff0dd!important}.archive-return :is(button,span){color:#fff0dd!important}.context-entry-hero{isolation:isolate}.context-entry-hero:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,rgba(9,12,10,.86),rgba(9,12,10,.48) 55%,rgba(9,12,10,.08))}.context-entry-hero>*{position:relative;z-index:1}.context-entry-hero :is(h1,h2,h3,p,small,span){color:#fff1dc!important;text-shadow:0 2px 18px rgba(0,0,0,.62)!important}
+
+/* Mobile flagship composition: scene first, controls second. */
+@media(max-width:900px){.world-scene{--v10-object:clamp(46px,8vw,64px)}.collection-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.deep-panel,.interaction-drawer{width:min(720px,calc(100vw - 22px))!important}}
+@media(max-width:620px){.world-scene{--v10-object:clamp(44px,12vw,58px)}.scene-object{--mass:min(var(--mass,1),1.12)}.scene-object>small{display:none!important}.scene-caption{left:14px!important;right:14px!important;width:auto!important;bottom:clamp(116px,16vh,154px)!important;padding:12px 14px!important}.scene-caption h2{font-size:clamp(2.3rem,12vw,4.4rem)!important}.scene-caption p{font-size:.72rem!important;line-height:1.5!important}.deep-panel,.interaction-drawer{left:0!important;right:0!important;bottom:0!important;top:auto!important;width:100%!important;max-width:none!important;max-height:min(88dvh,820px)!important;border-radius:22px 22px 0 0!important;padding:20px 16px max(20px,env(safe-area-inset-bottom))!important}.search-columns{grid-template-columns:1fr!important}.collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.collection-grid article:nth-child(5n+1){grid-column:span 2}}
+@media(max-width:380px){.scene-caption p{display:none!important}.scene-caption h2{font-size:2.5rem!important}.collection-grid{grid-template-columns:1fr!important}.collection-grid article:nth-child(5n+1){grid-column:auto}.deep-panel,.interaction-drawer{padding-inline:14px!important}}
+@media(max-height:650px) and (orientation:landscape){.scene-caption{bottom:20px!important;width:min(46vw,500px)!important}.scene-caption p{display:none!important}.world-scene{--v10-object:clamp(40px,7vh,54px)}.deep-panel,.interaction-drawer{max-height:calc(100dvh - 12px)!important}}
+@media(prefers-contrast:more){.deep-panel,.interaction-drawer{background:#06100e!important;border-color:rgba(255,255,255,.32)!important}.scene-caption{background:rgba(2,7,6,.94)!important}.scene-caption p{color:#fff4e2!important}.scene-object>em{background:#020706!important;color:#fff!important}}
+@media(prefers-reduced-motion:reduce){.scene-object,.search-columns section>button{transition:none!important}.scene-object,.scene-object:hover,.scene-object:focus-visible,.scene-object.active{transform:translate(-50%,-50%)!important}}
