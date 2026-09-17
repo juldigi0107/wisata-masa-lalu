@@ -39,8 +39,8 @@ test('v11 has dedicated portrait landscape and reduced-motion compositions',asyn
  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
 });
 
-test('PWA shell rotates to v11 and pre-caches the active flagship layer',async()=>{
+test('PWA shell retains v11 while allowing a newer cache generation',async()=>{
  const sw=await text('public/sw.js');
- assert.match(sw,/wml-time-machine-v11-0/);
+ assert.match(sw,/wml-time-machine-v\d+-0/);
  assert.match(sw,/assets\/flagship-v11\.css/);
 });
