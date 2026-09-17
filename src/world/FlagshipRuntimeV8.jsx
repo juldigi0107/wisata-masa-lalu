@@ -18,31 +18,22 @@ function detectSurface(){
 export default function FlagshipRuntimeV8(){
  const [active,setActive]=useState(false);
  useEffect(()=>{
-  const id='wml-flagship-v8-css';
-  if(!document.getElementById(id)){
-   const link=document.createElement('link');
-   link.id=id;link.rel='stylesheet';link.href=`${BASE}assets/flagship-v8.css`;
-   document.head.appendChild(link);
+  for(const [id,file] of [['wml-flagship-v8-css','flagship-v8.css'],['wml-flagship-v9-css','flagship-v9.css']]){
+   if(document.getElementById(id))continue;
+   const link=document.createElement('link');link.id=id;link.rel='stylesheet';link.href=`${BASE}assets/${file}`;document.head.appendChild(link);
   }
  },[]);
  useEffect(()=>{
   let frame=0;
-  const sync=()=>{
-   frame=0;
-   const surface=detectSurface();
-   document.documentElement.dataset.wmlSurface=surface;
-   setActive(surface!=='boot');
-  };
+  const sync=()=>{frame=0;const surface=detectSurface();document.documentElement.dataset.wmlSurface=surface;setActive(surface!=='boot')};
   const schedule=()=>{if(!frame)frame=requestAnimationFrame(sync)};
-  sync();
-  const observer=new MutationObserver(schedule);
-  observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+  sync();const observer=new MutationObserver(schedule);observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
   return()=>{observer.disconnect();if(frame)cancelAnimationFrame(frame);delete document.documentElement.dataset.wmlSurface};
  },[]);
  useEffect(()=>{
   if(!window.matchMedia?.('(pointer:fine)').matches||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
   let frame=0,last=null;
-  const paint=()=>{frame=0;if(!last)return;const nx=last.clientX/window.innerWidth-.5,ny=last.clientY/window.innerHeight-.5;const root=document.documentElement.style;root.setProperty('--flagship-x',`${last.clientX}px`);root.setProperty('--flagship-y',`${last.clientY}px`);root.setProperty('--flagship-nx',nx.toFixed(4));root.setProperty('--flagship-ny',ny.toFixed(4));};
+  const paint=()=>{frame=0;if(!last)return;const nx=last.clientX/window.innerWidth-.5,ny=last.clientY/window.innerHeight-.5;const root=document.documentElement.style;root.setProperty('--flagship-x',`${last.clientX}px`);root.setProperty('--flagship-y',`${last.clientY}px`);root.setProperty('--flagship-nx',nx.toFixed(4));root.setProperty('--flagship-ny',ny.toFixed(4))};
   const move=event=>{last=event;if(!frame)frame=requestAnimationFrame(paint)};
   const reset=()=>{const root=document.documentElement.style;root.setProperty('--flagship-nx','0');root.setProperty('--flagship-ny','0')};
   window.addEventListener('pointermove',move,{passive:true});window.addEventListener('blur',reset);document.addEventListener('mouseleave',reset);
