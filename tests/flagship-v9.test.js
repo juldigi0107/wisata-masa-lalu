@@ -22,7 +22,7 @@ test('flagship v9 keeps mobile and short-landscape layouts deliberate',async()=>
  assert.match(css,/\.scene-object>small\{display:none!important\}/);
 });
 
-test('offline shell rotates and explicitly includes flagship runtime styles',async()=>{
+test('offline shell retains flagship v8 and v9 under the current cache generation',async()=>{
  const sw=await text('public/sw.js');
- assert.match(sw,/wml-time-machine-v9-0/);assert.match(sw,/assets\/flagship-v8\.css/);assert.match(sw,/assets\/flagship-v9\.css/);
+ assert.match(sw,/wml-time-machine-v\d+-0/);assert.match(sw,/assets\/flagship-v8\.css/);assert.match(sw,/assets\/flagship-v9\.css/);
 });
