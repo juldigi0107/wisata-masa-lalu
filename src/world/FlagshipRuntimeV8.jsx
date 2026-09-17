@@ -18,7 +18,7 @@ function detectSurface(){
 export default function FlagshipRuntimeV8(){
  const [active,setActive]=useState(false);
  useEffect(()=>{
-  for(const [id,file] of [['wml-flagship-v8-css','flagship-v8.css'],['wml-flagship-v9-css','flagship-v9.css'],['wml-flagship-v10-css','flagship-v10.css'],['wml-flagship-v11-css','flagship-v11.css']]){
+  for(const [id,file] of [['wml-flagship-v8-css','flagship-v8.css'],['wml-flagship-v9-css','flagship-v9.css'],['wml-flagship-v10-css','flagship-v10.css'],['wml-flagship-v11-css','flagship-v11.css'],['wml-flagship-v12-css','flagship-v12.css']]){
    if(document.getElementById(id))continue;
    const link=document.createElement('link');link.id=id;link.rel='stylesheet';link.href=`${BASE}assets/${file}`;document.head.appendChild(link);
   }
