@@ -33,3 +33,9 @@ test('v10 keeps deepest surfaces fluid and mobile safe',async()=>{
  assert.match(css,/env\(safe-area-inset-bottom\)/);
  assert.match(css,/max-height:min\(88dvh,820px\)/);
 });
+
+test('PWA shell rotates cache generation and includes flagship v10',async()=>{
+ const sw=await text('public/sw.js');
+ assert.match(sw,/wml-time-machine-v10-0/);
+ assert.match(sw,/assets\/flagship-v10\.css/);
+});
