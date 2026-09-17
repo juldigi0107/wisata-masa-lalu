@@ -1,0 +1,88 @@
+/* WISATA MASA LALU — FLAGSHIP V11
+   Adaptive optical hierarchy for every public surface.
+   Goals: no text/background collision, fluid object scale, calm non-dashboard composition,
+   premium image-backed depth and robust portrait/landscape behavior. Loaded after V10. */
+:root{
+ --v11-ink:#07100e;--v11-night:#020706;--v11-cream:#fff4e4;--v11-paper:#f3ead8;
+ --v11-teal:#a9fff3;--v11-gold:#ffd88f;--v11-copy:rgba(255,244,228,.84);
+ --v11-muted:rgba(255,244,228,.62);--v11-hairline:rgba(214,255,248,.14);
+ --v11-shadow:0 24px 90px rgba(0,0,0,.42);--v11-panel:rgba(3,9,8,.91);
+ --v11-space:clamp(14px,1.1vw + 10px,30px);--v11-radius:clamp(18px,1.5vw + 14px,34px)
+}
+
+/* Global contrast safety. Text that sits on photography/raster always gets an optical field. */
+:is(.world-app,.time-intro,.onboarding,.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel,.archive-loading,.fatal-shell){color-scheme:dark}
+:is(.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel,.archive-loading) :is(h1,h2,h3,h4,h5,h6,strong,b){color:var(--v11-cream)!important}
+:is(.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel,.archive-loading) :is(p,li,dd,label){color:var(--v11-copy)!important}
+:is(.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel,.archive-loading) :is(small,.panel-note,.campaign-note,.search-mode-note,.object-hint){color:var(--v11-muted)!important}
+:is(.deep-panel,.interaction-drawer) a:not(.context-sources a){color:var(--v11-teal)!important}
+:is(.deep-panel,.interaction-drawer) :is(button,input,textarea,select){font-size:clamp(.72rem,.68rem + .16vw,.9rem)}
+
+/* Full-screen raster stage: keep image dimensional while guaranteeing legible controls. */
+.world-scene{container-type:size;overflow:hidden!important;isolation:isolate;background:#07100e!important}
+.world-scene:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(180deg,rgba(1,5,4,.12),transparent 24%,transparent 58%,rgba(1,5,4,.54)),linear-gradient(90deg,rgba(1,5,4,.2),transparent 24%,transparent 74%,rgba(1,5,4,.16));mix-blend-mode:multiply}
+.world-scene:after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;box-shadow:inset 0 0 clamp(80px,13vw,210px) rgba(0,0,0,.5)}
+.scene-architecture{filter:saturate(.96) contrast(1.035) brightness(.96)!important;transform:scale(1.012);transition:filter .45s ease,transform .7s cubic-bezier(.2,.8,.2,1)!important}
+.world-scene:has(.scene-object:hover) .scene-architecture,.world-scene:has(.scene-object:focus-visible) .scene-architecture,.world-scene:has(.scene-object.active) .scene-architecture{filter:saturate(.9) contrast(1.04) brightness(.83)!important;transform:scale(1.024)}
+
+/* Dynamic object system. Object mass scales with viewport AND scene container. */
+.world-scene{--v11-object:clamp(46px,6.2cqw,82px)}
+.scene-object{width:calc(var(--v11-object)*var(--mass,1))!important;height:calc(var(--v11-object)*var(--mass,1))!important;max-width:104px!important;max-height:104px!important;border-radius:50%!important;background:radial-gradient(circle,rgba(169,255,243,.13),rgba(4,11,9,.72) 58%,rgba(4,11,9,.88))!important;border:1px solid rgba(206,255,247,.2)!important;box-shadow:0 14px 42px rgba(0,0,0,.36),inset 0 0 0 1px rgba(255,255,255,.04)!important}
+.scene-object:before{content:"";position:absolute;inset:-9px;border:1px solid rgba(169,255,243,.12);border-radius:50%;opacity:.55;transform:scale(.88);transition:transform .28s ease,opacity .28s ease}
+.scene-object:hover:before,.scene-object:focus-visible:before,.scene-object.active:before{transform:scale(1.06);opacity:1}
+.scene-object>b{filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));line-height:1!important}
+.scene-object>em{max-width:min(170px,38vw)!important;padding:7px 10px!important;font-size:clamp(.55rem,.5rem + .15vw,.68rem)!important;line-height:1.15!important;white-space:normal!important;text-wrap:balance!important}
+.scene-object>small{max-width:min(220px,48vw)!important;padding:8px 10px!important;font-size:clamp(.48rem,.44rem + .12vw,.58rem)!important;line-height:1.35!important;white-space:normal!important}
+
+/* Scene caption is editorial, not a dashboard card. */
+.scene-caption{max-width:min(760px,72vw)!important;border-radius:0 28px 28px 0!important;background:linear-gradient(90deg,rgba(1,6,5,.9),rgba(1,6,5,.68) 72%,rgba(1,6,5,.08))!important;box-shadow:none!important}
+.scene-caption h2{font-size:clamp(3rem,8.6cqw,8.6rem)!important;max-width:10ch!important;text-wrap:balance!important}
+.scene-caption p{max-width:56ch!important;color:rgba(255,246,232,.86)!important}
+
+/* HUD: optical controls, never a dense toolbar. */
+.world-hud{max-width:min(1180px,calc(100vw - 28px))!important;margin-inline:auto!important;border-radius:999px!important;padding:6px 8px!important;background:rgba(2,8,7,.76)!important;backdrop-filter:blur(24px) saturate(1.2)!important}
+.world-hud nav{gap:2px!important}.world-hud nav button{min-height:42px!important;border-radius:999px!important;padding-inline:clamp(10px,1.2vw,18px)!important;white-space:nowrap}
+.brand-ticket{min-width:0}.brand-ticket b{font-size:clamp(.7rem,.64rem + .2vw,.9rem)!important}.brand-ticket span{font-size:clamp(.42rem,.4rem + .08vw,.52rem)!important}
+
+/* Deep pages use responsive editorial widths and protected copy. */
+.deep-panel,.interaction-drawer{width:min(1080px,calc(100vw - 40px))!important;max-height:min(88dvh,940px)!important;box-shadow:var(--v11-shadow)!important;border:1px solid var(--v11-hairline)!important;backdrop-filter:blur(28px) saturate(1.12)!important}
+.deep-panel>h2,.interaction-drawer>h3{font-size:clamp(2.35rem,5.4vw,5.8rem)!important;letter-spacing:-.055em!important;line-height:.88!important}
+.deep-panel>p,.interaction-drawer>.object-hint{max-width:68ch!important}
+.panel-close,.drawer-close{width:46px!important;height:46px!important;display:grid!important;place-items:center!important;border-radius:50%!important;font-size:1.15rem!important}
+
+/* Buttons have a flagship physical hierarchy. */
+:is(.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel) button{transition:transform .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease}
+:is(.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel) button:hover{transform:translateY(-1px)}
+:is(.deep-panel,.interaction-drawer,.ambient-event,.season-panel,.social-memory-panel) button:focus-visible{outline:2px solid var(--v11-teal)!important;outline-offset:3px!important}
+
+/* Search / collection / campaign / settings: variable rhythm instead of equal SaaS cards. */
+.search-columns{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)!important}.search-columns h3{font-size:clamp(1.2rem,2vw,2rem)!important}.search-columns section>button b{font-size:clamp(.74rem,.7rem + .16vw,.92rem)!important;color:var(--v11-cream)!important}
+.collection-grid{grid-auto-flow:dense!important}.collection-grid article{padding:clamp(14px,1.5vw,22px)!important}.collection-grid article:nth-child(7n+3){min-height:clamp(150px,18vw,210px)!important}.collection-grid article b{font-size:clamp(.7rem,.66rem + .15vw,.88rem)!important}
+.campaign-timeline button{min-height:78px!important}.campaign-timeline time{font-size:clamp(.66rem,.6rem + .16vw,.82rem)!important}.campaign-timeline span{font-size:clamp(.55rem,.52rem + .1vw,.66rem)!important}
+.settings-panel>label{display:grid!important;grid-template-columns:minmax(120px,1fr) minmax(150px,1.2fr) auto!important;gap:14px!important;align-items:center!important}.settings-panel>label>input[type=range]{width:100%!important}
+
+/* Archive: dark-on-paper contract. No inherited white text on cream backgrounds. */
+.archive-mode,.context-entry-page{color-scheme:light;background:var(--v11-paper)!important;color:#171916!important}
+.archive-mode :is(section,article,div):not(.context-entry-hero):not(.archive-return):not(.crt-screen):not(.archive-loading) :is(h1,h2,h3,h4,h5,h6,strong,b){color:#171916}
+.archive-mode :is(section,article,div):not(.context-entry-hero):not(.archive-return):not(.crt-screen):not(.archive-loading) :is(p,li,dd,label){color:#4c514a}
+.archive-mode :is(input,textarea,select){color:#171916!important;background:rgba(255,255,255,.72)!important;border-color:rgba(23,25,22,.18)!important}
+.archive-mode :is(input,textarea)::placeholder{color:rgba(23,25,22,.5)!important}
+.context-entry-hero{min-height:clamp(420px,68vh,760px)!important;display:grid!important;align-content:end!important}.context-entry-hero:after{background:linear-gradient(180deg,rgba(5,8,7,.08) 12%,rgba(5,8,7,.26) 48%,rgba(5,8,7,.9) 100%)!important}.context-entry-hero :is(h1,h2,h3,p,small,span,b,strong){color:#fff4e4!important}
+.context-entry-hero h1{font-size:clamp(3rem,8vw,8rem)!important;line-height:.86!important;max-width:10ch!important}
+
+/* Tiny screens: keep the scene readable and let controls scroll, never collide. */
+@media(max-width:760px){
+ .world-hud{left:10px!important;right:10px!important;bottom:max(10px,env(safe-area-inset-bottom))!important;max-width:none!important;overflow-x:auto!important;scrollbar-width:none!important}.world-hud::-webkit-scrollbar{display:none}.world-hud nav{min-width:max-content!important}
+ .scene-caption{left:10px!important;right:10px!important;bottom:clamp(108px,16vh,146px)!important;max-width:none!important;border-radius:20px!important;background:linear-gradient(180deg,rgba(1,6,5,.58),rgba(1,6,5,.9))!important}.scene-caption h2{font-size:clamp(2.5rem,13vw,5rem)!important}.scene-caption p{font-size:clamp(.68rem,2.9vw,.8rem)!important}
+ .world-scene{--v11-object:clamp(44px,12cqw,62px)}.scene-object{--mass:min(var(--mass,1),1.1);max-width:72px!important;max-height:72px!important}.scene-object>small{display:none!important}
+ .deep-panel,.interaction-drawer{width:100%!important;max-height:88dvh!important;padding:22px 16px max(22px,env(safe-area-inset-bottom))!important;border-radius:26px 26px 0 0!important}.deep-panel>h2,.interaction-drawer>h3{font-size:clamp(2.2rem,12vw,4.4rem)!important}
+ .search-columns{grid-template-columns:1fr!important}.settings-panel>label{grid-template-columns:1fr auto!important}.settings-panel>label>input[type=range],.settings-panel>label>select{grid-column:1/-1!important}
+}
+@media(max-width:430px){
+ .scene-caption{bottom:112px!important}.scene-caption p{max-height:3.1em;overflow:hidden}.scene-object>em{font-size:.52rem!important;max-width:112px!important}.collection-grid{grid-template-columns:1fr 1fr!important}.collection-grid article:nth-child(5n+1),.collection-grid article:nth-child(7n+3){grid-column:span 2!important}
+ .deep-panel,.interaction-drawer{padding-inline:14px!important}.context-entry-hero{min-height:68dvh!important}.context-entry-hero h1{font-size:clamp(2.8rem,15vw,4.9rem)!important}
+}
+@media(max-height:640px) and (orientation:landscape){.scene-caption{left:12px!important;bottom:12px!important;width:min(48vw,520px)!important}.scene-caption h2{font-size:clamp(2rem,8vh,4rem)!important}.scene-caption p{display:none!important}.world-hud{bottom:8px!important}.deep-panel,.interaction-drawer{max-height:calc(100dvh - 8px)!important}}
+
+@media(prefers-contrast:more){:root{--v11-copy:#fff;--v11-muted:#f4ead9}.world-hud,.deep-panel,.interaction-drawer{background:#020706!important;border-color:rgba(255,255,255,.4)!important}.scene-caption{background:#020706!important}.archive-mode,.context-entry-page{background:#fff7e8!important}.archive-mode :is(p,li,dd,label){color:#242822!important}}
+@media(prefers-reduced-motion:reduce){.scene-architecture,.scene-object,.scene-object:before,:is(.deep-panel,.interaction-drawer) button{transition:none!important}.world-scene:has(.scene-object:hover) .scene-architecture,.world-scene:has(.scene-object:focus-visible) .scene-architecture,.world-scene:has(.scene-object.active) .scene-architecture{transform:none!important}}
